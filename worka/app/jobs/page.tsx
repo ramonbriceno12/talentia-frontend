@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import CallToAction from "@/components/homepage/CallToAction";
 import Footer from "@/components/homepage/Footer";
 import Navbar from "@/components/homepage/Navbar";
+export const dynamic = 'force-dynamic';
 
 export default function JobListView() {
     const [jobs, setJobs] = useState([]);
