@@ -43,7 +43,7 @@ export default function JobListing() {
     }
 
     return (
-        <section className="py-16 px-6 container mx-auto relative">
+        <section className="py-16 px-6 container mx-auto relative bg-talentia">
             <h2 className="text-5xl font-extrabold text-center text-gray-900 dark:text-white tracking-tight">
                 Featured Job Offers
             </h2>

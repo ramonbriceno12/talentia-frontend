@@ -41,9 +41,9 @@ export default function TypingEffect() {
     }, [text, isDeleting, loop]);
 
     return (
-        <h1 className="text-6xl font-extrabold leading-tight tracking-wide drop-shadow-lg">
+        <h1 className="text-6xl talentia-text font-extrabold leading-tight tracking-wide drop-shadow-lg">
             {text}
-            <span className="text-pink-400 animate-blink">|</span>
+            <span className="talentia-text animate-blink">|</span>
         </h1>
     );
 }

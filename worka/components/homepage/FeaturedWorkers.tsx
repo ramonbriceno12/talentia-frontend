@@ -15,7 +15,7 @@ export default function FeaturedWorkers() {
     };
 
     return (
-        <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-200 dark:from-gray-900 dark:to-gray-800 relative">
+        <section className="py-16 bg-talentia relative">
             <div className="container mx-auto px-6">
                 <h2 className="text-5xl font-extrabold text-center text-gray-900 dark:text-white tracking-tight">
                     Meet Talented Professionals

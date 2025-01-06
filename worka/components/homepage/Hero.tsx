@@ -62,11 +62,11 @@ export default function HeroSection() {
     };
 
     return (
-        <section className="relative w-full min-h-[700px] flex items-center bg-gray-50 text-gray-900">
+        <section className="relative w-full min-h-[500px] flex items-center bg-white text-gray-900">
             <div className="container mx-auto px-6 flex items-center justify-between relative z-10">
                 <div className="max-w-3xl text-left">
                     {/* Fixed Height for Typing Effect */}
-                    <div className="h-[200px] flex items-center justify-start mb-6">
+                    <div className="h-[300px] flex items-center justify-start mb-6">
                         <TypingEffect />
                     </div>
 
@@ -75,7 +75,7 @@ export default function HeroSection() {
                     </p>
 
                     {/* Search Bar */}
-                    <div className="mt-10 flex relative">
+                    {/* <div className="mt-10 flex relative">
                         <div className="relative w-full sm:w-[70%]">
                             <input
                                 type="text"
@@ -85,15 +85,15 @@ export default function HeroSection() {
                                 onChange={handleSearch}
                             />
                             <button
-                                className="absolute inset-y-0 right-0 flex items-center justify-center px-6 bg-indigo-600 text-white rounded-r-lg hover:bg-indigo-700 transition"
+                                className="absolute inset-y-0 right-0 flex items-center justify-center px-6 bg-talentia text-white rounded-r-lg hover:bg-indigo-700 transition"
                             >
                                 🔍
                             </button>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Quick Access Buttons */}
-                    <div className="mt-12 flex space-x-6">
+                    {/* <div className="mt-12 flex space-x-6">
                         {[
                             { label: "Jobs", icon: "💼", category: "jobs" },
                             { label: "Talents", icon: "🧑‍💻", category: "talents" },
@@ -101,14 +101,15 @@ export default function HeroSection() {
                         ].map((item, index) => (
                             <button
                                 key={index}
-                                className="w-[160px] h-[55px] bg-gray-800 text-white rounded-lg flex items-center justify-center space-x-3 hover:bg-gray-700 transition"
+                                className="w-[200px] h-[55px] bg-talentia text-white rounded-lg flex items-center justify-center space-x-3 hover:bg-gray-700 transition"
+                                style={ {paddingRight: '10px', paddingLeft: '10px'} }
                                 onClick={() => filterByCategory(item.category)}
                             >
                                 <span className="text-2xl">{item.icon}</span>
                                 <span>{item.label}</span>
                             </button>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Background Image on the Right */}
@@ -131,7 +132,7 @@ export default function HeroSection() {
 
             {/* Sidebar for Filtered Results */}
             <div
-                className={`fixed top-0 right-0 h-full w-[400px] bg-white dark:bg-gray-800 shadow-2xl z-50 transform ${isSidebarOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed top-0 right-0 h-full w-[400px] bg-talentia shadow-2xl z-50 transform ${isSidebarOpen ? "translate-x-0" : "translate-x-full"
                     } transition-transform duration-300 ease-in-out`}
             >
                 <div className="p-6 h-full flex flex-col">

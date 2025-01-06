@@ -10,7 +10,7 @@ import FeaturedCompanies from "@/components/homepage/FeaturedCompanies";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-talentia dark:bg-gray-900">
 
       {/* Navbar */}
       <Navbar />
@@ -19,13 +19,13 @@ export default function Home() {
       <Hero />
 
       {/* Job Listings Section */}
-      <JobListing />
+      {/* <JobListing /> */}
 
       {/* Featured Companies Section */}
-      <FeaturedCompanies />
+      {/* <FeaturedCompanies /> */}
       
       {/* Featured Workers Section */}
-      <FeaturedWorkers />
+      {/* <FeaturedWorkers /> */}
 
       {/* Call to Action Section */}
       <CallToAction />

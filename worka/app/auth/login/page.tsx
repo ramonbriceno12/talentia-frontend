@@ -25,28 +25,23 @@ export default function Login() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error("User not found. Please check your credentials.");
-        } else {
-          throw new Error(data.message || "An unexpected error occurred.");
+        if (response.status !== 201) {
+          throw new Error("El usuario ya existe.");
         }
       }
 
-      // Successful login
-      setNotification({ message: "Login successful! Redirecting...", type: "success" });
-      console.log("Login successful:", data.token);
+      localStorage.setItem("user", JSON.stringify(data));
 
-      // Simulate redirection after 2 seconds
+      setNotification({ message: "Login successful! Redirecting...", type: "success" });
+
       setTimeout(() => {
-        window.location.href = "/dashboard";  // Redirect to dashboard or homepage
-      }, 2000);
+        window.location.href = "/";
+      }, 1000);
 
     } catch (err) {
       setNotification({ message: err.message, type: "error" });
     } finally {
       setLoading(false);
-      
-      // Auto-hide notification after 5 seconds
       setTimeout(() => {
         setNotification({ message: "", type: "" });
       }, 5000);
@@ -55,55 +50,8 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Floating Tooltip */}
-      {notification.message && (
-        <div
-          className={`fixed top-6 right-6 px-6 py-4 rounded-lg shadow-lg animate-fade-in ${
-            notification.type === "error"
-              ? "bg-red-500 text-white"
-              : "bg-green-500 text-white"
-          }`}
-        >
-          <strong className="font-bold">
-            {notification.type === "error" ? "Error: " : "Success! "}
-          </strong>
-          {notification.message}
-          <span
-            className="ml-4 cursor-pointer"
-            onClick={() => setNotification({ message: "", type: "" })}
-          >
-            ✖
-          </span>
-        </div>
-      )}
-
-      {/* Left Section - Info */}
-      <div className="w-1/2 flex flex-col items-center justify-center p-12 bg-blue-600 text-white">
-        <div className="max-w-md text-center">
-          <Image
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={120}
-            height={28}
-            className="mb-6"
-          />
-          <h1 className="text-4xl font-bold leading-tight">
-            Welcome to Worka
-          </h1>
-          <p className="mt-4 text-lg">
-            Find the best opportunities in tech, design, and marketing. Join now
-            and start your journey!
-          </p>
-          <ul className="mt-6 space-y-3 text-left text-lg">
-            <li>🚀 Job Listings for Junior Roles</li>
-            <li>💬 Real-time Messaging</li>
-            <li>📊 Track Job Proposals</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Right Section - Login Form */}
-      <div className="w-1/2 flex items-center justify-center p-12 bg-gray-50 dark:bg-gray-900">
+      {/* Left Section - Login Form */}
+      <div className="w-1/2 flex items-center justify-center p-12 bg-talentia dark:bg-gray-900">
         <main className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
           <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white">
             Login
@@ -120,7 +68,7 @@ export default function Login() {
               <input
                 type="email"
                 id="email"
-                className="mt-1 p-3 w-full border rounded-md bg-gray-50 dark:bg-gray-700 dark:text-white"
+                className="mt-1 p-3 w-full border rounded-md bg-talentia dark:bg-gray-700 dark:text-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -137,7 +85,7 @@ export default function Login() {
               <input
                 type="password"
                 id="password"
-                className="mt-1 p-3 w-full border rounded-md bg-gray-50 dark:bg-gray-700 dark:text-white"
+                className="mt-1 p-3 w-full border rounded-md bg-talentia dark:bg-gray-700 dark:text-white"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -161,6 +109,60 @@ export default function Login() {
           </p>
         </main>
       </div>
+
+      {/* Right Section - Image and Info */}
+      <div className="w-1/2 relative hidden md:block">
+        <Image
+          src="/img/hero-background.png"  // Change to your desired image
+          alt="Login Background"
+          layout="fill"
+          objectFit="cover"
+          className="rounded-l-lg"
+        />
+        {/* <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white p-12">
+          <Image
+            src="/next.svg"
+            alt="Next.js Logo"
+            width={120}
+            height={28}
+            className="mb-6"
+          />
+          <h1 className="text-4xl font-bold leading-tight">
+            Welcome to Worka
+          </h1>
+          <p className="mt-4 text-lg max-w-md text-center">
+            Find the best opportunities in tech, design, and marketing. Join now
+            and start your journey!
+          </p>
+          <ul className="mt-6 space-y-3 text-lg">
+            <li>🚀 Job Listings for Junior Roles</li>
+            <li>💬 Real-time Messaging</li>
+            <li>📊 Track Job Proposals</li>
+          </ul>
+        </div> */}
+      </div>
+
+      {/* Floating Notification */}
+      {notification.message && (
+        <div
+          className={`fixed top-6 right-6 px-6 py-4 rounded-lg shadow-lg animate-fade-in ${
+            notification.type === "error"
+              ? "bg-red-500 text-white"
+              : "bg-green-500 text-white"
+          }`}
+        >
+          <strong className="font-bold">
+            {notification.type === "error" ? "Error: " : "Success! "}
+          </strong>
+          {notification.message}
+          <span
+            className="ml-4 cursor-pointer"
+            onClick={() => setNotification({ message: "", type: "" })}
+          >
+            ✖
+          </span>
+        </div>
+      )}
     </div>
   );
 }

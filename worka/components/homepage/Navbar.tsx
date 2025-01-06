@@ -1,30 +1,50 @@
-import { useState } from "react";
+'use client'
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Navbar() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [user, setUser] = useState(null);
 
-    // Mock user data
-    const user = {
-        name: "Jane Doe",
-        email: "jane.doe@example.com",
-        avatar: "/avatar.jpg",
-    };
+    // Fetch user from localStorage on mount
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const storedUser = localStorage.getItem("user");
+            if (storedUser) {
+                setUser(JSON.parse(storedUser).user);
+            }
+        }
+    }, []);
 
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        window.location.href = "/auth/login";
+    };
+
     return (
         <>
             {/* Navbar */}
-            <nav className="bg-white dark:bg-gray-800 shadow-md fixed top-0 left-0 w-full z-50">
+            <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
                 <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex items-center space-x-4">
+                        
+                        <a href="/">
+                            <Image
+                                src="/img/logo.png"
+                                alt="Avatar"
+                                width={120}
+                                height={120}
+                                className=""
+                            />
+                        </a>
                         {/* Burger Button */}
                         <button
                             onClick={toggleSidebar}
-                            className="text-gray-700 dark:text-white focus:outline-none"
+                            className="text-gray-900 focus:outline-none"
                         >
                             <svg
                                 className="w-8 h-8"
@@ -41,98 +61,120 @@ export default function Navbar() {
                                 />
                             </svg>
                         </button>
-
-                        <span className="text-2xl font-semibold text-blue-600">
-                            Talentia
-                        </span>
+                        
                     </div>
 
                     {/* User Section */}
-                    <div className="flex items-center space-x-3">
-                        <Image
-                            src={user.avatar}
-                            alt="Avatar"
-                            width={20}
-                            height={20}
-                            className="rounded-full border border-gray-300"
-                        />
-                        <span className="text-gray-700 dark:text-white font-medium">
-                            {user.name}
-                        </span>
-                    </div>
+                    {user ? (
+                        <div className="flex items-center space-x-3">
+                            {
+                                user.profile_picture ? (
+                                    <Image
+                                        src={user.profile_picture}
+                                        alt="Avatar"
+                                        width={40}
+                                        height={40}
+                                        className="rounded-full border border-gray-300"
+                                    />
+                                ) : (
+                                    "😎"
+                                )
+                            }
+                            <span className="text-gray-900 font-medium">
+                                {user.name}
+                            </span>
+
+                            {/* Logout Icon (Replaces Button) */}
+                            <button
+                                onClick={handleLogout}
+                                className="ml-4 hover:text-red-600 transition"
+                                aria-label="Logout"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={1.5}
+                                    stroke="currentColor"
+                                    className="w-7 h-7"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m-3-6l3 3m0 0l-3 3m3-3H9"
+                                    />
+                                </svg>
+                            </button>
+
+                        </div>
+                    ) : (
+                        <a href="/login" className="text-blue-500 hover:underline">
+                            🔑
+                        </a>
+                    )}
                 </div>
             </nav>
 
             {/* Sidebar (Left) */}
             <div
-                className={`fixed top-0 left-0 h-full w-72 bg-white dark:bg-gray-800 shadow-lg z-50 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed top-0 left-0 h-full w-72 bg-white shadow-lg z-50 transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
                     } transition-transform duration-300 ease-in-out`}
             >
                 <div className="p-6 space-y-8">
                     <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-                            Menu
-                        </h2>
+                        <a href="/">
+                            <Image
+                                src="/img/logo.png"
+                                alt="Avatar"
+                                width={120}
+                                height={120}
+                                className=""
+                            />
+                        </a>
+
                         <button
                             onClick={toggleSidebar}
-                            className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                            className="text-gray-500 hover:text-gray-700"
                         >
                             ✖
                         </button>
                     </div>
 
                     <ul className="space-y-4">
+                        {user && (
+                            <li>
+                                <a
+                                    href="/profile"
+                                    className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
+                                >
+                                    🧑‍💻 <span>Mi Perfil</span>
+                                </a>
+                            </li>
+                        )}
                         <li>
                             <a
-                                href="/offers"
-                                className="flex items-center space-x-3 text-lg text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700 px-4 py-3 rounded-lg"
+                                href="/companies"
+                                className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
                             >
-                                💼 <span>My Offers</span>
+                                💼 <span>Empresas</span>
                             </a>
                         </li>
 
                         <li>
                             <a
-                                href="/searches"
-                                className="flex items-center space-x-3 text-lg text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700 px-4 py-3 rounded-lg"
+                                href="/jobs"
+                                className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
                             >
-                                🔍 <span>My Searches</span>
+                                🔍 <span>Ofertas</span>
                             </a>
                         </li>
 
                         <li>
                             <a
-                                href="/views"
-                                className="flex items-center space-x-3 text-lg text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700 px-4 py-3 rounded-lg"
+                                href="/talents"
+                                className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
                             >
-                                👀 <span>Profile Views</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="/messages"
-                                className="flex items-center space-x-3 text-lg text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700 px-4 py-3 rounded-lg"
-                            >
-                                💬 <span>Messages</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="/settings"
-                                className="flex items-center space-x-3 text-lg text-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-700 px-4 py-3 rounded-lg"
-                            >
-                                ⚙️ <span>Settings</span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                href="/logout"
-                                className="flex items-center space-x-3 text-lg text-red-500 hover:bg-red-50 px-4 py-3 rounded-lg"
-                            >
-                                🚪 <span>Logout</span>
+                                👀 <span>Talentos</span>
                             </a>
                         </li>
                     </ul>
