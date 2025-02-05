@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useEffect } from "react";
+import GTM from "@/components/google/GTM";
 
 export default function RootLayout({
   children,
@@ -33,15 +34,20 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <title>Talentia - Encuentra Candidatos de Alta Calidad con Nuestra IA</title>
-      <meta name="description" content="Nuestra IA conecta tu empresa con los mejores talentos, pre-evaluados y listos para trabajar en tu equipo." />
-      <meta name="keywords" content="talento, candidatos, contratación, IA, reclutamiento, trabajos, empresa" />
-      <meta name="robots" content="index, follow" />
-      <meta name="author" content="Talentia" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="icon" href="/img/LOGO-03.png" />
+      <head>
+        <title>Talentia - Encuentra Candidatos de Alta Calidad con Nuestra IA</title>
+        <meta name="description" content="Nuestra IA conecta tu empresa con los mejores talentos, pre-evaluados y listos para trabajar en tu equipo." />
+        <meta name="keywords" content="talento, candidatos, contratación, IA, reclutamiento, trabajos, empresa" />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Talentia" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/img/LOGO-03.png" />
+      </head>
+
       <body
       >
+        <GTM />
+        
         {children}
         <script type="text/javascript" id="hs-script-loader" async defer src="https://js.hs-scripts.com/24005206.js"></script>
       </body>

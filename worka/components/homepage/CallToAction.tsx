@@ -2,9 +2,9 @@ import { FaLinkedin, FaTwitter, FaFacebook, FaInstagram } from "react-icons/fa";
 
 export default function CallToAction() {
     return (
-        <section className="py-16 text-center">
+        <section className="py-16 text-center px-4">
             <h2 className="text-4xl font-semibold text-white">
-                🚀 ¿ESTÁS Listo para Comenzar?
+                🚀 ¿ESTÁS LISTO PARA COMENZAR?
             </h2>
             <p className="mt-4 text-lg text-white">
                 SOLO ESTÁS A UN PASO DE ENCONTRAR EL TRABAJO DE TUS SUEÑOS
@@ -28,8 +28,8 @@ export default function CallToAction() {
 
             {/* Social Icons */}
             <div className="mt-12 flex justify-center space-x-6">
-            <a
-                    href="https://instagram.com"
+                <a
+                    href="https://www.instagram.com/talentiave/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="talentia-text hover:text-blue-800 transition"
@@ -37,7 +37,7 @@ export default function CallToAction() {
                     <FaInstagram size={32} />
                 </a>
                 <a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/company/talentiave/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="talentia-text hover:text-blue-800 transition"
