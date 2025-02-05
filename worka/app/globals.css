@@ -10,26 +10,41 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Poppins Regular';
+  src: 
+       url('/fonts/poppins/Poppins-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Poppins Bold';
+  src: url('/fonts/poppins/Poppins-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #35aba1;
+  --foreground: #349390;
   --general-background: #ffffff;
-  --general-foreground: #35aba1;
+  --general-foreground: #349390;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #35aba1;
+    --background: #349390;
     --foreground: #ededed;
     --general-background: #ffffff;
-    --general-foreground: #35aba1;
+    --general-foreground: #349390;
   }
 }
 
 body {
   color: var(--general-foreground);
   background: var(--general-background);
-  font-family: 'Naville', Arial, Helvetica, sans-serif;
+  font-family: 'Poppins Regular', Arial, Helvetica, sans-serif;
 }
 
 @keyframes fadeIn {
@@ -72,23 +87,33 @@ body {
 }
 
 .bg-talentia {
-  cursor: pointer;
-  background-color: #35aba1 !important;
+  /* cursor: pointer; */
+  background-color: #349390 !important;
+}
+
+.bg-forms {
+  /* cursor: pointer; */
+  background-color: #244c56 !important;
+}
+
+.buttons-color {
+  background-color: #244c56 !important;
 }
 
 .talentia-text {
-  color: #177d84 !important;
+  color: #244c56 !important;
+  font-family: 'Poppins Bold', sans-serif !important;
 }
 
 .talentia-button{
-  background-color: #177d84 !important;
+  background-color: #244c56 !important;
 }
 
 button {
-  /* background-color: #177d84 !important; */
+  /* background-color: #244c56 !important; */
 }
 
 .talentia-footer{
-  background-color: #177d84 !important;
+  background-color: #244c56 !important;
 }
 

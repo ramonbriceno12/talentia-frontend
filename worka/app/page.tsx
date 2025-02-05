@@ -1,36 +1,30 @@
 'use client'
-import Image from "next/image";
-import Hero from "@/components/homepage/Hero";
-import JobListing from "@/components/homepage/JobListing";
-import FeaturedWorkers from "@/components/homepage/FeaturedWorkers";
 import CallToAction from "@/components/homepage/CallToAction";
 import Footer from "@/components/homepage/Footer";
+import HeroSection from "@/components/homepage/Hero";
 import Navbar from "@/components/homepage/Navbar";
-import FeaturedCompanies from "@/components/homepage/FeaturedCompanies";
+import PlansSection from "@/components/homepage/PlansSection";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-talentia dark:bg-gray-900">
-
+    <div className="flex flex-col min-h-screen bg-talentia dark:bg-gray-900">
       {/* Navbar */}
       <Navbar />
 
-      {/* Hero Section */}
-      <Hero />
+      {/* Spacer to offset the fixed navbar */}
+      <div className="h-20"></div>
 
-      {/* Job Listings Section */}
-      {/* <JobListing /> */}
+      {/* Main Content Wrapper - Pushes Footer Down */}
+      <div className="flex-grow">
+        {/* Hero Section */}
+        <HeroSection />
+        {/* Plans Section */}
+        <PlansSection />
+        {/* Call to Action Section */}
+        <CallToAction />
+      </div>
 
-      {/* Featured Companies Section */}
-      {/* <FeaturedCompanies /> */}
-      
-      {/* Featured Workers Section */}
-      {/* <FeaturedWorkers /> */}
-
-      {/* Call to Action Section */}
-      <CallToAction />
-
-      {/* Footer */}
+      {/* Footer - Always Stays at Bottom */}
       <Footer />
     </div>
   );

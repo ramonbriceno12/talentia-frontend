@@ -4,10 +4,10 @@ export default function CallToAction() {
     return (
         <section className="py-16 text-center">
             <h2 className="text-4xl font-semibold text-white">
-                🚀 Ready to Start?
+                🚀 ¿ESTÁS Listo para Comenzar?
             </h2>
             <p className="mt-4 text-lg text-white">
-                Sign up today and discover new job opportunities or connect with top talent.
+                SOLO ESTÁS A UN PASO DE ENCONTRAR EL TRABAJO DE TUS SUEÑOS
             </p>
 
             {/* Option Buttons */}
@@ -16,13 +16,13 @@ export default function CallToAction() {
                     href="/forms/talent"
                     className="inline-block talentia-button text-white bg-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
                 >
-                    I’m a Talent
+                    Encontrar Trabajo
                 </a>
                 <a
                     href="/forms/offer"
                     className="inline-block talentia-button text-white bg-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition"
                 >
-                    I’m a Company
+                    Crear Oferta Laboral
                 </a>
             </div>
 
@@ -43,22 +43,6 @@ export default function CallToAction() {
                     className="talentia-text hover:text-blue-800 transition"
                 >
                     <FaLinkedin size={32} />
-                </a>
-                <a
-                    href="https://twitter.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="talentia-text hover:text-blue-500 transition"
-                >
-                    <FaTwitter size={32} />
-                </a>
-                <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="talentia-text hover:text-blue-700 transition"
-                >
-                    <FaFacebook size={32} />
                 </a>
             </div>
         </section>

@@ -1,208 +1,211 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Select from 'react-select';
+import { useRouter } from 'next/navigation';
 
 const steps = [
-  { id: 1, label: 'Job Details' },
-  { id: 2, label: 'Location & Salary' },
-  { id: 3, label: 'Company Info' },
+    { id: 1, label: 'Company Info' },
+    { id: 2, label: 'Upload Job Requirements' },
 ];
 
-export default function MultiStepJobForm() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: '',
-    skills: [],
-    location: '',
-    salary: '',
-    isRemote: false,
-    companyName: '',
-    email: '',
-    logo: null,
-  });
+export default function CompanyForm() {
+    const [step, setStep] = useState(1);
+    const [formData, setFormData] = useState({
+        companyName: '',
+        email: '',
+        address: '',
+        jobRequirements: null,
+    });
 
-  const [skillsOptions, setSkillsOptions] = useState([]);
+    const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [message, setMessage] = useState('');
+    const [fileError, setFileError] = useState('');
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/skills');
-        const data = await response.json();
-        const formattedSkills = data.map(skill => ({
-          value: skill.id,
-          label: skill.name,
-          category: skill.category
+    const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
+    const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+    const handleFormChange = (e: any) => {
+        const { name, value, files } = e.target;
+
+        if (files) {
+            const file = files[0];
+            if (file && file.type !== "application/pdf") {
+                setFileError("❌ Solo se permiten archivos en formato PDF.");
+                return;
+            }
+            setFileError('');
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: files ? files[0] : value,
         }));
-        setSkillsOptions(formattedSkills);
-      } catch (error) {
-        console.error('Error fetching skills:', error);
-      }
     };
 
-    fetchSkills();
-  }, []);
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
-  const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+        const missingFields = [];
+        if (!formData.companyName) missingFields.push("Nombre de la Empresa");
+        if (!formData.email) missingFields.push("Correo Electrónico");
+        if (!formData.address) missingFields.push("Ubicación");
+        if (!formData.jobRequirements) missingFields.push("Archivo de Requerimientos");
 
-  const handleFormChange = (e: any) => {
-    const { name, value, files, type, checked } = e.target;
-    const val = type === 'checkbox' ? checked : files ? files[0] : value;
+        if (missingFields.length > 0) {
+            setMessage(`⚠️ Los siguientes campos son obligatorios: ${missingFields.join(", ")}`);
+            return;
+        }
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: val,
-    }));
-  };
+        setIsSubmitting(true);
+        setMessage('');
 
-  const handleSkillsChange = (selectedSkills) => {
-    setFormData((prev) => ({
-      ...prev,
-      skills: selectedSkills,
-    }));
-  };
+        try {
+            const formDataToSend = new FormData();
+            formDataToSend.append('name', formData.companyName);
+            formDataToSend.append('email', formData.email);
+            formDataToSend.append('address', formData.address);
+            formDataToSend.append('jobRequirements', formData.jobRequirements);
 
-  return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-green-500 to-blue-600 text-white">
-      <motion.div
-        key={step}
-        initial={{ x: 300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: -300, opacity: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-3xl bg-white p-10 rounded-lg shadow-lg text-gray-900"
-      >
-        {step === 1 && (
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Job Details</h2>
-            <div className="mb-4">
-              <label htmlFor="title" className="block text-lg">Job Title</label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                value={formData.title}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="description" className="block text-lg">Description</label>
-              <textarea
-                id="description"
-                name="description"
-                rows={4}
-                value={formData.description}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="category" className="block text-lg">Category</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-green-500"
-              >
-                <option value="">Select Category</option>
-                <option value="Developer">Developer</option>
-                <option value="Designer">Designer</option>
-                <option value="Marketer">Marketer</option>
-                <option value="Data Analyst">Data Analyst</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="skills" className="block text-lg">Skills (Search & Select)</label>
-              <Select
-                isMulti
-                name="skills"
-                options={skillsOptions}
-                value={formData.skills}
-                onChange={handleSkillsChange}
-                className="basic-multi-select"
-                classNamePrefix="select"
-                placeholder="Select skills..."
-                isSearchable
-                filterOption={(candidate, input) => {
-                  const results = skillsOptions
-                    .filter(skill =>
-                      skill.label.toLowerCase().includes(input.toLowerCase())
-                    )
-                    .slice(0, 5); // Limit to 5 options
-                  return results.some(result => result.value === candidate.value);
-                }}
-              />
-            </div>
-          </div>
-        )}
+            const response = await fetch('http://localhost:5000/api/upload/company', {
+                method: 'POST',
+                body: formDataToSend,
+            });
 
-        {step === 2 && (
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Location & Salary</h2>
-            <div className="mb-4">
-              <label htmlFor="location" className="block text-lg">Location</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                value={formData.location}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="salary" className="block text-lg">Salary Range</label>
-              <input
-                type="text"
-                id="salary"
-                name="salary"
-                value={formData.salary}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-green-500"
-              />
-            </div>
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="isRemote"
-                name="isRemote"
-                checked={formData.isRemote}
-                onChange={handleFormChange}
-              />
-              <label htmlFor="isRemote" className="ml-2">Remote Position</label>
-            </div>
-          </div>
-        )}
+            if (!response.ok) {
+                throw new Error('Error al enviar el formulario');
+            }
 
-        {step === 3 && (
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Company Info</h2>
-          </div>
-        )}
+            setMessage('✅ ¡Formulario enviado con éxito!');
+            setTimeout(() => {
+                setMessage('');
+                router.push(`offer/success?name=${formData.companyName}`);
+            }, 3000);
 
-        <div className="flex justify-between mt-8">
-          {step > 1 && (
-            <button onClick={prevStep} className="bg-gray-300 px-6 py-2 rounded">
-              Back
-            </button>
-          )}
-          {step < steps.length ? (
-            <button onClick={nextStep} className="bg-green-600 px-6 py-2 text-white rounded">
-              Next
-            </button>
-          ) : (
-            <button type="submit" className="bg-blue-500 px-6 py-2 text-white rounded">
-              Submit Job
-            </button>
-          )}
+            setFormData({ companyName: '', email: '', address: '', jobRequirements: null });
+        } catch (error) {
+            setMessage('❌ Error al enviar el formulario. Inténtalo de nuevo.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    return (
+        <div className="w-screen h-screen flex flex-col items-center justify-center bg-forms text-white">
+            <img
+                src="/img/LOGO-01.png"
+                alt="Talentia Logo"
+                className="mb-6 w-64 h-auto"
+            />
+            <motion.div
+                key={step}
+                initial={{ x: 300, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -300, opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
+            >
+                <form onSubmit={handleSubmit}>
+                    {step === 1 && (
+                        <div>
+                            <h2 className="text-3xl font-semibold mb-6">Información de la Empresa</h2>
+                            <div className="mb-4">
+                                <label htmlFor="companyName" className="block text-lg">Nombre de la Empresa</label>
+                                <input
+                                    type="text"
+                                    id="companyName"
+                                    name="companyName"
+                                    value={formData.companyName}
+                                    onChange={handleFormChange}
+                                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleFormChange}
+                                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                    required
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="address" className="block text-lg">Ubicación</label>
+                                <input
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleFormChange}
+                                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                    required
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {step === 2 && (
+                        <div>
+                            <h2 className="text-3xl font-semibold mb-6">Sube los Requerimientos</h2>
+                            <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
+                                <input
+                                    type="file"
+                                    id="jobRequirements"
+                                    name="jobRequirements"
+                                    accept="application/pdf"
+                                    onChange={handleFormChange}
+                                    className="hidden"
+                                />
+                                <label htmlFor="jobRequirements" className="cursor-pointer text-indigo-600">
+                                    {formData.jobRequirements ? formData.jobRequirements.name : 'Haz clic para subir el archivo (PDF)'}
+                                </label>
+                                {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Buttons */}
+                    <div className="flex justify-between mt-8">
+                        {step > 1 && (
+                            <button
+                                type="button"
+                                onClick={prevStep}
+                                className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
+                            >
+                                Atrás
+                            </button>
+                        )}
+                        {step < steps.length ? (
+                            <button
+                                type="button"
+                                onClick={nextStep}
+                                className="buttons-color px-6 py-2 text-white rounded"
+                            >
+                                Siguiente
+                            </button>
+                        ) : (
+                            <button
+                                type="submit"
+                                className="buttons-color px-6 py-2 text-white rounded flex items-center"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? 'Enviando...' : 'Enviar'}
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Success/Error Message */}
+                    {message && (
+                        <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
+                            {message}
+                        </p>
+                    )}
+                </form>
+            </motion.div>
         </div>
-      </motion.div>
-    </div>
-  );
+    );
 }

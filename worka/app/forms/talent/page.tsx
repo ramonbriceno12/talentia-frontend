@@ -1,66 +1,110 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Select from 'react-select';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 
 const steps = [
   { id: 1, label: 'Personal Info' },
   { id: 2, label: 'Upload Resume' },
-  { id: 3, label: 'Select Skills' },
 ];
 
 export default function MultiStepForm() {
+
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams); // Convert to URLSearchParams object
+  const plan = params.get('plan') || 1; // Default to 'Usuario' if no name is found
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     resume: null,
-    skills: [],
+    plan_id: plan
   });
 
-  const [skillsOptions, setSkillsOptions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/skills');
-        const data = await response.json();
-        const formattedSkills = data.map(skill => ({
-          value: skill.name,
-          label: skill.name,
-        }));
-        setSkillsOptions(formattedSkills);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching skills:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchSkills();
-  }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  const [fileError, setFileError] = useState('');
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const handleFormChange = (e: any) => {
     const { name, value, files } = e.target;
+
+    if (files) {
+      const file = files[0];
+      if (file && file.type !== "application/pdf") {
+        setFileError("❌ Solo se permiten archivos en formato PDF.");
+        return;
+      }
+      setFileError('');
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
     }));
   };
 
-  const handleSkillsChange = (selectedSkills) => {
-    setFormData((prev) => ({
-      ...prev,
-      skills: selectedSkills,
-    }));
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const missingFields = [];
+    if (!formData.name) missingFields.push("Nombre");
+    if (!formData.email) missingFields.push("Correo Electrónico");
+    if (!formData.resume) missingFields.push("Currículum");
+
+    // If any field is missing, show error message
+    if (missingFields.length > 0) {
+      setMessage(`⚠️ Los siguientes campos son obligatorios: ${missingFields.join(", ")}`);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setMessage('');
+
+    try {
+      // Create FormData object to send file
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('resume', formData.resume);
+      formDataToSend.append('plan_id', plan);
+      console.log(formDataToSend);
+      // // Send data to backend API
+      const response = await fetch('http://localhost:5000/api/upload/talent', {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar el formulario');
+      }
+
+      setMessage('✅ ¡Formulario enviado con éxito!');
+      setTimeout(() => {
+        setMessage('')
+        router.push(`talent/success?name=${formData.name}`);
+      }, 3000);
+      setFormData({ name: '', email: '', resume: null, plan_id: plan });
+    } catch (error) {
+      setMessage('❌ Error al enviar el formulario. Inténtalo de nuevo.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 to-blue-600 text-white">
+    <div className="w-screen h-screen flex flex-col items-center justify-center bg-forms text-white">
+      <img
+        src="/img/LOGO-01.png"
+        alt="Talentia Logo"
+        className="mb-6 w-64 h-auto"
+      />
       <motion.div
         key={step}
         initial={{ x: 300, opacity: 0 }}
@@ -69,111 +113,94 @@ export default function MultiStepForm() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
       >
-        {step === 1 && (
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Personal Information</h2>
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-lg">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-lg">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleFormChange}
-                className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                required
-              />
-            </div>
-          </div>
-        )}
-
-        {step === 2 && (
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Upload Your Resume</h2>
-            <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
-              <input
-                type="file"
-                id="resume"
-                name="resume"
-                accept="application/pdf"
-                onChange={handleFormChange}
-                className="hidden"
-              />
-              <label htmlFor="resume" className="cursor-pointer text-indigo-600">
-                {formData.resume ? formData.resume.name : 'Click to upload your resume (PDF)'}
-              </label>
-            </div>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div>
-            <h2 className="text-3xl font-semibold mb-6">Select Your Skills</h2>
-            {loading ? (
-              <p>Loading skills...</p>
-            ) : (
-                <Select
-                  isMulti
-                  name="skills"
-                  options={skillsOptions}
-                  value={formData.skills}
-                  onChange={handleSkillsChange}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                  placeholder="Select skills..."
-                  isSearchable
-                  filterOption={(candidate, input) => {
-                    const results = skillsOptions
-                      .filter(skill =>
-                        skill.label.toLowerCase().includes(input.toLowerCase())
-                      )
-                      .slice(0, 5); // Limit to 5 options
-                    return results.some(result => result.value === candidate.value);
-                  }}
+        <form onSubmit={handleSubmit}>
+          {step === 1 && (
+            <div>
+              <h2 className="text-3xl font-semibold mb-6">Información Personal</h2>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-lg">Nombre</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                  required
                 />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                  required
+                />
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div>
+              <h2 className="text-3xl font-semibold mb-6">Sube tu Currículum</h2>
+              <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
+                <input
+                  type="file"
+                  id="resume"
+                  name="resume"
+                  accept="application/pdf"
+                  onChange={handleFormChange}
+                  className="hidden"
+                />
+                <label htmlFor="resume" className="cursor-pointer text-indigo-600">
+                  {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF)'}
+                </label>
+                {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+              </div>
+            </div>
+          )}
+
+          {/* Buttons */}
+          <div className="flex justify-between mt-8">
+            {step > 1 && (
+              <button
+                type="button"
+                onClick={prevStep}
+                className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
+              >
+                Atrás
+              </button>
+            )}
+            {step < steps.length ? (
+              <button
+                type="button"
+                onClick={nextStep}
+                className="buttons-color px-6 py-2 text-white rounded"
+              >
+                Siguiente
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="buttons-color px-6 py-2 text-white rounded flex items-center"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Enviando...' : 'Enviar'}
+              </button>
             )}
           </div>
-        )}
 
-        <div className="flex justify-between mt-8">
-          {step > 1 && (
-            <button
-              type="button"
-              onClick={prevStep}
-              className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
-            >
-              Back
-            </button>
+          {/* Success/Error Message */}
+          {message && (
+            <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
+              {message}
+            </p>
           )}
-          {step < steps.length ? (
-            <button
-              type="button"
-              onClick={nextStep}
-              className="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 text-white rounded"
-            >
-              Next
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="bg-green-500 hover:bg-green-600 px-6 py-2 text-white rounded"
-            >
-              Submit
-            </button>
-          )}
-        </div>
+        </form>
       </motion.div>
     </div>
   );
