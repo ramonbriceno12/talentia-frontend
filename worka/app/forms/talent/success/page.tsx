@@ -2,14 +2,14 @@
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react'; // Success icon
 import { useSearchParams } from 'next/navigation';
-export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
 
 
-export default function SuccessPage() {
+function SuccessPageComponent() {
     const searchParams = useSearchParams();
     const params = new URLSearchParams(searchParams); // Convert to URLSearchParams object
     const name = params.get('name') || 'Usuario'; // Default to 'Usuario' if no name is found
-    
+
     return (
         <div className="w-screen h-screen flex flex-col items-center justify-center bg-forms text-white">
             {/* Logo */}
@@ -30,7 +30,7 @@ export default function SuccessPage() {
                     ¡Formulario enviado con éxito, {name}!
                 </h2>
                 <p className="text-lg text-center text-gray-600 mt-2">
-                Hemos recibido tu información con éxito! En breve, recibirás un correo electrónico con las instrucciones para continuar con el proceso.
+                    Hemos recibido tu información con éxito! En breve, recibirás un correo electrónico con las instrucciones para continuar con el proceso.
                 </p>
 
                 {/* Button to go back to the homepage */}
@@ -40,4 +40,13 @@ export default function SuccessPage() {
             </motion.div>
         </div>
     );
+}
+
+export default function SuccessPage() {
+    return (
+        <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
+            <SuccessPageComponent />
+        </Suspense>
+    );
+
 }

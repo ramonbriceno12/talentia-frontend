@@ -1,15 +1,13 @@
 'use client';
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-export const dynamic = 'force-dynamic';
 
-export default function CalendlyRedirectPage() {
+import { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+function CalendlyRedirectComponent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const email = searchParams.get('email'); // Capture email from URL
     const name = searchParams.get('name'); // Capture name from URL
-
-    console.log(email)
 
     useEffect(() => {
         const trackUserClick = async () => {
@@ -49,5 +47,14 @@ export default function CalendlyRedirectPage() {
                 <div className="mt-4 animate-spin rounded-full h-10 w-10 border-b-2 border-gray-600"></div>
             </div>
         </div>
+    );
+}
+
+// Wrap the component inside Suspense
+export default function CalendlyRedirectPage() {
+    return (
+        <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
+            <CalendlyRedirectComponent />
+        </Suspense>
     );
 }

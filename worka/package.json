@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cross-env NEXT_IGNORE_WARNINGS=1 next build || true",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },

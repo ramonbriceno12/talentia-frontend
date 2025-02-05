@@ -1,17 +1,14 @@
 'use client'
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-export const dynamic = 'force-dynamic';
-
 
 const steps = [
   { id: 1, label: 'Personal Info' },
   { id: 2, label: 'Upload Resume' },
 ];
 
-export default function MultiStepForm() {
-
+function MultiStepFormComponent() {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams); // Convert to URLSearchParams object
   const plan = params.get('plan') || 1; // Default to 'Usuario' if no name is found
@@ -205,4 +202,13 @@ export default function MultiStepForm() {
       </motion.div>
     </div>
   );
+}
+
+export default function MultiStepForm() {
+  return (
+    <Suspense fallback={<div className="text-center text-white">Cargando...</div>}>
+      <MultiStepFormComponent />
+    </Suspense>
+  );
+
 }

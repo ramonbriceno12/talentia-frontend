@@ -143,9 +143,7 @@ export default function Navbar() {
           <ul className="space-y-4">
             <li>
               <a
-                href="https://www.instagram.com/talentiave/"
-                    target="_blank"
-                // href="/forms/offer"
+                href="/forms/offer"
                 className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
               >
                 💼 <span>Crear Oferta Laboral</span>
@@ -153,9 +151,7 @@ export default function Navbar() {
             </li>
             <li>
               <a
-                // href="/forms/talent"
-                href="https://www.instagram.com/talentiave/"
-                    target="_blank"
+                href="/forms/talent"
                 className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
               >
                 👀 <span>Conseguir Trabajo</span>

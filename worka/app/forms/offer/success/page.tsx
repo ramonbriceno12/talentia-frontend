@@ -2,9 +2,9 @@
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react'; // Success icon
 import { useSearchParams } from 'next/navigation';
-export const dynamic = 'force-dynamic';
+import { Suspense } from 'react';
 
-export default function CompanySuccessPage() {
+function CompanySuccessPageComponent(){
     const searchParams = useSearchParams();
     const params = new URLSearchParams(searchParams); // Convert to URLSearchParams object
     const companyName = params.get('name') || 'Empresa'; // Default to 'Empresa' if no name is found
@@ -40,4 +40,12 @@ export default function CompanySuccessPage() {
             </motion.div>
         </div>
     );
+}
+
+export default function CompanySuccessPage() {
+    return(
+        <Suspense fallback={<div className="text-center text-white">Cargando...</div>}> 
+            <CompanySuccessPageComponent />
+        </Suspense>
+    )
 }
