@@ -64,7 +64,7 @@ export default function MultiStepJobForm() {
     useEffect(() => {
         const fetchSkills = async () => {
             try {
-                const response = await fetch('https://talentiave.com/api/skills');
+                const response = await fetch('https://talentiave.com/api/api/skills');
                 const data = await response.json();
                 const formattedSkills = data.map(skill => ({
                     value: skill.id,
@@ -80,7 +80,7 @@ export default function MultiStepJobForm() {
         // Fetch job categories
         const fetchCategories = async () => {
             try {
-                const response = await fetch('https://talentiave.com/api/job-categories');
+                const response = await fetch('https://talentiave.com/api/api/job-categories');
                 const data = await response.json();
                 const formattedCategories = data.map(category => ({
                     value: category.id,

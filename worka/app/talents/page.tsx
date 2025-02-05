@@ -20,7 +20,7 @@ export default function TalentListView() {
         const fetchTalents = async () => {
             setLoading(true);
             try {
-                const response = await fetch("https://talentiave.com/api/talents");
+                const response = await fetch("https://talentiave.com/api/api/talents");
                 const data = await response.json();
 
                 setTalents(data);

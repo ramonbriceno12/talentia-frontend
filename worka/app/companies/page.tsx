@@ -20,7 +20,7 @@ export default function CompanyListView() {
     useEffect(() => {
         const fetchCompanies = async () => {
             try {
-                const response = await fetch("https://talentiave.com/api/companies");
+                const response = await fetch("https://talentiave.com/api/api/companies");
                 const data = await response.json();
                 setCompanies(data);
                 setFilteredCompanies(data);
@@ -35,7 +35,7 @@ export default function CompanyListView() {
 
     const fetchCompanyJobs = async (companyId) => {
         try {
-            const response = await fetch(`https://talentiave.com/api/jobs?company_id=${companyId}`);
+            const response = await fetch(`https://talentiave.com/api/api/jobs?company_id=${companyId}`);
             const data = await response.json();
             setCompanyJobs(data);
         } catch (error) {

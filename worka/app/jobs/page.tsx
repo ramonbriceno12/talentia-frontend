@@ -32,7 +32,7 @@ export default function JobListView() {
         const fetchJobs = async () => {
             setLoading(true);
             try {
-                const response = await fetch("https://talentiave.com/api/jobs");
+                const response = await fetch("https://talentiave.com/api/api/jobs");
                 const data = await response.json();
 
                 const filtered = companyId
