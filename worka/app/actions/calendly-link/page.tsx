@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+export const dynamic = 'force-dynamic';
 
 export default function CalendlyRedirectPage() {
     const router = useRouter();

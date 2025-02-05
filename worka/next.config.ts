@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,   // Disable TypeScript build errors
   },
+  output: "standalone", // Avoid static export issues
+  generateBuildId: async () => "build-ignore-errors", // Forces new build ID
+  productionBrowserSourceMaps: false, // Prevents source map errors in production
   images: {
     remotePatterns: [
       {

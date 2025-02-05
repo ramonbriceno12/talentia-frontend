@@ -90,6 +90,12 @@ export default function CompanyForm() {
         }
     };
 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0] || null;
+        setFormData((prev) => ({ ...prev, jobRequirements: file }));
+    };
+    
+
     return (
         <div className="w-screen h-screen flex flex-col items-center justify-center bg-forms text-white">
             <img
@@ -157,7 +163,7 @@ export default function CompanyForm() {
                                     id="jobRequirements"
                                     name="jobRequirements"
                                     accept="application/pdf"
-                                    onChange={handleFormChange}
+                                    onChange={handleFileChange}
                                     className="hidden"
                                 />
                                 <label htmlFor="jobRequirements" className="cursor-pointer text-indigo-600">

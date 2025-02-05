@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react'; // Success icon
 import { useSearchParams } from 'next/navigation';
+export const dynamic = 'force-dynamic';
 
 
 export default function SuccessPage() {

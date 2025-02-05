@@ -48,7 +48,8 @@ export default function PlansSection() {
   const router = useRouter();
 
   const handlePlanSelection = (planId) => {
-    router.push(`/forms/talent/?plan=${planId}`);
+    // router.push(`/forms/talent/?plan=${planId}`);
+    router.push('https://instagram.com/talentiave')
   };
 
   const plans = [

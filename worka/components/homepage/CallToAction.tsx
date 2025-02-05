@@ -13,13 +13,16 @@ export default function CallToAction() {
             {/* Option Buttons */}
             <div className="mt-8 flex justify-center space-x-6">
                 <a
-                    href="/forms/talent"
+                    href="https://www.instagram.com/talentiave/"
+                    target="_blank"
                     className="inline-block talentia-button text-white bg-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition"
                 >
                     Encontrar Trabajo
                 </a>
                 <a
-                    href="/forms/offer"
+                    href="https://www.instagram.com/talentiave/"
+                    target="_blank"
+                    // href="/forms/offer"
                     className="inline-block talentia-button text-white bg-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-green-700 transition"
                 >
                     Crear Oferta Laboral
