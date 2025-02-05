@@ -67,7 +67,7 @@ export default function CompanyForm() {
             formDataToSend.append('address', formData.address);
             formDataToSend.append('jobRequirements', formData.jobRequirements);
 
-            const response = await fetch('http://localhost:5000/api/upload/company', {
+            const response = await fetch('http://talentiave.com:5000/api/upload/company', {
                 method: 'POST',
                 body: formDataToSend,
             });

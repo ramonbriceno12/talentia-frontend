@@ -31,7 +31,7 @@ export default function JobDetailView() {
             if (!id) return;
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/jobs/${id}`);
+                const response = await fetch(`http://talentiave.com:5000/api/jobs/${id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setJob(data);
@@ -72,7 +72,7 @@ export default function JobDetailView() {
 
             try {
                 setUploading(true);  // Start loading state
-                const response = await fetch('http://localhost:5000/api/upload/application', {
+                const response = await fetch('http://talentiave.com:5000/api/upload/application', {
                     method: 'POST',
                     body: submissionData,
                 });
