@@ -15,7 +15,7 @@ export default function Register() {
     setNotification({ message: "", type: "" });
     setLoading(true);
     try {
-      const response = await fetch("http://talentiave.com:5000/api/auth/register", {
+      const response = await fetch("https://talentiave.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

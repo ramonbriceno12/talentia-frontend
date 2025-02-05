@@ -11,7 +11,7 @@ export default function FeaturedCompanies() {
     useEffect(() => {
         const fetchFeaturedCompanies = async () => {
             try {
-                const response = await fetch("http://talentiave.com:5000/api/companies?featured=true");
+                const response = await fetch("https://talentiave.com/api/companies?featured=true");
                 const data = await response.json();
                 setFeaturedCompanies(data);
                 setLoading(false);

@@ -15,7 +15,7 @@ export default function CompanyCalendlyRedirectPage() {
             if (!email) return;
 
             try {
-                await fetch(`http://talentiave.com:5000/api/actions/calendly/company/${encodeURIComponent(email)}`, {
+                await fetch(`https://talentiave.com/api/actions/calendly/company/${encodeURIComponent(email)}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' }
                 });

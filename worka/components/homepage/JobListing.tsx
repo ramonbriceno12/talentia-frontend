@@ -11,7 +11,7 @@ export default function JobListing() {
     useEffect(() => {
         const fetchFeaturedJobs = async () => {
             try {
-                const response = await fetch("http://talentiave.com:5000/api/jobs?featured=true");
+                const response = await fetch("https://talentiave.com/api/jobs?featured=true");
                 const data = await response.json();
                 setFeaturedJobs(data);
                 console.log(data)

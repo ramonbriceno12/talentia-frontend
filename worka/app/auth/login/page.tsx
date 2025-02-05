@@ -14,7 +14,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://talentiave.com:5000/api/auth/login", {
+      const response = await fetch("https://talentiave.com/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -40,7 +40,7 @@ export default function Profile() {
             setLoadingAvatar(true);
 
             try {
-                const response = await fetch('http://talentiave.com:5000/api/upload/avatar', {
+                const response = await fetch('https://talentiave.com/api/upload/avatar', {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -72,7 +72,7 @@ export default function Profile() {
             setLoadingResume(true);
 
             try {
-                const response = await fetch('http://talentiave.com:5000/api/upload/resume', {
+                const response = await fetch('https://talentiave.com/api/upload/resume', {
                     method: 'POST',
                     body: formData,
                     headers: {

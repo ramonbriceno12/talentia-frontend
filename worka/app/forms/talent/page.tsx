@@ -76,7 +76,7 @@ export default function MultiStepForm() {
       formDataToSend.append('plan_id', plan);
       console.log(formDataToSend);
       // // Send data to backend API
-      const response = await fetch('http://talentiave.com:5000/api/upload/talent', {
+      const response = await fetch('https://talentiave.com/api/upload/talent', {
         method: 'POST',
         body: formDataToSend,
       });
