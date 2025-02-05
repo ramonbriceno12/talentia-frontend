@@ -49,7 +49,7 @@ export default function RootLayout({
         <meta property="og:description" content="Nuestra IA conecta tu empresa con los mejores talentos, pre-evaluados y listos para trabajar en tu equipo." />
         <meta property="og:url" content="https://talentiave.com/" />
         <meta property="og:type" content="website"/>
-        <meta name="twitter:image" content="https://talentiave.com/img/LOGO-04.png" />
+        <meta name="twitter:image" content="https://talentiave.com/img/LOGO-02.png" />
         <meta name="twitter:title" content="Talentia - Encuentra Candidatos de Alta Calidad" />
         <meta name="twitter:description" content="Nuestra IA conecta tu empresa con los mejores talentos, pre-evaluados y listos para trabajar en tu equipo." />
         <meta name="twitter:card" content="summary_large_image" />
