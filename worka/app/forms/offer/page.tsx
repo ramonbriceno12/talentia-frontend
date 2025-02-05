@@ -97,7 +97,7 @@ export default function CompanyForm() {
     
 
     return (
-        <div className="w-screen h-screen flex flex-col items-center justify-center bg-forms text-white">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-forms text-white px-4 sm:px-6 lg:px-8">
             <img
                 src="/img/LOGO-01.png"
                 alt="Talentia Logo"

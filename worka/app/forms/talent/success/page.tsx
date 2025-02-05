@@ -11,7 +11,7 @@ function SuccessPageComponent() {
     const name = params.get('name') || 'Usuario'; // Default to 'Usuario' if no name is found
 
     return (
-        <div className="w-screen h-screen flex flex-col items-center justify-center bg-forms text-white">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-forms text-white px-4 sm:px-6 lg:px-8">
             {/* Logo */}
             <img src="/img/LOGO-01.png" alt="Talentia Logo" className="mb-6 w-64 h-auto" />
 
