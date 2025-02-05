@@ -12,49 +12,6 @@ export default function HeroSection() {
         companies: [],
     });
 
-    // useEffect(() => {
-    //     const fetchJobs = async () => {
-    //         try {
-    //             const response = await fetch("https://talentiave.com/api/api/jobs");
-    //             const data = await response.json();
-    //             setJobs(data);
-    //             setFilteredResults((prev) => ({ ...prev, jobs: data }));
-    //         } catch (error) {
-    //             console.error("Error fetching jobs:", error);
-    //         }
-    //     };
-    //     fetchJobs();
-    // }, []);
-
-    const handleSearch = (e) => {
-        const query = e.target.value.toLowerCase();
-        setSearchQuery(query);
-        setSidebarOpen(true);
-        setActiveCategory("jobs");
-
-        const filteredJobs = jobs.filter((job) =>
-            job.title.toLowerCase().includes(query)
-        );
-
-        setFilteredResults((prev) => ({
-            ...prev,
-            jobs: filteredJobs,
-        }));
-    };
-
-    const filterByCategory = (category) => {
-        setActiveCategory(category);
-        setSidebarOpen(true);
-
-        if (category === "jobs") {
-            setFilteredResults((prev) => ({ ...prev, jobs }));
-        } else {
-            setFilteredResults((prev) => ({
-                ...prev,
-                [category]: prev[category] || [],
-            }));
-        }
-    };
 
     const closeSidebar = () => {
         setSidebarOpen(false);
@@ -76,12 +33,14 @@ export default function HeroSection() {
                     </p>
                 </div>
             </div>
-        <br />
+            <br />
             {/* Promotional Banner – Full Page Width */}
             <div className="w-full">
                 <div className="bg-[#244c56] text-white text-center py-3 px-4">
-                    <p className="text-3xl font-bold">
-                        ¡Oferta Especial! Nuestro plan Premium está en promoción: de $100 a $30
+                    <p className="text-2xl">
+                        ¡Oferta Especial! Nuestro plan Premium está en promoción: <br />
+                        Antes <span className="line-through">$100.00</span> ahora $30.00 para Talentos <br />
+                        Antes <span className="line-through">$200.00</span> ahora $50.00 para Empresas
                     </p>
                 </div>
             </div>

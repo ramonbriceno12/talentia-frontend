@@ -3,10 +3,8 @@ import { useState, useEffect } from "react";
 const phrases = [
     "Impulsa Tu Carrera en Venezuela",
     "Conecta con Talento Venezolano",
-    "Haz Realidad Tu Trabajo Ideal en Venezuela",
-    "Descubre Empleos Remotos para Venezolanos",
-    "Encuentra Oportunidades en el Mercado Local",
-    "Crece Profesionalmente desde Venezuela",
+    "Encuentra Tu Trabajo Ideal desde Venezuela",
+    "Descubre Empleos para Venezolanos",
 ];
 
 export default function TypingEffect() {
