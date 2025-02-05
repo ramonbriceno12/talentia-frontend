@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useEffect } from "react";
 import GTM from "@/components/google/GTM";
+import GA from "@/components/google/GA";
 
 export default function RootLayout({
   children,
@@ -47,7 +48,7 @@ export default function RootLayout({
       <body
       >
         <GTM />
-        
+        <GA />
         {children}
         <script type="text/javascript" id="hs-script-loader" async defer src="https://js.hs-scripts.com/24005206.js"></script>
       </body>
