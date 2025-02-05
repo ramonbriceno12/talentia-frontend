@@ -53,7 +53,7 @@ export default function RootLayout({
         <meta name="twitter:title" content="Talentia - Encuentra Candidatos de Alta Calidad" />
         <meta name="twitter:description" content="Nuestra IA conecta tu empresa con los mejores talentos, pre-evaluados y listos para trabajar en tu equipo." />
         <meta name="twitter:card" content="summary_large_image" />
-        <link rel="icon" href="/img/LOGO-03.png" />
+        <link rel="icon" type="image/png" href="/img/LOGO-03.png" />
 
       </head>
 
