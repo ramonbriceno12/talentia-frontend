@@ -28,7 +28,7 @@ export default function HeroSection() {
 
         try {
             const response = await fetch(
-                "http://localhost:5000/api/actions/subscription/",
+                "https://talentiave.com/api/api/actions/subscription/",
                 {
                     method: "POST",
                     headers: {
