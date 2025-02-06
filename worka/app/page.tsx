@@ -11,9 +11,6 @@ export default function Home() {
       {/* Navbar */}
       <Navbar />
 
-      {/* Spacer to offset the fixed navbar */}
-      <div className="h-20"></div>
-
       {/* Main Content Wrapper - Pushes Footer Down */}
       <div className="flex-grow">
         {/* Hero Section */}

@@ -20,24 +20,19 @@ export default function Navbar() {
     setSidebarOpen(!sidebarOpen);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    window.location.href = "/auth/login";
-  };
-
   return (
     <>
       {/* Fixed Navbar */}
       <nav className="bg-white border-b border-gray-200 fixed top-0 left-0 w-full z-50">
-        <div className="w-full px-6 py-4 flex items-center justify-between">
+        <div className="w-full px-6 flex items-center justify-between">
           {/* Logo */}
           <a href="/">
             <Image
               src="/img/LOGO-04.png"
               alt="Logo"
-              width={240}
-              height={90}
-              className="w-48 md:w-auto" // Wider on mobile
+              width={120}
+              height={60}
+              className="w-18 md:w-auto" // Wider on mobile
             />
           </a>
 
@@ -103,9 +98,9 @@ export default function Navbar() {
               <Image
                 src="/img/LOGO-04.png"
                 alt="Logo"
-                width={240}
-                height={90}
-                className="w-48"
+                width={140}
+                height={60}
+                className="w-24"
               />
             </a>
             <button
