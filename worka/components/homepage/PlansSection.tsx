@@ -31,7 +31,8 @@ function PlanCard({ plan, onPlanSelect }) {
       <div>
         <h3 className="text-3xl font-bold mb-2">{plan.title}</h3>
         <p className="text-2xl font-semibold">
-          {formatPrice(plan.price)}
+          {/* {formatPrice(plan.price)} */}
+          {/* {plan.price} */}
         </p>
         <br />
         <p className="mt-2 text-2xl">{plan.description}</p>
@@ -81,23 +82,27 @@ export default function PlansSection() {
 
   // Data for talent plans
   const talentPlans = [
+    // {
+    //   id: 1,
+    //   title: "Plan Gratuito",
+    //   price: "Gratis",
+    //   description:
+    //     "Ideal para talentos que buscan iniciarse en la optimización de su perfil profesional con recursos básicos.",
+    //   benefits: [
+    //     "✅ Checklist en PDF con estrategias clave para mejorar tu CV, LinkedIn y portafolio.",
+    //     "✅ El PDF se enviará a tu correo electrónico tras el registro.",
+    //     "✅ Orientación básica para optimizar tu presencia profesional.",
+    //   ],
+    //   bgColor: "bg-[#244c56]",
+    // },
     {
       id: 1,
-      title: "Plan Gratuito",
-      price: "Gratis",
-      description:
-        "Ideal para talentos que buscan iniciarse en la optimización de su perfil profesional con recursos básicos.",
-      benefits: [
-        "✅ Checklist en PDF con estrategias clave para mejorar tu CV, LinkedIn y portafolio.",
-        "✅ El PDF se enviará a tu correo electrónico tras el registro.",
-        "✅ Orientación básica para optimizar tu presencia profesional.",
-      ],
-      bgColor: "bg-[#244c56]",
-    },
-    {
-      id: 2,
       title: "Plan Regular",
-      price: "$25",
+      price: (
+        <>
+          <span className="line-through text-gray-400">$50.00</span> <span className="text-white">$25.00</span>
+        </>
+      ),
       description:
         "Para talentos que desean asesoría personalizada para mejorar su perfil y aumentar sus oportunidades laborales.",
       benefits: [
@@ -109,9 +114,13 @@ export default function PlansSection() {
       bgColor: "bg-[#0e7c7b]",
     },
     {
-      id: 3,
+      id: 2,
       title: "Plan Premium",
-      price: "$50",
+      price: (
+        <>
+          <span className="line-through text-gray-400">$100.00</span> <span className="text-white">$50.00</span>
+        </>
+      ),
       description:
         "Para talentos que desean una fuerte presencia digital, máxima exposición y acceso directo a oportunidades laborales.",
       benefits: [
@@ -134,9 +143,13 @@ export default function PlansSection() {
   // Data for the single company plan
   const companyPlans = [
     {
-      id: 4,
+      id: 3,
       title: "Plan Empresa",
-      price: "Desde $70",
+      price: (
+        <>
+          <span className="line-through text-gray-400">$200.00</span> <span className="text-white">$70.00</span>
+        </>
+      ),
       description:
         "Nos encargamos de todo el proceso de reclutamiento para que encuentres el talento ideal sin complicaciones. Explícanos tu vacante o proyecto, y nosotros hacemos el resto.",
       benefits: [
@@ -195,7 +208,7 @@ export default function PlansSection() {
 
         {/* Grid layout for plans */}
         <div
-          className={`grid ${selectedType === "talent" ? "md:grid-cols-3" : "md:grid-cols-1"
+          className={`p-6 grid ${selectedType === "talent" ? "md:grid-cols-2" : "md:grid-cols-1"
             } gap-4 items-start`}
         >
           {plansToDisplay.map((plan, index) => (

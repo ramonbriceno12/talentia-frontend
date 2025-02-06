@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 const phrases = [
-    "Impulsa Tu Carrera en Venezuela",
-    "Conecta con Talento Venezolano",
-    "Encuentra Tu Trabajo Ideal desde Venezuela",
-    "Descubre Empleos para Venezolanos",
-];
+    "Impulsa tu carrera profesional",
+    "Conecta con talento de calidad",
+    "Empleos en Venezuela y el mundo",
+    "Encuentra trabajo remoto",
+  ];
 
 export default function TypingEffect() {
     const [text, setText] = useState("");
