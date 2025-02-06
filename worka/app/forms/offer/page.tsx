@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const steps = [
     { id: 1, label: 'Company Info' },
@@ -94,15 +95,17 @@ export default function CompanyForm() {
         const file = event.target.files?.[0] || null;
         setFormData((prev) => ({ ...prev, jobRequirements: file }));
     };
-    
+
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-forms text-white px-4 sm:px-6 lg:px-8">
-            <img
-                src="/img/LOGO-01.png"
-                alt="Talentia Logo"
-                className="mb-6 w-64 h-auto"
-            />
+            <Link href="/">
+                <img
+                    src="/img/LOGO-01.png"
+                    alt="Talentia Logo"
+                    className="mb-6 w-64 h-auto cursor-pointer"
+                />
+            </Link>
             <motion.div
                 key={step}
                 initial={{ x: 300, opacity: 0 }}

@@ -2,6 +2,7 @@
 import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 const steps = [
   { id: 1, label: 'Personal Info' },
@@ -98,11 +99,13 @@ function MultiStepFormComponent() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-forms text-white px-4 sm:px-6 lg:px-8">
-      <img
-        src="/img/LOGO-01.png"
-        alt="Talentia Logo"
-        className="mb-6 w-64 h-auto"
-      />
+      <Link href="/">
+        <img
+          src="/img/LOGO-01.png"
+          alt="Talentia Logo"
+          className="mb-6 w-64 h-auto cursor-pointer"
+        />
+      </Link>
       <motion.div
         key={step}
         initial={{ x: 300, opacity: 0 }}
