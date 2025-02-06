@@ -39,8 +39,8 @@ export default function HeroSection() {
                 <div className="bg-[#244c56] text-white text-center py-3 px-4">
                     <p className="text-2xl">
                         ¡Oferta Especial! Nuestro plan Premium está en promoción: <br />
-                        Antes <span className="line-through">$100.00</span> ahora $30.00 para Talentos <br />
-                        Antes <span className="line-through">$200.00</span> ahora $50.00 para Empresas
+                        Antes <span className="line-through">$100.00</span> ahora $50.00 para Talentos <br />
+                        Antes <span className="line-through">$200.00</span> ahora $70.00 para Empresas
                     </p>
                 </div>
             </div>

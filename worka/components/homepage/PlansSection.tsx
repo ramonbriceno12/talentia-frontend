@@ -97,7 +97,7 @@ export default function PlansSection() {
     {
       id: 2,
       title: "Plan Regular",
-      price: "$15",
+      price: "$25",
       description:
         "Para talentos que desean asesoría personalizada para mejorar su perfil y aumentar sus oportunidades laborales.",
       benefits: [
@@ -111,7 +111,7 @@ export default function PlansSection() {
     {
       id: 3,
       title: "Plan Premium",
-      price: "$30",
+      price: "$50",
       description:
         "Para talentos que desean una fuerte presencia digital, máxima exposición y acceso directo a oportunidades laborales.",
       benefits: [
@@ -136,7 +136,7 @@ export default function PlansSection() {
     {
       id: 4,
       title: "Plan Empresa",
-      price: "Desde $50",
+      price: "Desde $70",
       description:
         "Nos encargamos de todo el proceso de reclutamiento para que encuentres el talento ideal sin complicaciones. Explícanos tu vacante o proyecto, y nosotros hacemos el resto.",
       benefits: [
