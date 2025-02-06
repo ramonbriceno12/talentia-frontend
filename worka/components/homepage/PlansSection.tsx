@@ -119,7 +119,7 @@ export default function PlansSection() {
         "✅ Optimización avanzada del perfil de LinkedIn con integración de palabras clave estratégicas.",
         "✅ Revisión y mejora del CV con redacción y optimización profesional.",
         "✅ Creación de portafolio personalizado con diseño profesional y branding personal.",
-        "✅ Publicación destacada en Instagram y historia permanente en nuestro perfil.",
+        "✅ Publicación destacada en Instagram e historia permanente en nuestro perfil.",
         "✅ Posicionamiento prioritario en nuestro directorio de talentos.",
         "✅ Aplicación directa a vacantes de empresas que busquen perfiles como el tuyo.",
         "✅ Visibilidad en nuestro sitio web e Instagram como talento disponible.",
