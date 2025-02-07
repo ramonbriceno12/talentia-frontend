@@ -40,7 +40,7 @@ export default function Navbar() {
           <div className="flex items-center space-x-4">
             {/* Desktop Contact Info */}
             <div className="hidden md:flex items-center space-x-2">
-              {/* <svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6 text-gray-700"
                 fill="none"
@@ -53,13 +53,13 @@ export default function Navbar() {
                   strokeWidth="2"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z"
                 />
-              </svg> */}
-              {/* <a
+              </svg>
+              <a
                 href="mailto:contacto@talentiave.com"
                 className="text-gray-700 text-md font-medium"
               >
                 contacto@talentiave.com
-              </a> */}
+              </a>
             </div>
 
             {/* Burger Button (always visible) */}
@@ -113,7 +113,7 @@ export default function Navbar() {
 
           {/* Mobile-only contact info inside the sidebar */}
           <div className="flex md:hidden items-center space-x-2 mb-4">
-            {/* <svg
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-gray-700"
               fill="none"
@@ -126,13 +126,13 @@ export default function Navbar() {
                 strokeWidth="2"
                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z"
               />
-            </svg> */}
-            {/* <a
+            </svg>
+            <a
               href="mailto:contacto@talentiave.com"
               className="text-gray-700 text-md font-medium"
             >
               contacto@talentiave.com
-            </a> */}
+            </a>
           </div>
 
           <ul className="space-y-4">
