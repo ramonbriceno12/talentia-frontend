@@ -1,8 +1,10 @@
 'use client'
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Select from 'react-select';
+import Footer from '@/components/homepage/Footer';
 
 const steps = [
   { id: 1, label: 'Personal Info' },
@@ -13,12 +15,14 @@ function MultiStepFormComponent() {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams); // Convert to URLSearchParams object
   const plan = params.get('plan') || 1; // Default to 'Usuario' if no name is found
-
+  const [jobTitles, setJobTitles] = useState([]);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     resume: null,
+    avatar: null,
+    job_title: '',
     plan_id: plan
   });
 
@@ -27,69 +31,85 @@ function MultiStepFormComponent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [fileError, setFileError] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
+  useEffect(() => {
+    const fetchJobTitles = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/job-titles');
+        const data = await response.json();
+        console.log(data)
+        setJobTitles(data);
+      } catch (error) {
+        console.error('Error fetching job titles:', error);
+      }
+    };
+    fetchJobTitles();
+  }, []);
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
   const handleFormChange = (e: any) => {
     const { name, value, files } = e.target;
-
     if (files) {
       const file = files[0];
-      if (file && file.type !== "application/pdf") {
-        setFileError("❌ Solo se permiten archivos en formato PDF.");
+      if (name === 'resume' && file && file.type !== 'application/pdf') {
+        setFileError('❌ Solo se permiten archivos en formato PDF.');
         return;
       }
+
+      if (name === 'avatar' && file) {
+        const reader = new FileReader();
+        reader.onload = () => setAvatarPreview(reader.result);
+        reader.readAsDataURL(file);
+      }
+      
       setFileError('');
     }
-
     setFormData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
     }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleJobTitleChange = (selectedOption: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      job_title: selectedOption.value, // Store only one selected job title
+    }));
+  };
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const missingFields = [];
-    if (!formData.name) missingFields.push("Nombre");
-    if (!formData.email) missingFields.push("Correo Electrónico");
-    if (!formData.resume) missingFields.push("Currículum");
-
-    // If any field is missing, show error message
-    if (missingFields.length > 0) {
-      setMessage(`⚠️ Los siguientes campos son obligatorios: ${missingFields.join(", ")}`);
+    if (!formData.name || !formData.email || !formData.resume || !formData.avatar || !formData.job_title) {
+      setMessage('⚠️ Todos los campos son obligatorios.');
       return;
     }
-
     setIsSubmitting(true);
     setMessage('');
 
     try {
-      // Create FormData object to send file
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
+      if (formData.avatar) formDataToSend.append('avatar', formData.avatar);
       formDataToSend.append('resume', formData.resume);
+      formDataToSend.append('job_title', formData.job_title);
       formDataToSend.append('plan_id', plan);
-      console.log(formDataToSend);
-      // // Send data to backend API
-      const response = await fetch('https://talentiave.com/api/api/upload/talent', {
+
+      const response = await fetch('http://localhost:5000/api/upload/talent', {
         method: 'POST',
         body: formDataToSend,
       });
 
-      if (!response.ok) {
-        throw new Error('Error al enviar el formulario');
-      }
+      if (!response.ok) throw new Error('Error al enviar el formulario');
 
       setMessage('✅ ¡Formulario enviado con éxito!');
       setTimeout(() => {
-        setMessage('')
-        router.push(`talent/success?name=${formData.name}`);
+        router.push(`/forms/talent/success?name=${formData.name}`);
       }, 3000);
-      setFormData({ name: '', email: '', resume: null, plan_id: plan });
     } catch (error) {
       setMessage('❌ Error al enviar el formulario. Inténtalo de nuevo.');
     } finally {
@@ -142,12 +162,39 @@ function MultiStepFormComponent() {
                   required
                 />
               </div>
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-lg">Avatar</label>
+                <div className="flex items-center space-x-4">
+                  {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className="w-16 h-16 rounded-full" />}
+                  <input
+                    type="file"
+                    name="avatar"
+                    accept="image/*"
+                    onChange={handleFormChange}
+                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                    required
+                  />
+                </div>
+              </div>
             </div>
           )}
 
           {step === 2 && (
             <div>
               <h2 className="text-3xl font-semibold mb-6">Sube tu Currículum</h2>
+              <Select
+                name="jobTitle"
+                options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
+                value={formData.jobTitle}
+                onChange={handleJobTitleChange}
+                className="basic-single-select"
+                classNamePrefix="select"
+                placeholder="Selecciona un cargo..."
+                isSearchable
+                filterOption={(candidate, input) =>
+                  candidate.label.toLowerCase().includes(input.toLowerCase())
+                }
+              /><br/>
               <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
                 <input
                   type="file"
@@ -203,6 +250,7 @@ function MultiStepFormComponent() {
           )}
         </form>
       </motion.div>
+      <Footer />
     </div>
   );
 }

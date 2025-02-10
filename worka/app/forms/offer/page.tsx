@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Footer from '@/components/homepage/Footer';
 
 const steps = [
     { id: 1, label: 'Company Info' },
@@ -80,7 +81,7 @@ export default function CompanyForm() {
             setMessage('✅ ¡Formulario enviado con éxito!');
             setTimeout(() => {
                 setMessage('');
-                router.push(`offer/success?name=${formData.companyName}`);
+                router.push(`/forms/offer/success?name=${formData.companyName}`);
             }, 3000);
 
             setFormData({ companyName: '', email: '', address: '', jobRequirements: null });
@@ -215,6 +216,7 @@ export default function CompanyForm() {
                     )}
                 </form>
             </motion.div>
+            <Footer/>
         </div>
     );
 }
