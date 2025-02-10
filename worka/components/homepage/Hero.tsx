@@ -6,7 +6,9 @@ export default function HeroSection() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [subscriberEmail, setSubscriberEmail] = useState("");
     const [subscriberName, setSubscriberName] = useState("");
-    const [submissionStatus, setSubmissionStatus] = useState(""); // "success" or "error"
+    const [submissionStatus, setSubmissionStatus] = useState("");
+    const [loading, setLoading] = useState('Enviar');
+    const [submitDisabled, setSubmitDisabled] = useState(false);
 
     const closeSidebar = () => {
         setSidebarOpen(false);
@@ -25,7 +27,8 @@ export default function HeroSection() {
 
     const submitSubscriber = async (e) => {
         e.preventDefault();
-
+        setLoading('Enviando...');
+        setSubmitDisabled(true);
         try {
             const response = await fetch(
                 "https://talentiave.com/api/api/actions/subscription/",
@@ -40,12 +43,18 @@ export default function HeroSection() {
 
             if (response.ok) {
                 setSubmissionStatus("success");
+                setLoading('Enviar');
+                setSubmitDisabled(false);
             } else {
                 setSubmissionStatus("error");
+                setLoading('Enviar');
+                setSubmitDisabled(false);
             }
         } catch (error) {
             console.error("Error sending subscriber email:", error);
             setSubmissionStatus("error");
+            setLoading('Enviar');
+            setSubmitDisabled(false);
         }
     };
 
@@ -152,8 +161,9 @@ export default function HeroSection() {
                                     <button
                                         type="submit"
                                         className="bg-[#244c56] text-white py-2 px-4 rounded w-full"
+                                        disabled={submitDisabled}
                                     >
-                                        Enviar
+                                        {loading}
                                     </button>
                                 </form>
                             </>
