@@ -36,7 +36,7 @@ function MultiStepFormComponent() {
   useEffect(() => {
     const fetchJobTitles = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/job-titles');
+        const response = await fetch('https://talentiave.com/api/api/job-titles');
         const data = await response.json();
         console.log(data)
         setJobTitles(data);
@@ -99,7 +99,7 @@ function MultiStepFormComponent() {
       formDataToSend.append('job_title', formData.job_title);
       formDataToSend.append('plan_id', plan);
 
-      const response = await fetch('http://localhost:5000/api/upload/talent', {
+      const response = await fetch('https://talentiave.com/api/api/upload/talent', {
         method: 'POST',
         body: formDataToSend,
       });
