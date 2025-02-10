@@ -17,6 +17,7 @@ function MultiStepFormComponent() {
   const params = new URLSearchParams(searchParams); // Convert to URLSearchParams object
   const plan = params.get('plan') || 1; // Default to 'Usuario' if no name is found
   const [jobTitles, setJobTitles] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
@@ -24,7 +25,8 @@ function MultiStepFormComponent() {
     resume: null,
     avatar: null,
     job_title: '',
-    plan_id: plan
+    plan_id: plan,
+    skills: [], // Make sure skills is always an array
   });
 
   const router = useRouter();
@@ -37,7 +39,7 @@ function MultiStepFormComponent() {
   useEffect(() => {
     const fetchJobTitles = async () => {
       try {
-        const response = await fetch('https://talentiave.com/api/api/job-titles');
+        const response = await fetch('http://localhost:5000/api/job-titles');
         const data = await response.json();
         console.log(data)
         setJobTitles(data);
@@ -45,7 +47,21 @@ function MultiStepFormComponent() {
         console.error('Error fetching job titles:', error);
       }
     };
+
+    const fetchSkills = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/skills');
+        const data = await response.json();
+        console.log(data)
+        setSkills(data);
+      } catch (error) {
+        console.error('Error fetching job titles:', error);
+      }
+    };
+
     fetchJobTitles();
+    fetchSkills();
+
   }, []);
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
@@ -81,10 +97,17 @@ function MultiStepFormComponent() {
     }));
   };
 
+  const handleSkillsChange = (selectedOptions: any) => {
+    setFormData((prev) => ({
+      ...prev,
+      skills: selectedOptions.map((option: any) => option.value), // Store only skill names in state
+    }));
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.resume || !formData.avatar || !formData.job_title) {
+    if (!formData.name || !formData.email || !formData.resume || !formData.avatar || !formData.job_title || !formData.skills.length) {
       setMessage('⚠️ Todos los campos son obligatorios.');
       return;
     }
@@ -100,7 +123,16 @@ function MultiStepFormComponent() {
       formDataToSend.append('job_title', formData.job_title);
       formDataToSend.append('plan_id', plan);
 
-      const response = await fetch('https://talentiave.com/api/api/upload/talent', {
+      if (Array.isArray(formData.skills) && formData.skills.length > 0) {
+        formDataToSend.append('skills', formData.skills.join(",")); // Convert array to a comma-separated string
+      }
+
+      // Debugging: Log FormData
+      for (const pair of formDataToSend.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
+
+      const response = await fetch('http://localhost:5000/api/upload/talent', {
         method: 'POST',
         body: formDataToSend,
       });
@@ -195,6 +227,22 @@ function MultiStepFormComponent() {
                   className="basic-single-select"
                   classNamePrefix="select"
                   placeholder="Selecciona un cargo..."
+                  isSearchable
+                  filterOption={(candidate, input) =>
+                    candidate.label.toLowerCase().includes(input.toLowerCase())
+                  }
+                /><br />
+                <Select
+                  isMulti
+                  name="skills"
+                  options={skills.map((skill) => ({ value: skill.name, label: skill.name }))}
+                  value={formData.skills?.length > 0
+                    ? formData.skills.map((skill) => ({ value: skill, label: skill }))
+                    : []} // Ensure it's always an array
+                  onChange={handleSkillsChange}
+                  className="basic-single-select"
+                  classNamePrefix="select"
+                  placeholder="Selecciona tus skills..."
                   isSearchable
                   filterOption={(candidate, input) =>
                     candidate.label.toLowerCase().includes(input.toLowerCase())
