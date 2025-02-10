@@ -31,7 +31,7 @@ export default function TalentsPage() {
         async function fetchData() {
             try {
                 // const response = await fetch(`https://talentiave.com/api/api/talents?page=${page}&limit=${talentsPerPage}`);
-                const response = await fetch(`http://localhost:5000/api/talents?page=${page}&limit=${talentsPerPage}`);
+                const response = await fetch(`https://talentiave.com/api/api/talents?page=${page}&limit=${talentsPerPage}`);
                 if (!response.ok) {
                     throw new Error('Error fetching data');
                 }

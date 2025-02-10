@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
                 https://js.hs-analytics.net;
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;
-              connect-src 'self' http://localhost:5000 https://api.talentiave.com https://*.hubspot.com https://*.google-analytics.com;
+              connect-src 'self' https://api.talentiave.com https://*.hubspot.com https://*.google-analytics.com;
               img-src 'self' data: https://talentia-images.s3.us-east-2.amazonaws.com https://*.hubspot.com;
               frame-src 'self' https://*.hubspot.com;
             `.replace(/\s{2,}/g, ' '), // Minimize spaces in CSP

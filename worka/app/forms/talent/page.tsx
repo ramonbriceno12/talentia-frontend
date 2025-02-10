@@ -39,7 +39,7 @@ function MultiStepFormComponent() {
   useEffect(() => {
     const fetchJobTitles = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/job-titles');
+        const response = await fetch('https://talentiave.com/api/api/job-titles');
         const data = await response.json();
         console.log(data)
         setJobTitles(data);
@@ -50,7 +50,7 @@ function MultiStepFormComponent() {
 
     const fetchSkills = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/skills');
+        const response = await fetch('https://talentiave.com/api/api/skills');
         const data = await response.json();
         console.log(data)
         setSkills(data);
@@ -132,7 +132,7 @@ function MultiStepFormComponent() {
         console.log(`${pair[0]}: ${pair[1]}`);
       }
 
-      const response = await fetch('http://localhost:5000/api/upload/talent', {
+      const response = await fetch('https://talentiave.com/api/api/upload/talent', {
         method: 'POST',
         body: formDataToSend,
       });
