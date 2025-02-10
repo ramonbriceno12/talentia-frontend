@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Select from 'react-select';
 import Footer from '@/components/homepage/Footer';
+import Navbar from '@/components/homepage/Navbar';
 
 const steps = [
   { id: 1, label: 'Personal Info' },
@@ -64,7 +65,7 @@ function MultiStepFormComponent() {
         reader.onload = () => setAvatarPreview(reader.result);
         reader.readAsDataURL(file);
       }
-      
+
       setFileError('');
     }
     setFormData((prev) => ({
@@ -118,138 +119,143 @@ function MultiStepFormComponent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-forms text-white px-4 sm:px-6 lg:px-8">
-      <Link href="/">
-        <img
-          src="/img/LOGO-01.png"
-          alt="Talentia Logo"
-          className="mb-6 w-64 h-auto cursor-pointer"
-        />
-      </Link>
-      <motion.div
-        key={step}
-        initial={{ x: 300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: -300, opacity: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
-      >
-        <form onSubmit={handleSubmit}>
-          {step === 1 && (
-            <div>
-              <h2 className="text-3xl font-semibold mb-6">Información Personal</h2>
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-lg">Nombre</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleFormChange}
-                  className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleFormChange}
-                  className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-lg">Avatar</label>
-                <div className="flex items-center space-x-4">
-                  {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className="w-16 h-16 rounded-full" />}
+    <div className='bg-gray-100'>
+      <div className='mt-10'>
+        <Navbar />
+      </div>
+      <div className="min-h-screen flex flex-col bg-gray-100 items-center justify-center text-white px-4 sm:px-6 lg:px-8 mb-8">
+        <Link href="/">
+          <img
+            src="/img/LOGO-04.png"
+            alt="Talentia Logo"
+            className="mb-6 w-64 h-auto cursor-pointer"
+          />
+        </Link>
+        <motion.div
+          key={step}
+          initial={{ x: 300, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -300, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
+        >
+          <form onSubmit={handleSubmit}>
+            {step === 1 && (
+              <div>
+                <h2 className="text-3xl font-semibold mb-6">Información Personal</h2>
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-lg">Nombre</label>
                   <input
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
                     onChange={handleFormChange}
                     className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
                     required
                   />
                 </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-lg">Avatar</label>
+                  <div className="flex items-center space-x-4">
+                    {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className="w-16 h-16 rounded-full" />}
+                    <input
+                      type="file"
+                      name="avatar"
+                      accept="image/*"
+                      onChange={handleFormChange}
+                      className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {step === 2 && (
-            <div>
-              <h2 className="text-3xl font-semibold mb-6">Sube tu Currículum</h2>
-              <Select
-                name="jobTitle"
-                options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
-                value={formData.jobTitle}
-                onChange={handleJobTitleChange}
-                className="basic-single-select"
-                classNamePrefix="select"
-                placeholder="Selecciona un cargo..."
-                isSearchable
-                filterOption={(candidate, input) =>
-                  candidate.label.toLowerCase().includes(input.toLowerCase())
-                }
-              /><br/>
-              <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
-                <input
-                  type="file"
-                  id="resume"
-                  name="resume"
-                  accept="application/pdf"
-                  onChange={handleFormChange}
-                  className="hidden"
-                />
-                <label htmlFor="resume" className="cursor-pointer text-indigo-600">
-                  {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF)'}
-                </label>
-                {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+            {step === 2 && (
+              <div>
+                <h2 className="text-3xl font-semibold mb-6">Sube tu Currículum</h2>
+                <Select
+                  name="jobTitle"
+                  options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
+                  value={formData.jobTitle}
+                  onChange={handleJobTitleChange}
+                  className="basic-single-select"
+                  classNamePrefix="select"
+                  placeholder="Selecciona un cargo..."
+                  isSearchable
+                  filterOption={(candidate, input) =>
+                    candidate.label.toLowerCase().includes(input.toLowerCase())
+                  }
+                /><br />
+                <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
+                  <input
+                    type="file"
+                    id="resume"
+                    name="resume"
+                    accept="application/pdf"
+                    onChange={handleFormChange}
+                    className="hidden"
+                  />
+                  <label htmlFor="resume" className="cursor-pointer text-indigo-600">
+                    {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF)'}
+                  </label>
+                  {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+                </div>
               </div>
+            )}
+
+            {/* Buttons */}
+            <div className="flex justify-between mt-8">
+              {step > 1 && (
+                <button
+                  type="button"
+                  onClick={prevStep}
+                  className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
+                >
+                  Atrás
+                </button>
+              )}
+              {step < steps.length ? (
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="buttons-color px-6 py-2 text-white rounded"
+                >
+                  Siguiente
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="buttons-color px-6 py-2 text-white rounded flex items-center"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Enviando...' : 'Enviar'}
+                </button>
+              )}
             </div>
-          )}
 
-          {/* Buttons */}
-          <div className="flex justify-between mt-8">
-            {step > 1 && (
-              <button
-                type="button"
-                onClick={prevStep}
-                className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
-              >
-                Atrás
-              </button>
+            {/* Success/Error Message */}
+            {message && (
+              <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
+                {message}
+              </p>
             )}
-            {step < steps.length ? (
-              <button
-                type="button"
-                onClick={nextStep}
-                className="buttons-color px-6 py-2 text-white rounded"
-              >
-                Siguiente
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="buttons-color px-6 py-2 text-white rounded flex items-center"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Enviando...' : 'Enviar'}
-              </button>
-            )}
-          </div>
-
-          {/* Success/Error Message */}
-          {message && (
-            <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
-              {message}
-            </p>
-          )}
-        </form>
-      </motion.div>
+          </form>
+        </motion.div>
+      </div>
       <Footer />
     </div>
   );

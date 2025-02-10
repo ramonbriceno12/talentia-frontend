@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from '@/components/homepage/Footer';
+import Navbar from '@/components/homepage/Navbar';
 
 const steps = [
     { id: 1, label: 'Company Info' },
@@ -99,124 +100,130 @@ export default function CompanyForm() {
 
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-forms text-white px-4 sm:px-6 lg:px-8">
-            <Link href="/">
-                <img
-                    src="/img/LOGO-01.png"
-                    alt="Talentia Logo"
-                    className="mb-6 w-64 h-auto cursor-pointer"
-                />
-            </Link>
-            <motion.div
-                key={step}
-                initial={{ x: 300, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -300, opacity: 0 }}
-                transition={{ duration: 0.5 }}
-                className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
-            >
-                <form onSubmit={handleSubmit}>
-                    {step === 1 && (
-                        <div>
-                            <h2 className="text-3xl font-semibold mb-6">Información de la Empresa</h2>
-                            <div className="mb-4">
-                                <label htmlFor="companyName" className="block text-lg">Nombre de la Empresa</label>
-                                <input
-                                    type="text"
-                                    id="companyName"
-                                    name="companyName"
-                                    value={formData.companyName}
-                                    onChange={handleFormChange}
-                                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                                    required
-                                />
+        <div className='bg-gray-100'>
+            <div className='mt-10'>
+                <Navbar />
+            </div>
+            <div className="min-h-screen flex flex-col items-center bg-gray-100 justify-center text-white px-4 sm:px-6 lg:px-8 mb-8">
+                <Link href="/">
+                    <img
+                        src="/img/LOGO-04.png"
+                        alt="Talentia Logo"
+                        className="mb-6 w-64 h-auto cursor-pointer"
+                    />
+                </Link>
+                <motion.div
+                    key={step}
+                    initial={{ x: 300, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -300, opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
+                >
+                    <form onSubmit={handleSubmit}>
+                        {step === 1 && (
+                            <div>
+                                <h2 className="text-3xl font-semibold mb-6">Información de la Empresa</h2>
+                                <div className="mb-4">
+                                    <label htmlFor="companyName" className="block text-lg">Nombre de la Empresa</label>
+                                    <input
+                                        type="text"
+                                        id="companyName"
+                                        name="companyName"
+                                        value={formData.companyName}
+                                        onChange={handleFormChange}
+                                        className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleFormChange}
+                                        className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="address" className="block text-lg">Ubicación</label>
+                                    <input
+                                        type="text"
+                                        id="address"
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleFormChange}
+                                        className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                        required
+                                    />
+                                </div>
                             </div>
-                            <div className="mb-4">
-                                <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleFormChange}
-                                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                                    required
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label htmlFor="address" className="block text-lg">Ubicación</label>
-                                <input
-                                    type="text"
-                                    id="address"
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleFormChange}
-                                    className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
-                                    required
-                                />
-                            </div>
-                        </div>
-                    )}
-
-                    {step === 2 && (
-                        <div>
-                            <h2 className="text-3xl font-semibold mb-6">Sube los Requerimientos</h2>
-                            <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
-                                <input
-                                    type="file"
-                                    id="jobRequirements"
-                                    name="jobRequirements"
-                                    accept="application/pdf"
-                                    onChange={handleFileChange}
-                                    className="hidden"
-                                />
-                                <label htmlFor="jobRequirements" className="cursor-pointer text-indigo-600">
-                                    {formData.jobRequirements ? formData.jobRequirements.name : 'Haz clic para subir el archivo (PDF)'}
-                                </label>
-                                {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Buttons */}
-                    <div className="flex justify-between mt-8">
-                        {step > 1 && (
-                            <button
-                                type="button"
-                                onClick={prevStep}
-                                className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
-                            >
-                                Atrás
-                            </button>
                         )}
-                        {step < steps.length ? (
-                            <button
-                                type="button"
-                                onClick={nextStep}
-                                className="buttons-color px-6 py-2 text-white rounded"
-                            >
-                                Siguiente
-                            </button>
-                        ) : (
-                            <button
-                                type="submit"
-                                className="buttons-color px-6 py-2 text-white rounded flex items-center"
-                                disabled={isSubmitting}
-                            >
-                                {isSubmitting ? 'Enviando...' : 'Enviar'}
-                            </button>
-                        )}
-                    </div>
 
-                    {/* Success/Error Message */}
-                    {message && (
-                        <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
-                            {message}
-                        </p>
-                    )}
-                </form>
-            </motion.div>
-            <Footer/>
+                        {step === 2 && (
+                            <div>
+                                <h2 className="text-3xl font-semibold mb-6">Sube los Requerimientos</h2>
+                                <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
+                                    <input
+                                        type="file"
+                                        id="jobRequirements"
+                                        name="jobRequirements"
+                                        accept="application/pdf"
+                                        onChange={handleFileChange}
+                                        className="hidden"
+                                    />
+                                    <label htmlFor="jobRequirements" className="cursor-pointer text-indigo-600">
+                                        {formData.jobRequirements ? formData.jobRequirements.name : 'Haz clic para subir el archivo (PDF)'}
+                                    </label>
+                                    {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Buttons */}
+                        <div className="flex justify-between mt-8">
+                            {step > 1 && (
+                                <button
+                                    type="button"
+                                    onClick={prevStep}
+                                    className="bg-gray-300 hover:bg-gray-400 px-6 py-2 rounded"
+                                >
+                                    Atrás
+                                </button>
+                            )}
+                            {step < steps.length ? (
+                                <button
+                                    type="button"
+                                    onClick={nextStep}
+                                    className="buttons-color px-6 py-2 text-white rounded"
+                                >
+                                    Siguiente
+                                </button>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    className="buttons-color px-6 py-2 text-white rounded flex items-center"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Enviando...' : 'Enviar'}
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Success/Error Message */}
+                        {message && (
+                            <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
+                                {message}
+                            </p>
+                        )}
+                    </form>
+                </motion.div>
+            </div>
+            <Footer />
+
         </div>
     );
 }
