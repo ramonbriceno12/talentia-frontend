@@ -138,6 +138,14 @@ export default function Navbar() {
           <ul className="space-y-4">
             <li>
               <a
+                href="/talents"
+                className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
+              >
+                🧑‍💻 <span>Talentos</span>
+              </a>
+            </li>
+            <li>
+              <a
                 href="/forms/offer"
                 className="flex items-center space-x-3 text-lg text-gray-900 hover:bg-gray-100 px-4 py-3 rounded-lg"
               >
