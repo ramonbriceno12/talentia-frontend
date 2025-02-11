@@ -23,6 +23,8 @@ export default function ProposalPage() {
     const [talent, setTalent] = useState<Talent | null>(null);
     const [expandedBio, setExpandedBio] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [message, setMessage] = useState('');
 
     // Estados del formulario
     const [userType, setUserType] = useState("recruiter");
@@ -76,7 +78,7 @@ export default function ProposalPage() {
     // Manejo del envío del formulario
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        setIsSubmitting(true);
         const proposalData = {
             userType,
             name,
@@ -93,15 +95,19 @@ export default function ProposalPage() {
             });
 
             if (response.ok) {
-                alert("Propuesta enviada con éxito 🎉");
+                setMessage('✅ ¡Propuesta enviada con éxito, revisa la bandeja de entrada de tu email!')
+                setIsSubmitting(false);
                 setName("");
                 setEmail("");
                 setDescription("");
             } else {
-                alert("Hubo un error al enviar la propuesta.");
+                setMessage('❌ ¡Hubo un error al enviar la propuesta!')
+                setIsSubmitting(false);
             }
         } catch (error) {
             console.error("Error enviando la propuesta:", error);
+            setMessage('❌ ¡Hubo un error al enviar la propuesta!')
+            setIsSubmitting(false);
         }
     };
 
@@ -218,9 +224,16 @@ export default function ProposalPage() {
                             <button
                                 type="submit"
                                 className="w-full bg-[#10282c] text-white px-4 py-2 rounded-lg hover:bg-[#244c56]"
+                                disabled={isSubmitting}
                             >
-                                Enviar Propuesta 🚀
+                                {isSubmitting ? 'Enviando...' : 'Enviar Propuesta 🚀'}
                             </button>
+                            {/* Success/Error Message */}
+                            {message && (
+                                <p className={`mt-4 text-lg ${message.includes('✅') ? 'text-green-600' : 'text-red-600'}`}>
+                                    {message}
+                                </p>
+                            )}
                         </form>
                     </div>
                 </div>

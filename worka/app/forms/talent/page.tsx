@@ -107,8 +107,17 @@ function MultiStepFormComponent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.resume || !formData.avatar || !formData.job_title || !formData.skills.length) {
-      setMessage('⚠️ Todos los campos son obligatorios.');
+    const missingFields = [];
+
+    if (!formData.name) missingFields.push("Nombre");
+    if (!formData.email) missingFields.push("Correo electrónico");
+    if (!formData.resume) missingFields.push("Currículum");
+    if (!formData.avatar) missingFields.push("Foto de perfil");
+    if (!formData.job_title) missingFields.push("Cargo");
+    if (!formData.skills.length) missingFields.push("Habilidades");
+
+    if (missingFields.length > 0) {
+      setMessage(`⚠️ Faltan los siguientes campos: ${missingFields.join(", ")}.`);
       return;
     }
     setIsSubmitting(true);
@@ -174,7 +183,8 @@ function MultiStepFormComponent() {
           <form onSubmit={handleSubmit}>
             {step === 1 && (
               <div>
-                <h2 className="text-3xl font-semibold mb-6">Información Personal</h2>
+                <h2 className="text-3xl font-semibold">Información Personal</h2>
+                <p className="mb-6 text-gray-600">Todos los campos son obligatorios*</p>
                 <div className="mb-4">
                   <label htmlFor="name" className="block text-lg">Nombre</label>
                   <input
@@ -218,7 +228,8 @@ function MultiStepFormComponent() {
 
             {step === 2 && (
               <div>
-                <h2 className="text-3xl font-semibold mb-6">Sube tu Currículum</h2>
+                <h2 className="text-3xl font-semibold">Sube tu Currículum</h2>
+                <p className="mb-6 text-gray-600">Todos los campos son obligatorios*</p>
                 <Select
                   name="jobTitle"
                   options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
@@ -247,7 +258,11 @@ function MultiStepFormComponent() {
                   filterOption={(candidate, input) =>
                     candidate.label.toLowerCase().includes(input.toLowerCase())
                   }
-                /><br />
+                />
+                <p className="text-gray-400 text-sm mt-2">
+                  Agregar más habilidades aumenta tu visibilidad en la plataforma.
+                </p>
+                <br />
                 <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
                   <input
                     type="file"
