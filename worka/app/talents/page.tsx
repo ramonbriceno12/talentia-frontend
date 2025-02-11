@@ -1,6 +1,5 @@
 'use client'
 import { FaUserPlus } from "react-icons/fa";
-import { MdWork } from "react-icons/md";
 import Link from "next/link";
 import Navbar from '@/components/homepage/Navbar';
 import Footer from '@/components/homepage/Footer';
