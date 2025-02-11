@@ -10,7 +10,7 @@ export default function LinktreePage() {
     useEffect(() => {
         async function fetchLinks() {
             try {
-                const response = await fetch('http://localhost:5000/api/links');
+                const response = await fetch('https://talentiave.com/api/api/links');
                 if (!response.ok) {
                     throw new Error('Failed to fetch links');
                 }
@@ -26,7 +26,7 @@ export default function LinktreePage() {
     // Track link clicks
     const trackLinkClick = async (id: number) => {
         try {
-            await fetch('http://localhost:5000/api/links/track-click', {
+            await fetch('https://talentiave.com/api/api/links/track-click', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ link_id: id })
