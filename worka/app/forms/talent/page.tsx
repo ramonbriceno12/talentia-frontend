@@ -72,7 +72,7 @@ function MultiStepFormComponent() {
     if (name === "name") {
       // Regex to allow only letters (including accents) and spaces, rejecting emails and numbers
       const nameRegex = /^(?!.*\b(gmail|hotmail|yahoo|outlook|icloud|mail|email|com|net|org|info|biz|dot|arroba)\b)[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-  
+
       if (!nameRegex.test(value) || /\d/.test(value)) {
         setMessage("❌ Ingresa un nombre válido sin números, correos o palabras no permitidas.");
         return;
@@ -91,7 +91,7 @@ function MultiStepFormComponent() {
         reader.readAsDataURL(file);
       }
 
-      
+
 
       setFileError('');
     }
@@ -286,6 +286,9 @@ function MultiStepFormComponent() {
                     onChange={handleFormChange}
                     className="hidden"
                   />
+                  <p className="text-gray-400 text-sm mt-2">
+                    El tamaño máximo es de 20MB
+                  </p>
                   <label htmlFor="resume" className="cursor-pointer text-indigo-600">
                     {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF)'}
                   </label>
