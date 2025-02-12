@@ -263,7 +263,7 @@ export default function TalentsPage() {
                             <img
                                 src={selectedTalent.profile_picture || '/img/default-user.png'}
                                 alt={selectedTalent.full_name.split(' ')[0]}
-                                className="w-24 h-24 rounded-full mb-3"
+                                className="w-20 h-20 object-cover rounded-full mb-3 transition-transform duration-300 hover:scale-110 active:scale-125 cursor-pointer"
                             />
                             <p className="text-gray-600">{selectedTalent.job_title?.title || 'Sin título'}</p>
                             {/* Skills Display */}

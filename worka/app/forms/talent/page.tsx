@@ -69,6 +69,15 @@ function MultiStepFormComponent() {
 
   const handleFormChange = (e: any) => {
     const { name, value, files } = e.target;
+    if (name === "name") {
+      // Regex to allow only letters (including accents) and spaces, rejecting emails and numbers
+      const nameRegex = /^(?!.*\b(gmail|hotmail|yahoo|outlook|icloud|mail|email|com|net|org|info|biz|dot|arroba)\b)[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+  
+      if (!nameRegex.test(value) || /\d/.test(value)) {
+        setMessage("❌ Ingresa un nombre válido sin números, correos o palabras no permitidas.");
+        return;
+      }
+    }
     if (files) {
       const file = files[0];
       if (name === 'resume' && file && file.type !== 'application/pdf') {
@@ -81,6 +90,8 @@ function MultiStepFormComponent() {
         reader.onload = () => setAvatarPreview(reader.result);
         reader.readAsDataURL(file);
       }
+
+      
 
       setFileError('');
     }
@@ -221,6 +232,9 @@ function MultiStepFormComponent() {
                       className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
                       required
                     />
+                    <p className="text-gray-400 text-sm mt-2">
+                      El tamaño máximo es de 20MB
+                    </p>
                   </div>
                 </div>
               </div>
