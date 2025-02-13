@@ -18,6 +18,8 @@ export default function CompanyForm() {
         email: '',
         address: '',
         jobRequirements: null,
+        jobRequirementsLink: '',
+        uploadOption: 'file',
     });
 
     const router = useRouter();
@@ -33,8 +35,16 @@ export default function CompanyForm() {
 
         if (files) {
             const file = files[0];
-            if (file && file.type !== "application/pdf") {
-                setFileError("❌ Solo se permiten archivos en formato PDF.");
+            const allowedTypes = [
+                "application/pdf",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+                "application/vnd.ms-excel", // .xls
+                "application/msword", // .doc
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
+            ];
+
+            if (file && !allowedTypes.includes(file.type)) {
+                setFileError("❌ Solo se permiten archivos en formato PDF, Excel o Word.");
                 return;
             }
             setFileError('');
@@ -53,7 +63,14 @@ export default function CompanyForm() {
         if (!formData.companyName) missingFields.push("Nombre de la Empresa");
         if (!formData.email) missingFields.push("Correo Electrónico");
         if (!formData.address) missingFields.push("Ubicación");
-        if (!formData.jobRequirements) missingFields.push("Archivo de Requerimientos");
+
+        if (formData.uploadOption === 'file' && !formData.jobRequirements) {
+            missingFields.push("Archivo de Requerimientos");
+        }
+
+        if (formData.uploadOption === 'link' && !formData.jobRequirementsLink) {
+            missingFields.push("Enlace de Requerimientos");
+        }
 
         if (missingFields.length > 0) {
             setMessage(`⚠️ Los siguientes campos son obligatorios: ${missingFields.join(", ")}`);
@@ -68,7 +85,11 @@ export default function CompanyForm() {
             formDataToSend.append('name', formData.companyName);
             formDataToSend.append('email', formData.email);
             formDataToSend.append('address', formData.address);
-            formDataToSend.append('jobRequirements', formData.jobRequirements);
+            if (formData.uploadOption === 'file') {
+                formDataToSend.append('jobRequirements', formData.jobRequirements);
+            } else {
+                formDataToSend.append('jobRequirementsLink', formData.jobRequirementsLink);
+            }
 
             const response = await fetch('https://talentiave.com/api/api/upload/company', {
                 method: 'POST',
@@ -85,7 +106,7 @@ export default function CompanyForm() {
                 router.push(`/forms/offer/success?name=${formData.companyName}`);
             }, 3000);
 
-            setFormData({ companyName: '', email: '', address: '', jobRequirements: null });
+            setFormData({ companyName: '', email: '', address: '', jobRequirements: null, jobRequirementsLink: '', uploadOption: 'file' });
         } catch (error) {
             setMessage('❌ Error al enviar el formulario. Inténtalo de nuevo.');
         } finally {
@@ -166,20 +187,45 @@ export default function CompanyForm() {
                         {step === 2 && (
                             <div>
                                 <h2 className="text-3xl font-semibold mb-6">Sube los Requerimientos</h2>
-                                <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
-                                    <input
-                                        type="file"
-                                        id="jobRequirements"
-                                        name="jobRequirements"
-                                        accept="application/pdf"
-                                        onChange={handleFileChange}
-                                        className="hidden"
-                                    />
-                                    <label htmlFor="jobRequirements" className="cursor-pointer text-indigo-600">
-                                        {formData.jobRequirements ? formData.jobRequirements.name : 'Haz clic para subir el archivo (PDF)'}
-                                    </label>
-                                    {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+                                <div className="flex gap-4">
+                                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, uploadOption: 'file' }))} className={`px-4 py-2 rounded ${formData.uploadOption === 'file' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>
+                                        📂 Subir Archivo
+                                    </button>
+                                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, uploadOption: 'link' }))} className={`px-4 py-2 rounded ${formData.uploadOption === 'link' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>
+                                        🔗 Usar Enlace
+                                    </button>
                                 </div>
+                                {formData.uploadOption === 'file' ? (
+                                    <div className="mt-4 flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
+                                        <input
+                                            type="file"
+                                            id="jobRequirements"
+                                            name="jobRequirements"
+                                            accept=".pdf,.doc,.docx,.xls,.xlsx"
+                                            onChange={handleFileChange}
+                                            className="hidden"
+                                        />
+                                        <p className="text-gray-400 text-sm mt-2">
+                                            El tamaño máximo es de 20MB
+                                        </p>
+                                        <label htmlFor="jobRequirements" className="cursor-pointer text-indigo-600">
+                                            {formData.jobRequirements ? formData.jobRequirements.name : '📂 Haz clic para subir el archivo (PDF, Word, Excel)'}
+                                        </label>
+                                        {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
+                                    </div>
+                                ) : (
+                                    <input
+                                        type="text"
+                                        name="jobRequirementsLink"
+                                        value={formData.jobRequirementsLink}
+                                        onChange={handleFormChange}
+                                        className="mt-4 w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                                        placeholder="🔗 Pega el enlace aquí"
+                                        required
+                                    />
+                                )}
+
+
                             </div>
                         )}
 
