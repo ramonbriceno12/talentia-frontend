@@ -68,38 +68,36 @@ export default function HeroSection() {
             <div className="container mx-auto px-6 flex flex-col items-center text-center relative z-10">
                 <div className="max-w-3xl">
                     {/* Typing Effect Placeholder */}
-                    <div className="h-[250px] py-6 flex items-center justify-center mb-6">
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl text-white font-bold">
+                    <div className="flex flex-col items-start sm:items-center text-left sm:text-center w-full max-w-3xl">
+                        {/* Title */}
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl text-white font-bold leading-tight">
                             Agiliza tu búsqueda de empleo o encuentra el talento ideal 🚀
                         </h1>
-                        {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-48 bg-white rounded-lg shadow-md z-20 flex flex-col justify-center items-center p-4 border border-gray-300">
-                            <h2 className="text-lg font-bold text-gray-700">📜 Carta Abierta</h2>
-                            <p className="text-sm text-gray-600 mt-2 text-center">
-                                ¡Gracias por postularte! Nos pondremos en contacto pronto.
-                            </p>
-                        </div> */}
+
+                        {/* Paragraph */}
+                        <p className="mt-4 text-2xl text-white leading-relaxed">
+                            Talentia y nuestra IA encuentra los mejores candidatos en minutos. Optimiza tu proceso de contratación ahora.
+                        </p>
+
+                        {/* Buttons - Now properly aligned */}
+                        <div className="mt-6 flex flex-col sm:flex-row justify-start sm:justify-center gap-4 w-full">
+                            <button
+                                onClick={() => router.push("/forms/talent/")}
+                                className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition w-full sm:w-auto"
+                            >
+                                💼 Regístrate como Talento →
+                            </button>
+
+                            <button
+                                onClick={() => router.push("/forms/offer/")}
+                                className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition w-full sm:w-auto"
+                            >
+                                📄 Publicar Oferta de Trabajo →
+                            </button>
+                        </div>
                     </div>
 
-                    <p className="mt-4 text-2xl text-white">
-                        Talentia y nuestra IA encuentra los mejores candidatos en minutos. Optimiza tu proceso de contratación ahora.
-                    </p>
 
-                    {/* Buttons Container - Centered and Responsive */}
-                    <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
-                        <button
-                            onClick={() => router.push("/forms/talent/")}
-                            className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition"
-                        >
-                            💼 Regístrate como Talento →
-                        </button>
-
-                        <button
-                            onClick={() => router.push("/forms/offer/")}
-                            className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition"
-                        >
-                            📄 Publicar Oferta de Trabajo →
-                        </button>
-                    </div>
                 </div>
             </div>
 
