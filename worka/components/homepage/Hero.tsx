@@ -1,7 +1,9 @@
 import { useState } from "react";
 import TypingEffect from "./HeroText";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+    const router = useRouter();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [subscriberEmail, setSubscriberEmail] = useState("");
@@ -59,36 +61,45 @@ export default function HeroSection() {
     };
 
     return (
-        <section className="relative pt-36 w-full min-h-[500px] flex flex-col bg-white text-gray-900">
-            {/* Main Content Container */}
+        <section className="relative pt-36 w-full min-h-[500px] flex flex-col bg-white text-gray-900 pb-12" style={{
+            background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
+        }}>
+
             <div className="container mx-auto px-6 flex flex-col items-center text-center relative z-10">
                 <div className="max-w-3xl">
-                    {/* Fixed Height for Typing Effect */}
+                    {/* Typing Effect Placeholder */}
                     <div className="h-[250px] py-6 flex items-center justify-center mb-6">
-                        <TypingEffect />
+                        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-6xl text-white font-bold">
+                            Agiliza tu búsqueda de empleo o encuentra el talento ideal 🚀
+                        </h1>
+                        {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-64 h-48 bg-white rounded-lg shadow-md z-20 flex flex-col justify-center items-center p-4 border border-gray-300">
+                            <h2 className="text-lg font-bold text-gray-700">📜 Carta Abierta</h2>
+                            <p className="text-sm text-gray-600 mt-2 text-center">
+                                ¡Gracias por postularte! Nos pondremos en contacto pronto.
+                            </p>
+                        </div> */}
                     </div>
 
-                    <p className="mt-12 text-2xl">
-                        NUESTRA IA TE CONECTA CON CANDIDATOS DE ALTA CALIDAD, PRE-EVALUADOS Y
-                        LISTOS PARA UNIRSE A TU EQUIPO EN TIEMPO RÉCORD✨
+                    <p className="mt-4 text-2xl text-white">
+                        Talentia y nuestra IA encuentra los mejores candidatos en minutos. Optimiza tu proceso de contratación ahora.
                     </p>
-                </div>
-            </div>
-            <br />
 
-            {/* Promotional Banner – Full Page Width */}
-            <div className="w-full">
-                <div className="bg-[#244c56] text-white text-center py-3 px-4">
-                    <p className="text-1xl">
-                        ¡Oferta Especial!, obtén un PDF totalmente gratuito con un paso a paso para optimizar tu perfil profesional.
-                    </p>
-                    {/* Button to trigger modal */}
-                    <button
-                        onClick={openModal}
-                        className="mt-4 bg-white text-[#244c56] font-bold py-2 px-4 rounded"
-                    >
-                        Obtener PDF
-                    </button>
+                    {/* Buttons Container - Centered and Responsive */}
+                    <div className="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+                        <button
+                            onClick={() => router.push("/forms/talent/")}
+                            className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition"
+                        >
+                            💼 Regístrate como Talento →
+                        </button>
+
+                        <button
+                            onClick={() => router.push("/forms/offer/")}
+                            className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition"
+                        >
+                            📄 Publicar Oferta de Trabajo →
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -142,13 +153,13 @@ export default function HeroSection() {
                                     </p>
                                 )}
                                 <form onSubmit={submitSubscriber}>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Tu nombre" 
-                                        className="border border-gray-300 p-2 w-full rounded mb-4" 
-                                        value={subscriberName} 
-                                        onChange={(e) => setSubscriberName(e.target.value)} 
-                                        required 
+                                    <input
+                                        type="text"
+                                        placeholder="Tu nombre"
+                                        className="border border-gray-300 p-2 w-full rounded mb-4"
+                                        value={subscriberName}
+                                        onChange={(e) => setSubscriberName(e.target.value)}
+                                        required
                                     />
                                     <input
                                         type="email"

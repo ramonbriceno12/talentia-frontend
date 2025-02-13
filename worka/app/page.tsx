@@ -3,7 +3,9 @@ import CallToAction from "@/components/homepage/CallToAction";
 import Footer from "@/components/homepage/Footer";
 import HeroSection from "@/components/homepage/Hero";
 import Navbar from "@/components/homepage/Navbar";
+import OpenedLettersRow from "@/components/homepage/OpenedLetters";
 import PlansSection from "@/components/homepage/PlansSection";
+import TalentiaveSummary from "@/components/homepage/Summary";
 
 export default function Home() {
   return (
@@ -15,8 +17,10 @@ export default function Home() {
       <div className="flex-grow">
         {/* Hero Section */}
         <HeroSection />
+        <OpenedLettersRow />
+        <TalentiaveSummary />
         {/* Plans Section */}
-        <PlansSection />
+        {/* <PlansSection /> */}
         {/* Call to Action Section */}
         <CallToAction />
       </div>
