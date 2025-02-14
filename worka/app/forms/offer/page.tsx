@@ -188,10 +188,10 @@ export default function CompanyForm() {
                             <div>
                                 <h2 className="text-3xl font-semibold mb-6">Sube los Requerimientos</h2>
                                 <div className="flex gap-4">
-                                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, uploadOption: 'file' }))} className={`px-4 py-2 rounded ${formData.uploadOption === 'file' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>
+                                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, uploadOption: 'file' }))} className={`px-4 py-2 rounded ${formData.uploadOption === 'file' ? 'buttons-color text-white' : 'bg-gray-200'}`}>
                                         📂 Subir Archivo
                                     </button>
-                                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, uploadOption: 'link' }))} className={`px-4 py-2 rounded ${formData.uploadOption === 'link' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>
+                                    <button type="button" onClick={() => setFormData(prev => ({ ...prev, uploadOption: 'link' }))} className={`px-4 py-2 rounded ${formData.uploadOption === 'link' ? 'buttons-color text-white' : 'bg-gray-200'}`}>
                                         🔗 Usar Enlace
                                     </button>
                                 </div>

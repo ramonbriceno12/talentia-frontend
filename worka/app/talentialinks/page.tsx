@@ -37,7 +37,9 @@ export default function LinktreePage() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+        <div className="min-h-screen flex flex-col text-white" style={{
+            background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
+        }}>
             {/* Main Content */}
             <div className="flex-grow flex flex-col items-center p-6 mb-6">
                 {/* Logo */}
@@ -45,22 +47,25 @@ export default function LinktreePage() {
 
                 {/* Title */}
                 <h1 className="text-xl font-bold mb-4 text-center">Encuentra el mejor talento con Talentia 🚀</h1>
-                <br/>
+                <br />
                 {/* Links */}
                 <div className="w-full max-w-md flex flex-col items-center gap-4">
                     {links.length > 0 ? (
-                        links.map((link) => (
-                            <a
-                                key={link.id}
-                                href={link.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => trackLinkClick(link.id)}
-                                className="w-full text-center bg-[#244c56] hover:bg-[#10282c] text-white py-2 rounded-lg text-sm font-medium transition-all"
-                            >
-                                {link.label}
-                            </a>
-                        ))
+                        <div className="flex flex-col items-center gap-4 w-full">
+                            {links.map((link) => (
+                                <a
+                                    key={link.id}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => trackLinkClick(link.id)}
+                                    className="bg-white text-[#244c56] font-bold py-3 px-6 rounded-full text-lg shadow-lg hover:bg-gray-100 transition text-center w-full max-w-[300px] flex items-center justify-center"
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
+                        </div>
+
                     ) : (
                         <p className="text-gray-300">Cargando enlaces...</p>
                     )}

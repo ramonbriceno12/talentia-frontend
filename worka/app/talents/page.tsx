@@ -25,10 +25,13 @@ export default function TalentsPage() {
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(1);
-    const [uniqueSkills, setUniqueSkills] = useState<{ id: number; name: string }[]>([]);
     const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
     const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
     const [expandedBio, setExpandedBio] = useState(false);
+    const [uniqueJobTitles, setUniqueJobTitles] = useState<string[]>([]);
+    const [selectedJobTitle, setSelectedJobTitle] = useState<string | null>(null);
+    const jobTitlesContainerRef = useRef<HTMLDivElement | null>(null);
+
 
     const router = useRouter();
 
@@ -45,10 +48,11 @@ export default function TalentsPage() {
                 const talentsData: Talent[] = await response.json();
                 setTalents(talentsData);
 
-                // Extract unique skills
-                const allSkills = talentsData.flatMap(talent => talent.skills || []);
-                const skillMap = new Map(allSkills.map(skill => [skill.id, skill]));
-                setUniqueSkills(Array.from(skillMap.values()));
+                // Extract and sort unique job titles alphabetically
+                const jobTitles = Array.from(new Set(
+                    talentsData.map(talent => talent.job_title?.title).filter(Boolean)
+                )).sort((a, b) => a.localeCompare(b, "es", { sensitivity: "base" }));
+                setUniqueJobTitles(jobTitles);
 
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -59,7 +63,6 @@ export default function TalentsPage() {
         fetchData();
     }, []);
 
-    const totalPages = Math.ceil(talents.length / talentsPerPage);
 
     const handleSkillClick = (skill: string) => {
         setSelectedSkill(skill === selectedSkill ? null : skill);
@@ -78,6 +81,37 @@ export default function TalentsPage() {
         }
     };
 
+    const handleJobTitleClick = async (title: string) => {
+        const newTitle = selectedJobTitle === title ? null : title; // Toggle selection
+        setSelectedJobTitle(newTitle);
+
+        try {
+            const response = await fetch(
+                `https://talentiave.com/api/api/talents?job_title=${encodeURIComponent(newTitle || '')}`
+            );
+            if (!response.ok) {
+                throw new Error("Error fetching filtered data");
+            }
+
+            const filteredTalents = await response.json();
+            setTalents(filteredTalents);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+
+    const scrollJobTitles = (direction: 'left' | 'right') => {
+        if (jobTitlesContainerRef.current) {
+            const scrollAmount = 200; // Adjust as needed
+            jobTitlesContainerRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+
     const openModal = (talent: Talent) => {
         setSelectedTalent(talent);
         setExpandedBio(false); // Reset bio view state when opening modal
@@ -88,9 +122,16 @@ export default function TalentsPage() {
     };
 
     const filteredTalents = talents.filter(talent =>
-        talent.full_name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedSkill ? talent.skills.some(skill => skill.name === selectedSkill) : true)
+        (talent.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            talent.job_title?.title.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (selectedJobTitle ? talent.job_title?.title === selectedJobTitle : true)
     );
+
+    const totalPages = Math.ceil(filteredTalents.length / talentsPerPage);
+
+    useEffect(() => {
+        setPage(1);
+    }, [searchTerm, selectedSkill, selectedJobTitle]);
 
     const displayedTalents = filteredTalents.slice((page - 1) * talentsPerPage, page * talentsPerPage);
 
@@ -135,11 +176,11 @@ export default function TalentsPage() {
                         className="w-full p-3 border border-gray-300 rounded text-black mb-4"
                     />
 
-                    {/* Skills Filter (Carousel) */}
+                    {/* Job Titles Filter (Carousel) */}
                     <div className="relative w-full flex items-center mb-4">
                         {/* Left Scroll Button */}
                         <button
-                            onClick={() => scrollSkills('left')}
+                            onClick={() => scrollJobTitles('left')}
                             className="absolute left-0 z-10 bg-[#10282c] hover:bg-[#244c56] text-white px-3 py-2 rounded-full shadow-md"
                         >
                             ◀
@@ -148,21 +189,21 @@ export default function TalentsPage() {
                         {/* Spacer to prevent overlapping */}
                         <div className="w-10"></div>
 
-                        {/* Skills Container */}
+                        {/* Job Titles Container */}
                         <div
-                            ref={skillsContainerRef}
+                            ref={jobTitlesContainerRef}
                             className="w-full flex space-x-3 overflow-hidden scroll-smooth whitespace-nowrap px-12"
                         >
-                            {uniqueSkills.map(skill => (
+                            {uniqueJobTitles.map(title => (
                                 <button
-                                    key={skill.id}
-                                    onClick={() => handleSkillClick(skill.name)}
-                                    className={`px-4 rounded-full text-sm font-semibold transition ${selectedSkill === skill.name
+                                    key={title}
+                                    onClick={() => handleJobTitleClick(title)}
+                                    className={`px-4 rounded-full text-sm font-semibold transition ${selectedJobTitle === title
                                         ? 'bg-[#10282c] text-white'
                                         : 'bg-[#244c56] text-white hover:bg-[#244c56]'
                                         }`}
                                 >
-                                    {skill.name}
+                                    {title}
                                 </button>
                             ))}
                         </div>
@@ -172,12 +213,13 @@ export default function TalentsPage() {
 
                         {/* Right Scroll Button */}
                         <button
-                            onClick={() => scrollSkills('right')}
+                            onClick={() => scrollJobTitles('right')}
                             className="absolute right-0 z-10 bg-[#10282c] hover:bg-[#244c56] text-white px-3 py-2 rounded-full shadow-md"
                         >
                             ▶
                         </button>
                     </div>
+
 
 
 
