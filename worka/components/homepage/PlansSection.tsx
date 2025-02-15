@@ -36,12 +36,13 @@ const PlansSection = () => {
                         <li>✅ Acceso a oportunidades exclusivas</li>
                         <li>✅ Recomendaciones personalizadas de vacantes</li>
                     </ul>
+                    <br/>
                     <Link
                         href="https://calendly.com/contacto-talentiave/optimizacion-de-perfil-profesional"
                         target="_blank"
                         className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
                     >
-                        Agendar sesión
+                        Agendar sesión 🚀
                     </Link>
                 </div>
 
@@ -61,12 +62,13 @@ const PlansSection = () => {
                         <li>✅ Contacto directo con los mejores perfiles</li>
                         <li>✅ Reporte detallado de los mejores candidatos</li>
                     </ul>
+                    <br/>
                     <Link
                         href="https://calendly.com/contacto-talentiave/30min"
                         target="_blank"
                         className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
                     >
-                        Agendar sesión
+                        Agendar sesión 🚀
                     </Link>
                 </div>
 
@@ -86,12 +88,13 @@ const PlansSection = () => {
                         <li>✅ Asesoría en estrategias de reclutamiento</li>
                         <li>✅ Soporte continuo y seguimiento post-contratación</li>
                     </ul>
+                    <br/>
                     <Link
                         href="https://calendly.com/contacto-talentiave/company-onboarding-meeting"
                         target="_blank"
                         className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
                     >
-                        Agendar sesión
+                        Agendar sesión 🚀
                     </Link>
                 </div>
             </div>
