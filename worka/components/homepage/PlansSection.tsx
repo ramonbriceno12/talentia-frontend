@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const PlansSection = () => {
     return (
-        <section className="bg-gray-100 py-16 text-center" style={{
+        <section id="plansSection" className="bg-gray-100 py-16 text-center" style={{
           background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
       }}>
             {/* Headline */}
