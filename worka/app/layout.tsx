@@ -62,7 +62,7 @@ export default function RootLayout({
         <GTM />
         <GA />
         {children}
-        <script type="text/javascript" id="hs-script-loader" async defer src="https://js.hs-scripts.com/24005206.js"></script>
+        <script type="text/javascript" id="hs-script-loader" async defer src="https://js-na2.hs-scripts.com/241997332.js"></script>
       </body>
     </html>
   );
