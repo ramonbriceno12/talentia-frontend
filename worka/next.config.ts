@@ -38,6 +38,7 @@ const nextConfig: NextConfig = {
                 https://js.usemessages.com
                 https://js.hsadspixel.net
                 https://js.hs-banner.com
+                https://js-na2.hs-scripts.com
                 https://js.hs-analytics.net;
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;
