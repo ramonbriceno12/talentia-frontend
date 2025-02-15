@@ -1,221 +1,102 @@
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
+const PlansSection = () => {
+    return (
+        <section className="bg-gray-100 py-16 text-center" style={{
+          background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
+      }}>
+            {/* Headline */}
+            <div className="max-w-4xl mx-auto px-6">
+                <h2 className="text-4xl md:text-5xl font-bold text-white">
+                    Planes diseñados para potenciar tu éxito
+                </h2>
+                <p className="text-2xl md:text-3xl text-white mt-3">
+                    Selecciona el plan adecuado y deja que{" "}
+                    <span className="text-[#10282c] font-bold">Talentia</span> haga el trabajo por ti.
+                </p>
+            </div>
 
-function formatPrice(priceStr) {
-  // If the price is "Gratis", just return it
-  if (priceStr.toLowerCase() === "gratis") {
-    return priceStr;
-  }
+            {/* Plans Row */}
+            <div className="flex flex-col md:flex-row justify-center items-center md:items-stretch gap-6 bg-gray-100 p-6 mt-10" style={{
+                background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
+            }}>
+                {/* Plan Talento */}
+                <div className="relative w-80 bg-white rounded-lg shadow-lg flex flex-col items-center p-6 border border-gray-300 md:min-h-[450px] flex-grow">
+                    {/* Icon */}
+                    <div className="text-5xl">🎯</div>
+                    <h2 className="text-xl font-bold text-gray-700 mt-4">Plan Talento</h2>
+                    <p className="text-sm text-gray-600 mt-2 text-center">
+                        🔥 Optimiza tu perfil y destaca entre los mejores talentos.
+                    </p>
+                    <ul className="text-sm text-gray-700 text-left mt-4 space-y-2">
+                        <li>✅ Revisión y optimización de CV</li>
+                        <li>✅ Mejora de perfil en LinkedIn</li>
+                        <li>✅ Asesoría en portfolio y presencia online</li>
+                        <li>✅ Entrenamiento para entrevistas</li>
+                        <li>✅ Acceso a oportunidades exclusivas</li>
+                        <li>✅ Recomendaciones personalizadas de vacantes</li>
+                    </ul>
+                    <Link
+                        href="https://calendly.com/contacto-talentiave/optimizacion-de-perfil-profesional"
+                        target="_blank"
+                        className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
+                    >
+                        Agendar sesión
+                    </Link>
+                </div>
 
-  // Extract the numeric part (handles cases like "$15" and "Desde $50")
-  const numericValue = parseFloat(priceStr.replace(/[^0-9.]/g, ""));
-  if (isNaN(numericValue)) return priceStr; // Fallback in case of error
+                {/* Plan Reclutador */}
+                <div className="relative w-80 bg-white rounded-lg shadow-lg flex flex-col items-center p-6 border border-gray-300 md:min-h-[450px] flex-grow">
+                    {/* Icon */}
+                    <div className="text-5xl">📢</div>
+                    <h2 className="text-xl font-bold text-gray-700 mt-4">Plan Reclutador</h2>
+                    <p className="text-sm text-gray-600 mt-2 text-center">
+                        🚀 Publicamos tu vacante y encontramos a los mejores candidatos.
+                    </p>
+                    <ul className="text-sm text-gray-700 text-left mt-4 space-y-2">
+                        <li>✅ Publicación de oferta en nuestra plataforma</li>
+                        <li>✅ Difusión en redes sociales y canales especializados</li>
+                        <li>✅ Selección y filtrado de candidatos</li>
+                        <li>✅ Entrevistas pre-filtro y evaluación de habilidades</li>
+                        <li>✅ Contacto directo con los mejores perfiles</li>
+                        <li>✅ Reporte detallado de los mejores candidatos</li>
+                    </ul>
+                    <Link
+                        href="https://calendly.com/contacto-talentiave/30min"
+                        target="_blank"
+                        className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
+                    >
+                        Agendar sesión
+                    </Link>
+                </div>
 
-  // If the original string includes "Desde", keep it in the output
-  if (priceStr.includes("Desde")) {
-    return `Desde $${numericValue.toFixed(2)}`;
-  }
-  return `$${numericValue.toFixed(2)}`;
-}
-// Component for an individual plan card with dropdown features
-function PlanCard({ plan, onPlanSelect }) {
-  const [isOpen, setIsOpen] = useState(false);
+                {/* Plan Empresa */}
+                <div className="relative w-80 bg-white rounded-lg shadow-lg flex flex-col items-center p-6 border border-gray-300 md:min-h-[450px] flex-grow">
+                    {/* Icon */}
+                    <div className="text-5xl">🏢</div>
+                    <h2 className="text-xl font-bold text-gray-700 mt-4">Plan Empresa</h2>
+                    <p className="text-sm text-gray-600 mt-2 text-center">
+                        💼 Gestionamos todas tus vacantes y encontramos el talento ideal para tu empresa.
+                    </p>
+                    <ul className="text-sm text-gray-700 text-left mt-4 space-y-2">
+                        <li>✅ Gestión completa del proceso de selección</li>
+                        <li>✅ Creación y difusión de todas tus ofertas</li>
+                        <li>✅ Evaluación técnica y cultural de candidatos</li>
+                        <li>✅ Optimización del proceso de contratación</li>
+                        <li>✅ Asesoría en estrategias de reclutamiento</li>
+                        <li>✅ Soporte continuo y seguimiento post-contratación</li>
+                    </ul>
+                    <Link
+                        href="https://calendly.com/contacto-talentiave/company-onboarding-meeting"
+                        target="_blank"
+                        className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
+                    >
+                        Agendar sesión
+                    </Link>
+                </div>
+            </div>
+        </section>
+    );
+};
 
-  return (
-    <div
-      className={`p-4 rounded-2xl shadow-lg ${plan.bgColor} text-white flex flex-col justify-between`}
-    >
-      {/* Header Section: Always Visible */}
-      <br />
-      <div>
-        <h3 className="text-3xl font-bold mb-2">{plan.title}</h3>
-        <p className="text-2xl font-semibold">
-          {/* {formatPrice(plan.price)} */}
-          {/* {plan.price} */}
-        </p>
-        <br />
-        <p className="mt-2 text-2xl">{plan.description}</p>
-      </div>
-      <br />
-      {/* Dropdown Toggle & Benefits */}
-      <div>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="mt-4 flex items-center justify-center focus:outline-none"
-        >
-          <span className="text-2xl">{isOpen ? "▲ Ocultar" : "▼ Mostrar Beneficios"}</span>
-        </button>
-        {isOpen && (
-          <ul className="mt-4 text-xl space-y-2 text-left">
-            {plan.benefits.map((benefit, i) => (
-              <li key={i}>{benefit}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      {/* Action Button */}
-      <button
-        onClick={() => onPlanSelect(plan.id.toString())}
-        className="mt-6 px-6 py-3 bg-[#10282c] text-white font-semibold rounded-xl"
-      >
-        ¡Elige este plan!
-      </button>
-    </div>
-  );
-}
-
-export default function PlansSection() {
-  const router = useRouter();
-  // State to track which type of plans to display ("talent" or "company")
-  const [selectedType, setSelectedType] = useState("talent");
-
-  // Update the route based on the selected plan type.
-  const handlePlanSelection = (planId) => {
-    if (selectedType === "talent") {
-      router.push(`/forms/talent/?plan=${planId}`);
-    } else {
-      router.push(`/forms/company/?plan=${planId}`);
-    }
-  };
-
-  // Data for talent plans
-  const talentPlans = [
-    // {
-    //   id: 1,
-    //   title: "Plan Gratuito",
-    //   price: "Gratis",
-    //   description:
-    //     "Ideal para talentos que buscan iniciarse en la optimización de su perfil profesional con recursos básicos.",
-    //   benefits: [
-    //     "✅ Checklist en PDF con estrategias clave para mejorar tu CV, LinkedIn y portafolio.",
-    //     "✅ El PDF se enviará a tu correo electrónico tras el registro.",
-    //     "✅ Orientación básica para optimizar tu presencia profesional.",
-    //   ],
-    //   bgColor: "bg-[#244c56]",
-    // },
-    {
-      id: 1,
-      title: "Plan Regular",
-      price: (
-        <>
-          <span className="line-through text-gray-400">$50.00</span> <span className="text-white">$25.00</span>
-        </>
-      ),
-      description:
-        "Para talentos que desean asesoría personalizada para mejorar su perfil y aumentar sus oportunidades laborales.",
-      benefits: [
-        "✅ Checklist en PDF con estrategias clave para mejorar tu CV, LinkedIn y portafolio.",
-        "✅ Sesión 1-1 de 45 minutos con un experto para revisar y optimizar tu perfil.",
-        "✅ Análisis detallado de tus fortalezas y debilidades para mejorar tu visibilidad.",
-        "✅ Consejos estratégicos sobre cómo postular a trabajos y ampliar tu red de contactos.",
-      ],
-      bgColor: "bg-[#0e7c7b]",
-    },
-    {
-      id: 2,
-      title: "Plan Premium",
-      price: (
-        <>
-          <span className="line-through text-gray-400">$100.00</span> <span className="text-white">$50.00</span>
-        </>
-      ),
-      description:
-        "Para talentos que desean una fuerte presencia digital, máxima exposición y acceso directo a oportunidades laborales.",
-      benefits: [
-        "✅ Todo lo incluido en el Plan Regular",
-        "✅ Optimización avanzada del perfil de LinkedIn con integración de palabras clave estratégicas.",
-        "✅ Revisión y mejora del CV con redacción y optimización profesional.",
-        "✅ Creación de portafolio personalizado con diseño profesional y branding personal.",
-        "✅ Publicación destacada en Instagram e historia permanente en nuestro perfil.",
-        "✅ Posicionamiento prioritario en nuestro directorio de talentos.",
-        "✅ Aplicación directa a vacantes de empresas que busquen perfiles como el tuyo.",
-        "✅ Visibilidad en nuestro sitio web e Instagram como talento disponible.",
-        "✅ Estrategia personalizada de marca profesional y acompañamiento en procesos de reclutamiento.",
-        "✅ Postulación ilimitada a vacantes en nuestra plataforma.",
-        "✅ Feedback personalizado para mejorar tus postulaciones.",
-      ],
-      bgColor: "bg-[#ff4612]",
-    },
-  ];
-
-  // Data for the single company plan
-  const companyPlans = [
-    {
-      id: 3,
-      title: "Plan Empresa",
-      price: (
-        <>
-          <span className="line-through text-gray-400">$200.00</span> <span className="text-white">$70.00</span>
-        </>
-      ),
-      description:
-        "Nos encargamos de todo el proceso de reclutamiento para que encuentres el talento ideal sin complicaciones. Explícanos tu vacante o proyecto, y nosotros hacemos el resto.",
-      benefits: [
-        "✅ Publicación y promoción de tu oferta en nuestra plataforma y redes sociales.",
-        "✅ Búsqueda activa de talentos calificados según tu perfil.",
-        "✅ Filtros y preselección de candidatos para que solo recibas perfiles adecuados.",
-        "✅ Entrevistas iniciales con los candidatos para validar experiencia y habilidades.",
-        "✅ Aplicación de pruebas técnicas si el cargo lo requiere.",
-        "✅ Presentación de un shortlist con los mejores talentos listos para entrevista final.",
-        "✅ Asesoría en la elección del candidato ideal.",
-        "✅ Seguimiento post-contratación para garantizar la mejor integración del talento a tu empresa.",
-      ],
-      bgColor: "bg-[#244c56]",
-    },
-  ];
-
-
-  // Decide which plans to display based on the selected type
-  const plansToDisplay = selectedType === "talent" ? talentPlans : companyPlans;
-
-  return (
-    <section className="py-8 pt-20 pb-20 bg-gray-100 text-gray-900">
-      <div className="mx-auto max-w-full px-2 text-center">
-        <h2 className="text-4xl font-bold mb-4">
-          {selectedType === "talent"
-            ? "Planes de Exposición y Optimización para Talentos"
-            : "Plan para Empresas"}
-        </h2>
-        <p className="text-2xl mb-8">
-          {selectedType === "talent"
-            ? "Mejora tu perfil profesional, gana visibilidad y conéctate con empresas o proyectos que se ajusten a tu experiencia. Elige el plan que mejor se adapte a tus necesidades."
-            : "Potencia la marca de tu empresa, accede a talentos de calidad y mejora tu estrategia de reclutamiento."}
-        </p>
-
-        {/* Toggle Buttons */}
-        <div className="flex justify-center mb-8">
-          <button
-            className={`mx-2 px-4 py-2 rounded ${selectedType === "talent"
-              ? "bg-[#244c56] text-white"
-              : "bg-gray-200 text-gray-600"
-              }`}
-            onClick={() => setSelectedType("talent")}
-          >
-            Talento
-          </button>
-          <button
-            className={`mx-2 px-4 py-2 rounded ${selectedType === "company"
-              ? "bg-[#244c56] text-white"
-              : "bg-gray-200 text-gray-600"
-              }`}
-            onClick={() => setSelectedType("company")}
-          >
-            Empresa
-          </button>
-        </div>
-
-        {/* Grid layout for plans */}
-        <div
-          className={`p-6 grid ${selectedType === "talent" ? "md:grid-cols-2" : "md:grid-cols-1"
-            } gap-4 items-start`}
-        >
-          {plansToDisplay.map((plan, index) => (
-            <PlanCard key={index} plan={plan} onPlanSelect={handlePlanSelection} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+export default PlansSection;

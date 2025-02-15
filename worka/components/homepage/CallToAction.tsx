@@ -1,17 +1,19 @@
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 export default function CallToAction() {
-    const router = useRouter();
-    return (
-        <section className="bg-gray-100 py-16 text-center px-6">
+  const router = useRouter();
+  return (
+    <section className="bg-gray-100 py-16 text-center px-6" style={{
+      background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
+  }}>
       {/* Headline */}
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
+        <h2 className="text-4xl md:text-5xl font-bold text-white">
           🚀 ¿ESTÁS LISTO PARA COMENZAR?
         </h2>
-        <p className="mt-4 text-2xl md:text-3xl text-gray-700">
+        <p className="mt-4 text-2xl md:text-3xl text-white">
           SOLO ESTÁS A UN PASO DE ENCONTRAR{" "}
-          <span className="text-[#349390] font-bold">EL TRABAJO DE TUS SUEÑOS</span>
+          <span className="text-[#10282c] font-bold">EL TRABAJO DE TUS SUEÑOS</span>
         </p>
       </div>
 
@@ -38,7 +40,7 @@ export default function CallToAction() {
           href="https://www.instagram.com/talentiave"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-700 hover:text-[#349390] transition"
+          className="text-white hover:text-[#349390] transition"
         >
           <FaInstagram size={40} />
         </a>
@@ -46,11 +48,11 @@ export default function CallToAction() {
           href="https://www.linkedin.com/company/talentiave/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-gray-700 hover:text-[#349390] transition"
+          className="text-white hover:text-[#349390] transition"
         >
           <FaLinkedin size={40} />
         </a>
       </div>
     </section>
-    );
+  );
 }

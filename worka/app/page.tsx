@@ -17,10 +17,12 @@ export default function Home() {
       <div className="flex-grow">
         {/* Hero Section */}
         <HeroSection />
+        {/* Opened Letters Section */}
         <OpenedLettersRow />
-        <TalentiaveSummary />
         {/* Plans Section */}
-        {/* <PlansSection /> */}
+        <PlansSection />
+        {/* Talentiave Summary Section */}
+        <TalentiaveSummary />
         {/* Call to Action Section */}
         <CallToAction />
       </div>
