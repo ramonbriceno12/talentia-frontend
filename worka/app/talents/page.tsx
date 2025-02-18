@@ -16,6 +16,7 @@ interface Talent {
     is_featured: boolean;
     createdAt: string;
     updatedAt: string;
+    country: string;
     job_title: { title: string } | null;
     skills: { id: number; name: string; category: string }[];
 }
@@ -238,6 +239,7 @@ export default function TalentsPage() {
 
                                 <h3 className="text-lg text-[#10282c] font-semibold">{talent.full_name.split(' ')[0]}</h3>
                                 <p className="text-gray-600 text-sm">{talent.job_title?.title || 'Sin título'}</p>
+                                <p className="text-gray-400 text-sm">{talent.country || 'Venezuela'}</p>
 
                                 {/* Skills Display */}
                                 <div className="flex flex-wrap justify-center mt-3">
