@@ -17,6 +17,8 @@ interface Talent {
     createdAt: string;
     updatedAt: string;
     country: string;
+    years_of_experience: number;
+    expected_salary: string;
     job_title: { title: string } | null;
     skills: { id: number; name: string; category: string }[];
 }
@@ -36,7 +38,7 @@ export default function TalentsPage() {
 
     const router = useRouter();
 
-    const talentsPerPage = 12;
+    const talentsPerPage = 6;
 
     useEffect(() => {
         async function fetchData() {
@@ -47,6 +49,7 @@ export default function TalentsPage() {
                 }
 
                 const talentsData: Talent[] = await response.json();
+                console.log(talentsData)
                 setTalents(talentsData);
 
                 // Extract and sort unique job titles alphabetically
@@ -221,47 +224,63 @@ export default function TalentsPage() {
                         </button>
                     </div>
 
-
-
-
-                    {/* Talents List */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {displayedTalents.map(talent => (
+                    {/* Talents List (List View) */}
+                    <div className="flex flex-col space-y-4">
+                        {displayedTalents.map((talent) => (
                             <div
                                 key={talent.id}
-                                className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center text-center"
+                                className="bg-white shadow-md rounded-lg p-4 flex items-center"
                             >
+                                {/* Profile Picture */}
                                 <img
-                                    src={talent.profile_picture || '/img/default-user.png'}
-                                    alt={talent.full_name.split(' ')[0]}
-                                    className="w-20 h-20 object-cover rounded-full mb-3 transition-transform duration-300 hover:scale-110 active:scale-125 cursor-pointer"
+                                    src={talent.profile_picture || "/img/default-user.png"}
+                                    alt={talent.full_name.split(" ")[0]}
+                                    className="w-16 h-16 object-cover rounded-full mr-4 transition-transform duration-300 hover:scale-110 active:scale-125 cursor-pointer"
                                 />
 
-                                <h3 className="text-lg text-[#10282c] font-semibold">{talent.full_name.split(' ')[0]}</h3>
-                                <p className="text-gray-600 text-sm">{talent.job_title?.title || 'Sin título'}</p>
-                                <p className="text-gray-400 text-sm">{talent.country || 'Venezuela'}</p>
+                                {/* Talent Details */}
+                                <div className="flex flex-col flex-grow">
+                                    <h3 className="text-lg text-[#10282c] font-semibold">
+                                        {talent.full_name}
+                                    </h3>
+                                    <p className="text-gray-600 text-sm">
+                                        {talent.job_title?.title || "Sin título"}
+                                    </p>
+                                    <p className="text-gray-400 text-sm">
+                                        {talent.country && talent.country.trim() !== "N/A" ? talent.country : "Venezuela"}
+                                    </p>
 
-                                {/* Skills Display */}
-                                <div className="flex flex-wrap justify-center mt-3">
-                                    {talent.skills.length > 0 ? (
-                                        talent.skills.map(skill => (
-                                            <span
-                                                key={skill.id}
-                                                className="bg-gray-200 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full m-1"
-                                            >
-                                                {skill.name}
-                                            </span>
-                                        ))
-                                    ) : (
-                                        <span className="text-gray-500 text-xs">Sin skills</span>
+                                    {/* Experiencia: Only shows if years_of_experience is NOT null or 0 */}
+                                    {talent.years_of_experience != null && talent.years_of_experience !== 0 && (
+                                        <p className="text-gray-400 text-sm">
+                                            {`Experiencia: ${talent.years_of_experience} años`}
+                                        </p>
                                     )}
+
+                                    {/* Expectativa Salarial: Only shows if expected_salary is NOT null or "0.00" */}
+                                    {talent.expected_salary != null && talent.expected_salary !== "0.00" && (
+                                        <p className="text-gray-400 text-sm">
+                                            {`Expectativa Salarial: $${Number(talent.expected_salary).toLocaleString()}/Mes`}
+                                        </p>
+                                    )}
+
                                 </div>
 
-                                <button
-                                    onClick={() => openModal(talent)}
-                                    className="py-1 mt-3 bg-[#244c56] text-white px-4 rounded-lg hover:bg-[#10282c]">
-                                    Ver Bio 🚀
-                                </button>
+                                {/* Action Buttons */}
+                                <div className="flex flex-col items-end">
+                                    <button
+                                        onClick={() => openModal(talent)}
+                                        className="py-1 px-4 mb-2 bg-[#244c56] text-white rounded-lg hover:bg-[#10282c] min-w-[140px] text-center"
+                                    >
+                                        Ver Bio 💼
+                                    </button>
+                                    <button
+                                        onClick={() => goToProposal(talent.id)}
+                                        className="py-1 px-4 bg-[#10282c] text-white rounded-lg hover:bg-[#244c56] min-w-[140px] text-center"
+                                    >
+                                        Contacto 🚀
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -346,7 +365,7 @@ export default function TalentsPage() {
                                 onClick={() => goToProposal(selectedTalent.id)}
                                 className="w-full bg-[#10282c] text-white px-2 rounded-lg hover:bg-[#244c56]"
                             >
-                                {(loading ? 'Redirigiendo...' : 'Crear Propuesta 🚀')}
+                                {(loading ? 'Redirigiendo...' : 'Contacto 🚀')}
                             </button>
                         </div>
                     </div>

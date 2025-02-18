@@ -319,7 +319,7 @@ function MultiStepFormComponent() {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="expected_salary" className="block text-lg">Expectativa Salarial</label>
+                  <label htmlFor="expected_salary" className="block text-lg">Expectativa Salarial / Mes</label>
 
                   <input
                     type="range"
