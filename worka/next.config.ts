@@ -58,7 +58,7 @@ const nextConfig: NextConfig = {
               https://js-na2.hs-banner.com;
             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
             font-src 'self' https://fonts.gstatic.com;
-            connect-src 'self' https://api.talentiave.com https://*.hubspot.com https://*.google-analytics.com;
+            connect-src 'self' https://restcountries.com https://api.talentiave.com https://*.hubspot.com https://*.google-analytics.com;
             img-src 'self' data: 
               https://talentia-images.s3.us-east-2.amazonaws.com 
               https://talentiafilesprod.s3.us-east-2.amazonaws.com

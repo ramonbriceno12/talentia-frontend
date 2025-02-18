@@ -18,6 +18,7 @@ function MultiStepFormComponent() {
   const plan = params.get('plan') || 1; // Default to 'Usuario' if no name is found
   const [jobTitles, setJobTitles] = useState([]);
   const [skills, setSkills] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
@@ -27,6 +28,7 @@ function MultiStepFormComponent() {
     job_title: '',
     plan_id: plan,
     skills: [], // Make sure skills is always an array
+    country: '',
   });
 
   const router = useRouter();
@@ -37,6 +39,7 @@ function MultiStepFormComponent() {
   const [avatarPreview, setAvatarPreview] = useState(null);
 
   useEffect(() => {
+
     const fetchJobTitles = async () => {
       try {
         const response = await fetch('https://talentiave.com/api/api/job-titles');
@@ -59,10 +62,34 @@ function MultiStepFormComponent() {
       }
     };
 
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch('https://restcountries.com/v3.1/all');
+        const data = await response.json();
+
+        console.log(data)
+
+        const countryOptions = data.map((country) => ({
+          value: country.name.common, // Using country code as value
+          label: `${country.flag} ${country.name.common}`, // Displaying common name
+        }));
+
+        setCountries(countryOptions)
+
+      } catch (error) {
+        console.error('Error fetching countries')
+      }
+    }
+
     fetchJobTitles();
     fetchSkills();
+    fetchCountries();
 
   }, []);
+
+  const handleCountryChange = (selectedOption) => {
+    setFormData((prev) => ({ ...prev, country: selectedOption?.value || "" }));
+  };
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
@@ -126,6 +153,7 @@ function MultiStepFormComponent() {
     if (!formData.avatar) missingFields.push("Foto de perfil");
     if (!formData.job_title) missingFields.push("Cargo");
     if (!formData.skills.length) missingFields.push("Habilidades");
+    if (!formData.country) missingFields.push("Pais");
 
     if (missingFields.length > 0) {
       setMessage(`⚠️ Faltan los siguientes campos: ${missingFields.join(", ")}.`);
@@ -142,6 +170,7 @@ function MultiStepFormComponent() {
       formDataToSend.append('resume', formData.resume);
       formDataToSend.append('job_title', formData.job_title);
       formDataToSend.append('plan_id', plan);
+      formDataToSend.append('country', formData.country)
 
       if (Array.isArray(formData.skills) && formData.skills.length > 0) {
         formDataToSend.append('skills', formData.skills.join(",")); // Convert array to a comma-separated string
@@ -218,6 +247,23 @@ function MultiStepFormComponent() {
                     onChange={handleFormChange}
                     className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
                     required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="country" className="block text-lg">País</label>
+                  <Select
+                    name="countries"
+                    options={countries} // Use the formatted country data
+                    value={
+                      formData.country
+                        ? countries.find((c) => c.value === formData.country) // Ensure it displays correctly
+                        : null
+                    }
+                    onChange={handleCountryChange}
+                    className="basic-single-select"
+                    classNamePrefix="select"
+                    placeholder="Selecciona tu país..."
+                    isSearchable
                   />
                 </div>
                 <div className="mb-4">

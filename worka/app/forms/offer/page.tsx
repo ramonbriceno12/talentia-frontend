@@ -1,10 +1,11 @@
 'use client'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Footer from '@/components/homepage/Footer';
 import Navbar from '@/components/homepage/Navbar';
+import Select from 'react-select';
 
 const steps = [
     { id: 1, label: 'Company Info' },
@@ -20,12 +21,42 @@ export default function CompanyForm() {
         jobRequirements: null,
         jobRequirementsLink: '',
         uploadOption: 'file',
+        country: '',
     });
 
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [message, setMessage] = useState('');
     const [fileError, setFileError] = useState('');
+    const [countries, setCountries] = useState([]);
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const response = await fetch('https://restcountries.com/v3.1/all');
+                const data = await response.json();
+
+                console.log(data)
+
+                const countryOptions = data.map((country) => ({
+                    value: country.name.common, // Using country code as value
+                    label: `${country.flag} ${country.name.common}`, // Displaying common name
+                }));
+
+                setCountries(countryOptions)
+
+            } catch (error) {
+                console.error('Error fetching countries')
+            }
+        }
+
+        fetchCountries();
+
+    }, []);
+
+    const handleCountryChange = (selectedOption) => {
+        setFormData((prev) => ({ ...prev, country: selectedOption?.value || "" }));
+    };
 
     const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
     const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
@@ -63,6 +94,7 @@ export default function CompanyForm() {
         if (!formData.companyName) missingFields.push("Nombre de la Empresa");
         if (!formData.email) missingFields.push("Correo Electrónico");
         if (!formData.address) missingFields.push("Ubicación");
+        if (!formData.country) missingFields.push("Pais");
 
         if (formData.uploadOption === 'file' && !formData.jobRequirements) {
             missingFields.push("Archivo de Requerimientos");
@@ -85,6 +117,8 @@ export default function CompanyForm() {
             formDataToSend.append('name', formData.companyName);
             formDataToSend.append('email', formData.email);
             formDataToSend.append('address', formData.address);
+            formDataToSend.append('country', formData.country);
+
             if (formData.uploadOption === 'file') {
                 formDataToSend.append('jobRequirements', formData.jobRequirements);
             } else {
@@ -106,7 +140,6 @@ export default function CompanyForm() {
                 router.push(`/forms/offer/success?name=${formData.companyName}`);
             }, 3000);
 
-            setFormData({ companyName: '', email: '', address: '', jobRequirements: null, jobRequirementsLink: '', uploadOption: 'file' });
         } catch (error) {
             setMessage('❌ Error al enviar el formulario. Inténtalo de nuevo.');
         } finally {
@@ -167,6 +200,23 @@ export default function CompanyForm() {
                                         onChange={handleFormChange}
                                         className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
                                         required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label htmlFor="country" className="block text-lg">País</label>
+                                    <Select
+                                        name="countries"
+                                        options={countries} // Use the formatted country data
+                                        value={
+                                            formData.country
+                                                ? countries.find((c) => c.value === formData.country) // Ensure it displays correctly
+                                                : null
+                                        }
+                                        onChange={handleCountryChange}
+                                        className="basic-single-select"
+                                        classNamePrefix="select"
+                                        placeholder="Selecciona tu país..."
+                                        isSearchable
                                     />
                                 </div>
                                 <div className="mb-4">
