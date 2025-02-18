@@ -116,4 +116,42 @@ button {
 .talentia-footer{
   background-color: #244c56 !important;
 }
+.range-input {
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: background 0.15s ease-in-out;
+}
 
+.range-input::-webkit-slider-runnable-track {
+  background: #244c56;
+  height: 6px;
+  border-radius: 5px;
+}
+
+.range-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #244c56;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -6px; /* Centers the thumb */
+}
+
+.range-input::-moz-range-track {
+  background: #244c56;
+  height: 6px;
+  border-radius: 5px;
+}
+
+.range-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #244c56;
+  border-radius: 50%;
+  cursor: pointer;
+}

@@ -29,6 +29,8 @@ function MultiStepFormComponent() {
     plan_id: plan,
     skills: [], // Make sure skills is always an array
     country: '',
+    years_of_experience: 0,
+    expected_salary: 0,
   });
 
   const router = useRouter();
@@ -154,6 +156,8 @@ function MultiStepFormComponent() {
     if (!formData.job_title) missingFields.push("Cargo");
     if (!formData.skills.length) missingFields.push("Habilidades");
     if (!formData.country) missingFields.push("Pais");
+    if (!formData.years_of_experience) missingFields.push('Tiempo de Experiencia')
+    if (!formData.expected_salary) missingFields.push('Expectativa Salarial')
 
     if (missingFields.length > 0) {
       setMessage(`⚠️ Faltan los siguientes campos: ${missingFields.join(", ")}.`);
@@ -170,7 +174,9 @@ function MultiStepFormComponent() {
       formDataToSend.append('resume', formData.resume);
       formDataToSend.append('job_title', formData.job_title);
       formDataToSend.append('plan_id', plan);
-      formDataToSend.append('country', formData.country)
+      formDataToSend.append('country', formData.country);
+      formDataToSend.append('years_of_experience', formData.years_of_experience);
+      formDataToSend.append('expected_salary', formData.expected_salary);
 
       if (Array.isArray(formData.skills) && formData.skills.length > 0) {
         formDataToSend.append('skills', formData.skills.join(",")); // Convert array to a comma-separated string
@@ -290,6 +296,52 @@ function MultiStepFormComponent() {
               <div>
                 <h2 className="text-3xl font-semibold">Sube tu Currículum</h2>
                 <p className="mb-6 text-gray-600">Todos los campos son obligatorios*</p>
+                <div className="mb-4">
+                  <label htmlFor="years_of_experience" className="block text-lg">Tiempo de Experiencia</label>
+                  <input
+                    type="range"
+                    id="years_of_experience"
+                    name="years_of_experience"
+                    min="0"
+                    max="50"
+                    value={formData.years_of_experience}
+                    onChange={(e) => {
+                      const value = Math.min(50, Math.max(0, Number(e.target.value))); // Ensures value is between 0-50
+                      handleFormChange({ target: { name: 'years_of_experience', value } });
+                    }}
+                    className="w-full mt-2 range-input"
+                  />
+
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>0</span>
+                    <span className="text-[#244c56]">{formData.years_of_experience}</span>
+                    <span>50</span>
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="expected_salary" className="block text-lg">Expectativa Salarial</label>
+
+                  <input
+                    type="range"
+                    id="expected_salary"
+                    name="expected_salary"
+                    min="0"
+                    max="20000"
+                    step="100" // Adjusts increments to 100 for better precision
+                    value={formData.expected_salary}
+                    onChange={(e) => {
+                      const value = Math.min(20000, Math.max(0, Number(e.target.value))); // Ensure it stays in range
+                      handleFormChange({ target: { name: 'expected_salary', value } });
+                    }}
+                    className="w-full mt-2 range-input"
+                  />
+
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>$0</span>
+                    <span className="text-[#244c56]">${formData.expected_salary}</span>
+                    <span>$20,000</span>
+                  </div>
+                </div>
                 <Select
                   name="jobTitle"
                   options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
