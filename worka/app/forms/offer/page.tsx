@@ -36,8 +36,6 @@ export default function CompanyForm() {
                 const response = await fetch('https://restcountries.com/v3.1/all');
                 const data = await response.json();
 
-                console.log(data)
-
                 const countryOptions = data.map((country) => ({
                     value: country.name.common, // Using country code as value
                     label: `${country.flag} ${country.name.common}`, // Displaying common name

@@ -19,8 +19,6 @@ function CalendlyRedirectComponent() {
                     headers: { 'Content-Type': 'application/json' }
                 });
 
-                console.log("User click tracked successfully");
-
                 // After tracking, redirect to Calendly after 3 seconds
                 setTimeout(() => {
                     router.push(`https://calendly.com/contacto-talentiave/30min?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`);

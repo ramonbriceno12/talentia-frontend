@@ -31,7 +31,6 @@ export default function ProposalPage() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [description, setDescription] = useState("");
-    console.log("UUID from URL:", uuid);
 
     // 🔹 First, decode the UUID
     useEffect(() => {
@@ -51,7 +50,6 @@ export default function ProposalPage() {
                     setLoading(false);
                 }
 
-                console.log("Decoded ID:", originalId, storedUUIDs);
             } catch (error) {
                 console.error("Invalid encoded UUID", error);
                 setLoading(false);

@@ -49,7 +49,6 @@ export default function TalentsPage() {
                 }
 
                 const talentsData: Talent[] = await response.json();
-                console.log(talentsData)
                 setTalents(talentsData);
 
                 // Extract and sort unique job titles alphabetically

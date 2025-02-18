@@ -46,7 +46,6 @@ function MultiStepFormComponent() {
       try {
         const response = await fetch('https://talentiave.com/api/api/job-titles');
         const data = await response.json();
-        console.log(data)
         setJobTitles(data);
       } catch (error) {
         console.error('Error fetching job titles:', error);
@@ -57,7 +56,6 @@ function MultiStepFormComponent() {
       try {
         const response = await fetch('https://talentiave.com/api/api/skills');
         const data = await response.json();
-        console.log(data)
         setSkills(data);
       } catch (error) {
         console.error('Error fetching job titles:', error);
@@ -68,8 +66,6 @@ function MultiStepFormComponent() {
       try {
         const response = await fetch('https://restcountries.com/v3.1/all');
         const data = await response.json();
-
-        console.log(data)
 
         const countryOptions = data.map((country) => ({
           value: country.name.common, // Using country code as value
@@ -180,11 +176,6 @@ function MultiStepFormComponent() {
 
       if (Array.isArray(formData.skills) && formData.skills.length > 0) {
         formDataToSend.append('skills', formData.skills.join(",")); // Convert array to a comma-separated string
-      }
-
-      // Debugging: Log FormData
-      for (const pair of formDataToSend.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
       }
 
       const response = await fetch('https://talentiave.com/api/api/upload/talent', {

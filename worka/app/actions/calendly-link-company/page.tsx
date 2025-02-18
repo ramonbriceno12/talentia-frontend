@@ -18,8 +18,6 @@ function CompanyCalendlyRedirectComponent() {
                     headers: { 'Content-Type': 'application/json' }
                 });
 
-                console.log("Company Calendly click tracked successfully");
-
                 // After tracking, redirect to Calendly after 3 seconds
                 setTimeout(() => {
                     router.push(`https://calendly.com/contacto-talentiave/company-onboarding-meeting?email=${encodeURIComponent(email)}&name=${encodeURIComponent(companyName)}`);
