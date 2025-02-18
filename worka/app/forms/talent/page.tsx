@@ -31,6 +31,7 @@ function MultiStepFormComponent() {
     country: '',
     years_of_experience: 0,
     expected_salary: 0,
+    links: [{ link_type: "", url: "" }],
   });
 
   const router = useRouter();
@@ -92,6 +93,27 @@ function MultiStepFormComponent() {
   const nextStep = () => setStep((prev) => Math.min(prev + 1, steps.length));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
+  // Handle Links Change
+  const handleLinkChange = (index, field, value) => {
+    const updatedLinks = [...formData.links];
+    updatedLinks[index][field] = value;
+    setFormData((prev) => ({ ...prev, links: updatedLinks }));
+  };
+
+  // Add New Link Field
+  const addLink = () => {
+    setFormData((prev) => ({
+      ...prev,
+      links: [...prev.links, { link_type: "", url: "" }],
+    }));
+  };
+
+  // Remove Link Field
+  const removeLink = (index) => {
+    const updatedLinks = formData.links.filter((_, i) => i !== index);
+    setFormData((prev) => ({ ...prev, links: updatedLinks }));
+  };
+
   const handleFormChange = (e: any) => {
     const { name, value, files } = e.target;
     if (name === "name") {
@@ -145,6 +167,8 @@ function MultiStepFormComponent() {
     e.preventDefault();
     const missingFields = [];
 
+    console.log(formData.links)
+
     if (!formData.name) missingFields.push("Nombre");
     if (!formData.email) missingFields.push("Correo electrónico");
     if (!formData.resume) missingFields.push("Currículum");
@@ -173,6 +197,7 @@ function MultiStepFormComponent() {
       formDataToSend.append('country', formData.country);
       formDataToSend.append('years_of_experience', formData.years_of_experience);
       formDataToSend.append('expected_salary', formData.expected_salary);
+      formDataToSend.append('links', JSON.stringify(formData.links));
 
       if (Array.isArray(formData.skills) && formData.skills.length > 0) {
         formDataToSend.append('skills', formData.skills.join(",")); // Convert array to a comma-separated string
@@ -366,6 +391,63 @@ function MultiStepFormComponent() {
                   Agregar más habilidades aumenta tu visibilidad en la plataforma.
                 </p>
                 <br />
+                <div className="mb-6">
+                  <label className="block text-lg font-semibold mb-2">Enlaces (Opcional)</label>
+
+                  {formData.links.map((link, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 p-3 bg-gray-100 rounded-lg shadow-sm border border-gray-300 mt-2 transition-all hover:shadow-md"
+                    >
+                      {/* Link Icon & Type Input */}
+                      <div className="flex items-center gap-2 w-1/3">
+                        <span className="text-gray-500 text-xl">
+                          {link.link_type.toLowerCase().includes("linkedin") ? "🔗" :
+                            link.link_type.toLowerCase().includes("github") ? "🐙" :
+                              link.link_type.toLowerCase().includes("portfolio") ? "💼" :
+                                "🌐"}
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Ejemplo: LinkedIn, GitHub..."
+                          value={link.link_type}
+                          onChange={(e) => handleLinkChange(index, "link_type", e.target.value)}
+                          className="p-2 w-full bg-white border rounded-lg focus:ring-2 focus:ring-blue-500"
+                        />
+                      </div>
+
+                      {/* URL Input */}
+                      <input
+                        type="url"
+                        placeholder="https://example.com"
+                        value={link.url}
+                        onChange={(e) => handleLinkChange(index, "url", e.target.value)}
+                        className="p-2 w-2/3 bg-white border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      />
+
+                      {/* Delete Button */}
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => removeLink(index)}
+                          className="p-2 text-red-600 bg-red-100 rounded-full hover:bg-red-200 transition"
+                        >
+                          ✖
+                        </button>
+                      )}
+                    </div>
+                  ))}
+
+                  {/* Add Link Button */}
+                  <button
+                    type="button"
+                    onClick={addLink}
+                    className="mt-3 flex items-center gap-2 px-4 py-2 buttons-color text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+                  >
+                    ➕ Agregar otro enlace
+                  </button>
+                </div>
+
                 <div className="flex flex-col items-center border-2 border-dashed p-10 rounded-lg hover:border-indigo-500">
                   <input
                     type="file"
