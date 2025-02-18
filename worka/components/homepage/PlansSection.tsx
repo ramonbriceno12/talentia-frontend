@@ -38,7 +38,7 @@ const PlansSection = () => {
                     </ul>
                     <br/>
                     <Link
-                        href="https://calendly.com/contacto-talentiave/optimizacion-de-perfil-profesional"
+                        href="https://calendly.com/contacto-talentiave/"
                         target="_blank"
                         className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
                     >
@@ -64,7 +64,7 @@ const PlansSection = () => {
                     </ul>
                     <br/>
                     <Link
-                        href="https://calendly.com/contacto-talentiave/30min"
+                        href="https://calendly.com/contacto-talentiave/"
                         target="_blank"
                         className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
                     >
@@ -90,7 +90,7 @@ const PlansSection = () => {
                     </ul>
                     <br/>
                     <Link
-                        href="https://calendly.com/contacto-talentiave/company-onboarding-meeting"
+                        href="https://calendly.com/contacto-talentiave/"
                         target="_blank"
                         className="mt-auto bg-[#349390] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#26766b] transition duration-300"
                     >
