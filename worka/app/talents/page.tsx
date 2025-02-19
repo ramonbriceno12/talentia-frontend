@@ -269,13 +269,13 @@ export default function TalentsPage() {
                                 <div className="flex flex-col items-end">
                                     <button
                                         onClick={() => openModal(talent)}
-                                        className="py-1 px-4 mb-2 bg-[#244c56] text-white rounded-lg hover:bg-[#10282c] min-w-[140px] text-center"
+                                        className="py-1 px-4 mb-2 bg-[#244c56] text-white rounded-lg hover:bg-[#10282c] min-w-[100px] text-center"
                                     >
                                         Ver Bio 💼
                                     </button>
                                     <button
                                         onClick={() => goToProposal(talent.id)}
-                                        className="py-1 px-4 bg-[#10282c] text-white rounded-lg hover:bg-[#244c56] min-w-[140px] text-center"
+                                        className="py-1 px-4 bg-[#10282c] text-white rounded-lg hover:bg-[#244c56] min-w-[100px] text-center"
                                     >
                                         Contacto 🚀
                                     </button>
