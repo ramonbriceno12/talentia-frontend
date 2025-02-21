@@ -67,23 +67,6 @@ export default function TalentsPage() {
     }, []);
 
 
-    const handleSkillClick = (skill: string) => {
-        setSelectedSkill(skill === selectedSkill ? null : skill);
-        setPage(1); // Reset to first page on skill selection
-    };
-
-    const skillsContainerRef = useRef<HTMLDivElement | null>(null);
-
-    const scrollSkills = (direction: 'left' | 'right') => {
-        if (skillsContainerRef.current) {
-            const scrollAmount = 200; // Adjust as needed
-            skillsContainerRef.current.scrollBy({
-                left: direction === 'left' ? -scrollAmount : scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    };
-
     const handleJobTitleClick = async (title: string) => {
         const newTitle = selectedJobTitle === title ? null : title; // Toggle selection
         setSelectedJobTitle(newTitle);
@@ -161,110 +144,110 @@ export default function TalentsPage() {
             <div className="mt-10">
                 <Navbar />
             </div>
-            <div className="min-h-screen flex flex-col items-center bg-gray-100 p-6 mb-8">
-                <Link href="/">
-                    <img
-                        src="/img/LOGO-04.png"
-                        alt="Talentia Logo"
-                        className="mb-6 w-64 h-auto cursor-pointer"
-                    />
-                </Link>
+            <div className="min-h-screen flex flex-col items-center bg-gray-200 p-6 mb-8">
                 <div className="w-full">
-                    {/* Search Input */}
-                    <input
-                        type="text"
-                        placeholder="Buscar talentos..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full p-3 border border-gray-300 rounded text-black mb-4"
-                    />
-
-                    {/* Job Titles Filter (Carousel) */}
-                    <div className="relative w-full flex items-center mb-4">
-                        {/* Left Scroll Button */}
-                        <button
-                            onClick={() => scrollJobTitles('left')}
-                            className="absolute left-0 z-10 bg-[#10282c] hover:bg-[#244c56] text-white px-3 py-2 rounded-full shadow-md"
-                        >
-                            ◀
-                        </button>
-
-                        {/* Spacer to prevent overlapping */}
-                        <div className="w-10"></div>
-
-                        {/* Job Titles Container */}
-                        <div
-                            ref={jobTitlesContainerRef}
-                            className="w-full flex space-x-3 overflow-hidden scroll-smooth whitespace-nowrap px-12"
-                        >
-                            {uniqueJobTitles.map(title => (
-                                <button
-                                    key={title}
-                                    onClick={() => handleJobTitleClick(title)}
-                                    className={`px-4 rounded-full text-sm font-semibold transition ${selectedJobTitle === title
-                                        ? 'bg-[#10282c] text-white'
-                                        : 'bg-[#244c56] text-white hover:bg-[#244c56]'
-                                        }`}
-                                >
-                                    {title}
-                                </button>
-                            ))}
+                    <div className="bg-white shadow-lg rounded-lg p-6 mb-6 mt-6">
+                        {/* Search Input */}
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="Buscar talentos..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full p-3 pl-10 border border-gray-300 rounded text-black focus:ring-2 focus:ring-[#10282c] focus:outline-none"
+                            />
+                            {/* Search Icon */}
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg">
+                                🔍
+                            </span>
                         </div>
 
-                        {/* Spacer to prevent overlapping */}
-                        <div className="w-10"></div>
+                        {/* Job Titles Filter (Carousel) */}
+                        <div className="relative w-full flex items-center mt-4">
+                            {/* Left Scroll Button (Minimalist) */}
+                            <button
+                                onClick={() => scrollJobTitles('left')}
+                                className="absolute left-0 z-10 bg-white p-2 shadow-md rounded-full text-gray-500 hover:text-gray-800 transition transform -translate-y-1/2"
+                                style={{ top: "50%" }}
+                            >
+                                〈
+                            </button>
 
-                        {/* Right Scroll Button */}
-                        <button
-                            onClick={() => scrollJobTitles('right')}
-                            className="absolute right-0 z-10 bg-[#10282c] hover:bg-[#244c56] text-white px-3 py-2 rounded-full shadow-md"
-                        >
-                            ▶
-                        </button>
+                            {/* Job Titles Container */}
+                            <div
+                                ref={jobTitlesContainerRef}
+                                className="w-full flex space-x-3 overflow-x-auto scroll-smooth whitespace-nowrap px-12 no-scrollbar"
+                            >
+                                {uniqueJobTitles.map(title => (
+                                    <button
+                                        key={title}
+                                        onClick={() => handleJobTitleClick(title)}
+                                        className={`px-4 py-2 rounded-full text-sm font-semibold transition 
+                        ${selectedJobTitle === title
+                                                ? 'bg-[#10282c] text-white'
+                                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                                    >
+                                        {title}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Right Scroll Button (Minimalist) */}
+                            <button
+                                onClick={() => scrollJobTitles('right')}
+                                className="absolute right-0 z-10 bg-white p-2 shadow-md rounded-full text-gray-500 hover:text-gray-800 transition transform -translate-y-1/2"
+                                style={{ top: "50%" }}
+                            >
+                                〉
+                            </button>
+                        </div>
                     </div>
+
+
+
 
                     {/* Talents List (List View) */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {displayedTalents.map((talent) => (
                             <div
                                 key={talent.id}
-                                className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center text-center relative"
+                                className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center relative transition-transform duration-300 hover:scale-[1.02]"
                             >
                                 {/* Profile Picture */}
                                 <img
                                     src={talent.profile_picture || "/img/default-user.png"}
                                     alt={talent.full_name.split(" ")[0]}
-                                    className="w-20 h-20 object-cover rounded-full border-2 border-gray-300 mb-3 transition-transform duration-300 hover:scale-110 active:scale-125 cursor-pointer"
+                                    className="w-24 h-24 object-cover rounded-full border-4 border-gray-200 shadow-sm mb-4 transition-transform duration-300 hover:scale-110 cursor-pointer"
                                 />
 
                                 {/* Talent Details */}
-                                <h3 className="text-lg text-[#10282c] font-semibold">{talent.full_name}</h3>
-                                <p className="text-gray-600 text-sm">{talent.job_title?.title || "Sin título"}</p>
-                                <p className="text-gray-400 text-sm">
+                                <h3 className="text-xl text-[#10282c] font-semibold">{talent.full_name}</h3>
+                                <p className="text-gray-700 text-sm font-medium">{talent.job_title?.title || "Sin título"}</p>
+                                <p className="text-gray-500 text-sm">
                                     {talent.country && talent.country.trim() !== "N/A" ? talent.country : "Venezuela"}
                                 </p>
 
                                 {/* Experiencia: Only shows if years_of_experience is NOT null or 0 */}
                                 {talent.years_of_experience != null && talent.years_of_experience !== 0 && (
-                                    <p className="text-gray-400 text-sm">{`Experiencia: ${talent.years_of_experience} años`}</p>
+                                    <p className="text-gray-500 text-sm">{`Experiencia: ${talent.years_of_experience} años`}</p>
                                 )}
 
                                 {/* Expectativa Salarial: Only shows if expected_salary is NOT null or "0.00" */}
                                 {talent.expected_salary != null && talent.expected_salary !== "0.00" && (
-                                    <p className="text-gray-400 text-sm">
+                                    <p className="text-gray-500 text-sm">
                                         {`Expectativa Salarial: $${Number(talent.expected_salary).toLocaleString()}/Mes`}
                                     </p>
                                 )}
 
-                                {/* Action Buttons */}
-                                <div className="flex flex-col mt-3 w-full text-sm font-medium">
+                                {/* Action Links */}
+                                <div className="flex flex-col mt-4 w-full text-sm font-medium">
                                     <a
                                         href="#"
                                         onClick={(e) => {
                                             e.preventDefault();
                                             openModal(talent);
                                         }}
-                                        className="text-[#244c56] hover:underline"
+                                        className="text-[#10282c] hover:underline transition-colors duration-200"
                                     >
                                         Ver Bio 💼
                                     </a>
@@ -274,7 +257,7 @@ export default function TalentsPage() {
                                             e.preventDefault();
                                             goToProposal(talent.id);
                                         }}
-                                        className="text-[#244c56] hover:underline mt-1"
+                                        className="text-[#10282c] hover:underline mt-1 transition-colors duration-200"
                                     >
                                         Contactar 🚀
                                     </a>
@@ -282,6 +265,7 @@ export default function TalentsPage() {
                             </div>
                         ))}
                     </div>
+
 
 
                     {/* Pagination Controls */}
@@ -328,6 +312,21 @@ export default function TalentsPage() {
                                 className="w-20 h-20 object-cover rounded-full mb-3 transition-transform duration-300 hover:scale-110 active:scale-125 cursor-pointer"
                             />
                             <p className="text-gray-600">{selectedTalent.job_title?.title || 'Sin título'}</p>
+                            <p className="text-gray-400 text-sm">
+                                {selectedTalent.country && selectedTalent.country.trim() !== "N/A" ? selectedTalent.country : "Venezuela"}
+                            </p>
+
+                            {/* Experiencia: Only shows if years_of_experience is NOT null or 0 */}
+                            {selectedTalent.years_of_experience != null && selectedTalent.years_of_experience !== 0 && (
+                                <p className="text-gray-400 text-sm">{`Experiencia: ${selectedTalent.years_of_experience} años`}</p>
+                            )}
+
+                            {/* Expectativa Salarial: Only shows if expected_salary is NOT null or "0.00" */}
+                            {selectedTalent.expected_salary != null && selectedTalent.expected_salary !== "0.00" && (
+                                <p className="text-gray-400 text-sm">
+                                    {`Expectativa Salarial: $${Number(selectedTalent.expected_salary).toLocaleString()}/Mes`}
+                                </p>
+                            )}
                             {/* Skills Display */}
                             <div className="mt-3 flex flex-wrap">
                                 {selectedTalent.skills.map(skill => (
@@ -362,7 +361,7 @@ export default function TalentsPage() {
                         <div className="p-6 border-t">
                             <button
                                 onClick={() => goToProposal(selectedTalent.id)}
-                                className="w-full bg-[#10282c] text-white px-2 rounded-lg hover:bg-[#244c56]"
+                                className="w-m-4xl bg-[#10282c] text-white px-4 py-2 rounded-lg hover:bg-[#244c56]"
                             >
                                 {(loading ? 'Redirigiendo...' : 'Contacto 🚀')}
                             </button>

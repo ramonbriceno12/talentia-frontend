@@ -14,6 +14,8 @@ interface Talent {
     resume_file: string | null;
     job_title: { title: string } | null;
     skills: { id: number; name: string; category: string }[];
+    years_of_experience: number;
+    expected_salary: string;
 }
 
 export default function ProposalPage() {
@@ -117,8 +119,8 @@ export default function ProposalPage() {
             <div className="mt-10">
                 <Navbar />
             </div>
-            <div className="bg-gray-100 min-h-screen flex flex-col items-center p-6 pt-10">
-                <div className="w-full max-w-2xl bg-white shadow-md rounded-lg p-6">
+            <div className="bg-gray-200 min-h-screen flex flex-col items-center p-6 pt-20">
+                <div className="w-full max-w-6xl bg-white shadow-md rounded-lg p-6">
                     {/* Avatar y nombre */}
                     <div className="flex items-center space-x-4">
                         <img
@@ -129,6 +131,21 @@ export default function ProposalPage() {
                         <div>
                             <h2 className="text-2xl text-[#10282c] font-bold">{talent.full_name.split(" ")[0]}</h2>
                             <p className="text-gray-600">{talent.job_title?.title || "Sin título"}</p>
+                            <p className="text-gray-400 text-sm">
+                                {talent.country && talent.country.trim() !== "N/A" ? talent.country : "Venezuela"}
+                            </p>
+
+                            {/* Experiencia: Only shows if years_of_experience is NOT null or 0 */}
+                            {talent.years_of_experience != null && talent.years_of_experience !== 0 && (
+                                <p className="text-gray-400 text-sm">{`Experiencia: ${talent.years_of_experience} años`}</p>
+                            )}
+
+                            {/* Expectativa Salarial: Only shows if expected_salary is NOT null or "0.00" */}
+                            {talent.expected_salary != null && talent.expected_salary !== "0.00" && (
+                                <p className="text-gray-400 text-sm">
+                                    {`Expectativa Salarial: $${Number(talent.expected_salary).toLocaleString()}/Mes`}
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -156,7 +173,7 @@ export default function ProposalPage() {
                             {talent.skills.map(skill => (
                                 <span
                                     key={skill.id}
-                                    className="bg-gray-200 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full m-1"
+                                    className="bg-[#10282c] text-white text-xs font-semibold px-3 py-1 rounded-full m-1"
                                 >
                                     {skill.name}
                                 </span>
@@ -166,7 +183,7 @@ export default function ProposalPage() {
 
                     {/* Datos restringidos */}
                     <div className="mt-6 bg-gray-100 p-4 rounded-lg text-gray-500">
-                        <p className="text-sm">Para ver el correo electrónico y el CV de este talento, necesitas un plan premium.</p>
+                        <p className="text-sm">¿Quieres conocer más detalles? Envía una propuesta al talento y accede a su información.</p>
                     </div>
 
                     {/* Formulario de propuesta */}
@@ -221,7 +238,7 @@ export default function ProposalPage() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-[#10282c] text-white px-4 py-2 rounded-lg hover:bg-[#244c56]"
+                                className="w-m-4xl bg-[#10282c] text-white px-4 py-2 rounded-lg hover:bg-[#244c56]"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Enviando...' : 'Enviar Propuesta 🚀'}

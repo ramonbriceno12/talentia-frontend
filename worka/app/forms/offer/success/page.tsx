@@ -12,13 +12,11 @@ function CompanySuccessPageComponent() {
     const companyName = params.get('name') || 'Empresa'; // Default to 'Empresa' if no name is found
 
     return (
-        <div className='bg-gray-100'>
+        <div className='bg-gray-200'>
             <div className="mt-10">
                 <Navbar />
             </div>
             <div className="min-h-screen flex flex-col items-center justify-center text-white px-4 sm:px-6 lg:px-8 pb-8">
-                {/* Logo */}
-                <img src="/img/LOGO-04.png" alt="Talentia Logo" className="mb-6 w-64 h-auto" />
 
                 {/* Success Message Container */}
                 <motion.div

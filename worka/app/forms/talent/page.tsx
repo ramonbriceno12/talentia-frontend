@@ -226,21 +226,14 @@ function MultiStepFormComponent() {
       <div className='mt-10'>
         <Navbar />
       </div>
-      <div className="min-h-screen flex flex-col bg-gray-100 items-center justify-center text-white px-4 sm:px-6 lg:px-8 mb-8">
-        <Link href="/">
-          <img
-            src="/img/LOGO-04.png"
-            alt="Talentia Logo"
-            className="mb-6 w-64 h-auto cursor-pointer"
-          />
-        </Link>
+      <div className="min-h-screen flex flex-col bg-gray-200 items-center justify-center text-white px-4 sm:px-6 lg:px-8 mb-8 pt-12">
         <motion.div
           key={step}
           initial={{ x: 300, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -300, opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
+          className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg text-gray-900"
         >
           <form onSubmit={handleSubmit}>
             {step === 1 && (
@@ -301,7 +294,7 @@ function MultiStepFormComponent() {
                       required
                     />
                     <p className="text-gray-400 text-sm mt-2">
-                      El tamaño máximo es de 20MB
+                      El tamaño máximo es de 10MB
                     </p>
                   </div>
                 </div>
@@ -458,7 +451,7 @@ function MultiStepFormComponent() {
                     className="hidden"
                   />
                   <p className="text-gray-400 text-sm mt-2">
-                    El tamaño máximo es de 20MB
+                    El tamaño máximo es de 10MB
                   </p>
                   <label htmlFor="resume" className="cursor-pointer text-indigo-600">
                     {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF)'}

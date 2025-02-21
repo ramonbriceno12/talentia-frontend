@@ -28,7 +28,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="/">
             <Image
-              src="/img/LOGO-04.png"
+              src="/img/LOGO-03.png"
               alt="Logo"
               width={120}
               height={60}
@@ -58,7 +58,7 @@ export default function Navbar() {
                 href="mailto:contacto@talentiave.com"
                 className="text-gray-700 text-md font-medium"
               >
-                contacto@talentiave.com
+                Contacto
               </a>
             </div>
 
@@ -131,7 +131,7 @@ export default function Navbar() {
               href="mailto:contacto@talentiave.com"
               className="text-gray-700 text-md font-medium"
             >
-              contacto@talentiave.com
+              Contacto
             </a>
           </div>
 
