@@ -21,6 +21,7 @@ interface Talent {
     expected_salary: string;
     job_title: { title: string } | null;
     skills: { id: number; name: string; category: string }[];
+    job_type_preference: string;
 }
 
 export default function TalentsPage() {
@@ -238,6 +239,11 @@ export default function TalentsPage() {
                                         {`Expectativa Salarial: $${Number(talent.expected_salary).toLocaleString()}/Mes`}
                                     </p>
                                 )}
+                                {talent.job_type_preference && talent.job_type_preference.trim() !== "" && (
+                                    <p className="text-gray-500 text-sm">
+                                        {`Busco trabajo: ${talent.job_type_preference.split("/").join(", ")}`}
+                                    </p>
+                                )}
 
                                 {/* Action Links */}
                                 <div className="flex flex-col mt-4 w-full text-sm font-medium">
@@ -312,19 +318,24 @@ export default function TalentsPage() {
                                 className="w-20 h-20 object-cover rounded-full mb-3 transition-transform duration-300 hover:scale-110 active:scale-125 cursor-pointer"
                             />
                             <p className="text-gray-600">{selectedTalent.job_title?.title || 'Sin título'}</p>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-gray-500 text-sm">
                                 {selectedTalent.country && selectedTalent.country.trim() !== "N/A" ? selectedTalent.country : "Venezuela"}
                             </p>
 
                             {/* Experiencia: Only shows if years_of_experience is NOT null or 0 */}
                             {selectedTalent.years_of_experience != null && selectedTalent.years_of_experience !== 0 && (
-                                <p className="text-gray-400 text-sm">{`Experiencia: ${selectedTalent.years_of_experience} años`}</p>
+                                <p className="text-gray-500 text-sm">{`Experiencia: ${selectedTalent.years_of_experience} años`}</p>
                             )}
 
                             {/* Expectativa Salarial: Only shows if expected_salary is NOT null or "0.00" */}
                             {selectedTalent.expected_salary != null && selectedTalent.expected_salary !== "0.00" && (
-                                <p className="text-gray-400 text-sm">
+                                <p className="text-gray-500 text-sm">
                                     {`Expectativa Salarial: $${Number(selectedTalent.expected_salary).toLocaleString()}/Mes`}
+                                </p>
+                            )}
+                            {selectedTalent.job_type_preference && selectedTalent.job_type_preference.trim() !== "" && (
+                                <p className="text-gray-500 text-sm">
+                                    {`Busco trabajo: ${selectedTalent.job_type_preference.split("/").join(", ")}`}
                                 </p>
                             )}
                             {/* Skills Display */}

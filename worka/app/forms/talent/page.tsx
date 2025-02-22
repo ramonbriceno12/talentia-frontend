@@ -32,6 +32,7 @@ function MultiStepFormComponent() {
     years_of_experience: 0,
     expected_salary: 0,
     links: [{ link_type: "", url: "" }],
+    job_type: ""
   });
 
   const router = useRouter();
@@ -162,12 +163,25 @@ function MultiStepFormComponent() {
     }));
   }
 
+  const toggleJobType = (value) => {
+    let selectedTypes = formData.job_type ? formData.job_type.split("/") : [];
+
+    if (selectedTypes.includes(value)) {
+      selectedTypes = selectedTypes.filter((t) => t !== value); // Remove if selected
+    } else {
+      selectedTypes.push(value); // Add if not selected
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      job_type: selectedTypes.join("/"), // Convert array to string with "/"
+    }));
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const missingFields = [];
-
-    console.log(formData.links)
 
     if (!formData.name) missingFields.push("Nombre");
     if (!formData.email) missingFields.push("Correo electrónico");
@@ -178,6 +192,7 @@ function MultiStepFormComponent() {
     if (!formData.country) missingFields.push("Pais");
     if (!formData.years_of_experience) missingFields.push('Tiempo de Experiencia')
     if (!formData.expected_salary) missingFields.push('Expectativa Salarial')
+    if (!formData.job_type) missingFields.push('Preferencia de Tipo de Trabajo');
 
     if (missingFields.length > 0) {
       setMessage(`⚠️ Faltan los siguientes campos: ${missingFields.join(", ")}.`);
@@ -198,6 +213,7 @@ function MultiStepFormComponent() {
       formDataToSend.append('years_of_experience', formData.years_of_experience);
       formDataToSend.append('expected_salary', formData.expected_salary);
       formDataToSend.append('links', JSON.stringify(formData.links));
+      formDataToSend.append('job_type', formData.job_type);
 
       if (Array.isArray(formData.skills) && formData.skills.length > 0) {
         formDataToSend.append('skills', formData.skills.join(",")); // Convert array to a comma-separated string
@@ -239,9 +255,9 @@ function MultiStepFormComponent() {
             {step === 1 && (
               <div>
                 <h2 className="text-3xl font-semibold">Información Personal</h2>
-                <p className="mb-6 text-gray-600">Todos los campos son obligatorios*</p>
+                <p className="mb-6 text-gray-600">Campos obligatorios (*)</p>
                 <div className="mb-4">
-                  <label htmlFor="name" className="block text-lg">Nombre</label>
+                  <label htmlFor="name" className="block text-lg">Nombre (*)</label>
                   <input
                     type="text"
                     id="name"
@@ -253,7 +269,7 @@ function MultiStepFormComponent() {
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-lg">Correo Electrónico</label>
+                  <label htmlFor="email" className="block text-lg">Correo Electrónico (*)</label>
                   <input
                     type="email"
                     id="email"
@@ -265,7 +281,7 @@ function MultiStepFormComponent() {
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="country" className="block text-lg">País</label>
+                  <label htmlFor="country" className="block text-lg">País (*)</label>
                   <Select
                     name="countries"
                     options={countries} // Use the formatted country data
@@ -279,34 +295,63 @@ function MultiStepFormComponent() {
                     classNamePrefix="select"
                     placeholder="Selecciona tu país..."
                     isSearchable
+                    required
                   />
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-lg">Avatar</label>
-                  <div className="flex items-center space-x-4">
-                    {avatarPreview && <img src={avatarPreview} alt="Avatar Preview" className="w-16 h-16 rounded-full" />}
+                  <label htmlFor="avatar" className="block text-lg font-medium">
+                    Foto PNG o JPG (*)
+                  </label>
+
+                  <div className="flex items-center space-x-4 mt-2">
+                    {/* Image Preview */}
+                    {avatarPreview ? (
+                      <img
+                        src={avatarPreview}
+                        alt="Avatar Preview"
+                        className="w-16 h-16 rounded-full border border-gray-300 shadow-sm"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                        📷
+                      </div>
+                    )}
+
+                    {/* File Upload Button */}
+                    <label
+                      htmlFor="avatar"
+                      className="px-5 py-2 bg-[#10282c] text-white font-medium rounded-lg cursor-pointer hover:bg-[#244c56] transition shadow-md"
+                    >
+                      Subir Foto
+                    </label>
+
+                    {/* Hidden File Input */}
                     <input
                       type="file"
+                      id="avatar"
                       name="avatar"
-                      accept="image/*"
+                      accept="image/png, image/jpeg"
                       onChange={handleFormChange}
-                      className="w-full p-3 rounded border focus:ring-2 focus:ring-indigo-500"
+                      className="hidden"
                       required
                     />
-                    <p className="text-gray-400 text-sm mt-2">
-                      El tamaño máximo es de 10MB
-                    </p>
                   </div>
+
+                  {/* Subtle File Size Info */}
+                  <p className="text-gray-400 text-xs mt-2">
+                    El tamaño máximo es de 10MB
+                  </p>
                 </div>
+
               </div>
             )}
 
             {step === 2 && (
               <div>
                 <h2 className="text-3xl font-semibold">Sube tu Currículum</h2>
-                <p className="mb-6 text-gray-600">Todos los campos son obligatorios*</p>
+                <p className="mb-6 text-gray-600">Campos obligatorios (*)</p>
                 <div className="mb-4">
-                  <label htmlFor="years_of_experience" className="block text-lg">Tiempo de Experiencia</label>
+                  <label htmlFor="years_of_experience" className="block text-lg">Tiempo de Experiencia (*)</label>
                   <input
                     type="range"
                     id="years_of_experience"
@@ -318,7 +363,7 @@ function MultiStepFormComponent() {
                       const value = Math.min(50, Math.max(0, Number(e.target.value))); // Ensures value is between 0-50
                       handleFormChange({ target: { name: 'years_of_experience', value } });
                     }}
-                    className="w-full mt-2 range-input"
+                    className="w-full mt-3 range-input"
                   />
 
                   <div className="flex justify-between text-sm text-gray-500">
@@ -328,7 +373,7 @@ function MultiStepFormComponent() {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="expected_salary" className="block text-lg">Expectativa Salarial / Mes</label>
+                  <label htmlFor="expected_salary" className="block text-lg">Expectativa Salarial / Mes (*)</label>
 
                   <input
                     type="range"
@@ -342,7 +387,7 @@ function MultiStepFormComponent() {
                       const value = Math.min(20000, Math.max(0, Number(e.target.value))); // Ensure it stays in range
                       handleFormChange({ target: { name: 'expected_salary', value } });
                     }}
-                    className="w-full mt-2 range-input"
+                    className="w-full mt-3 range-input"
                   />
 
                   <div className="flex justify-between text-sm text-gray-500">
@@ -351,46 +396,75 @@ function MultiStepFormComponent() {
                     <span>$20,000</span>
                   </div>
                 </div>
-                <Select
-                  name="jobTitle"
-                  options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
-                  value={formData.jobTitle}
-                  onChange={handleJobTitleChange}
-                  className="basic-single-select"
-                  classNamePrefix="select"
-                  placeholder="Selecciona un cargo..."
-                  isSearchable
-                  filterOption={(candidate, input) =>
-                    candidate.label.toLowerCase().includes(input.toLowerCase())
-                  }
-                /><br />
-                <Select
-                  isMulti
-                  name="skills"
-                  options={skills.map((skill) => ({ value: skill.name, label: skill.name }))}
-                  value={formData.skills?.length > 0
-                    ? formData.skills.map((skill) => ({ value: skill, label: skill }))
-                    : []} // Ensure it's always an array
-                  onChange={handleSkillsChange}
-                  className="basic-single-select"
-                  classNamePrefix="select"
-                  placeholder="Selecciona tus skills..."
-                  isSearchable
-                  filterOption={(candidate, input) =>
-                    candidate.label.toLowerCase().includes(input.toLowerCase())
-                  }
-                />
-                <p className="text-gray-400 text-sm mt-2">
-                  Agregar más habilidades aumenta tu visibilidad en la plataforma.
-                </p>
-                <br />
+                <div className="mb-4">
+                  <label className="block text-lg">Cargo (*)</label>
+                  <Select
+                    name="jobTitle"
+                    options={jobTitles.map((job) => ({ value: job.title, label: job.title }))}
+                    value={formData.jobTitle}
+                    onChange={handleJobTitleChange}
+                    className="basic-single-select mt-3"
+                    classNamePrefix="select"
+                    placeholder="Selecciona un cargo..."
+                    isSearchable
+                    filterOption={(candidate, input) =>
+                      candidate.label.toLowerCase().includes(input.toLowerCase())
+                    }
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-lg">Habilidades (*)</label>
+                  <Select
+                    isMulti
+                    name="skills"
+                    options={skills.map((skill) => ({ value: skill.name, label: skill.name }))}
+                    value={formData.skills?.length > 0
+                      ? formData.skills.map((skill) => ({ value: skill, label: skill }))
+                      : []} // Ensure it's always an array
+                    onChange={handleSkillsChange}
+                    className="basic-single-select mt-3"
+                    classNamePrefix="select"
+                    placeholder="Selecciona tus skills..."
+                    isSearchable
+                    filterOption={(candidate, input) =>
+                      candidate.label.toLowerCase().includes(input.toLowerCase())
+                    }
+                  />
+                  <p className="text-gray-400 text-sm mt-2">
+                    Agregar más habilidades aumenta tu visibilidad en la plataforma.
+                  </p>
+                </div>
+                <div className="mb-4">
+                  <label className="block text-lg">Preferencia de Tipo de Trabajo (*)</label>
+
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {[
+                      { label: "Tiempo completo", value: "full-time" },
+                      { label: "Medio tiempo", value: "part-time" },
+                      { label: "Por horas", value: "hourly" },
+                      { label: "Por proyecto", value: "project" },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => toggleJobType(option.value)}
+                        className={`px-4 py-2 rounded-full text-sm font-semibold transition ${formData.job_type.includes(option.value)
+                          ? "bg-[#10282c] text-white"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                          }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="mb-6">
-                  <label className="block text-lg font-semibold mb-2">Enlaces (Opcional)</label>
+                  <label className="block text-lg mb-2">Enlaces (Opcional)</label>
 
                   {formData.links.map((link, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-2 p-3 bg-gray-100 rounded-lg shadow-sm border border-gray-300 mt-2 transition-all hover:shadow-md"
+                      className="flex items-center gap-2 p-3 bg-gray-100 rounded-lg shadow-sm border border-gray-300 mt-3 transition-all hover:shadow-md"
                     >
                       {/* Link Icon & Type Input */}
                       <div className="flex items-center gap-2 w-1/3">
@@ -453,8 +527,8 @@ function MultiStepFormComponent() {
                   <p className="text-gray-400 text-sm mt-2">
                     El tamaño máximo es de 10MB
                   </p>
-                  <label htmlFor="resume" className="cursor-pointer text-indigo-600">
-                    {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF)'}
+                  <label htmlFor="resume" className="cursor-pointer text-[#244c56]">
+                    {formData.resume ? formData.resume.name : 'Haz clic para subir tu currículum (PDF) (*)'}
                   </label>
                   {fileError && <p className="text-red-500 text-sm mt-2">{fileError}</p>}
                 </div>

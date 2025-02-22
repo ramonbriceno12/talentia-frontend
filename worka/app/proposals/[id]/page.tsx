@@ -16,6 +16,7 @@ interface Talent {
     skills: { id: number; name: string; category: string }[];
     years_of_experience: number;
     expected_salary: string;
+    job_type_preference: string;
 }
 
 export default function ProposalPage() {
@@ -131,19 +132,24 @@ export default function ProposalPage() {
                         <div>
                             <h2 className="text-2xl text-[#10282c] font-bold">{talent.full_name.split(" ")[0]}</h2>
                             <p className="text-gray-600">{talent.job_title?.title || "Sin título"}</p>
-                            <p className="text-gray-400 text-sm">
+                            <p className="text-gray-500 text-sm">
                                 {talent.country && talent.country.trim() !== "N/A" ? talent.country : "Venezuela"}
                             </p>
 
                             {/* Experiencia: Only shows if years_of_experience is NOT null or 0 */}
                             {talent.years_of_experience != null && talent.years_of_experience !== 0 && (
-                                <p className="text-gray-400 text-sm">{`Experiencia: ${talent.years_of_experience} años`}</p>
+                                <p className="text-gray-500 text-sm">{`Experiencia: ${talent.years_of_experience} años`}</p>
                             )}
 
                             {/* Expectativa Salarial: Only shows if expected_salary is NOT null or "0.00" */}
                             {talent.expected_salary != null && talent.expected_salary !== "0.00" && (
-                                <p className="text-gray-400 text-sm">
+                                <p className="text-gray-500 text-sm">
                                     {`Expectativa Salarial: $${Number(talent.expected_salary).toLocaleString()}/Mes`}
+                                </p>
+                            )}
+                            {talent.job_type_preference && talent.job_type_preference.trim() !== "" && (
+                                <p className="text-gray-500 text-sm">
+                                    {`Busco trabajo: ${talent.job_type_preference.split("/").join(", ")}`}
                                 </p>
                             )}
                         </div>
