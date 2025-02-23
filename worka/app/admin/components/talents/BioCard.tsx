@@ -58,14 +58,14 @@ export default function BioSection({ bio, talentId, onSave }: {
                             onClick={handleSave}
                             disabled={loading}
                         >
-                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Save</>}
+                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Guardar</>}
                         </button>
 
                         <button
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                             onClick={() => { setUpdatedBio(bio); setIsEditing(false); }} // Reset & Close
                         >
-                            <FaTimes size={16} className="inline-block mr-2" /> Close
+                            <FaTimes size={16} className="inline-block mr-2" /> Cancelar
                         </button>
                     </div>
                 ) : (
@@ -73,7 +73,7 @@ export default function BioSection({ bio, talentId, onSave }: {
                         className="text-gray-500 hover:text-gray-700 px-4 py-2 rounded"
                         onClick={() => setIsEditing(true)}
                     >
-                        <FaEdit size={18} className="inline-block mr-2" /> Edit
+                        <FaEdit size={18} className="inline-block mr-2" /> Editar
                     </button>
                 )}
             </div>

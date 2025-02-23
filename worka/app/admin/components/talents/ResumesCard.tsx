@@ -94,7 +94,7 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
 
     return (
         <div className="mt-6 bg-white shadow-md p-4 rounded">
-            <h2 className="text-xl font-semibold text-[#244c56]">Resumes</h2>
+            <h2 className="text-xl font-semibold text-[#244c56]">Currículums</h2>
 
             {/* ✅ Resume List */}
             {resumes.length > 0 ? (
@@ -115,13 +115,13 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
                     ))}
                 </ul>
             ) : (
-                <p className="text-gray-500 mt-3">No resumes uploaded.</p>
+                <p className="text-gray-500 mt-3">No hay currículums subidos.</p>
             )}
 
             {/* ✅ File Upload */}
             <div className="mt-4">
                 {/* Resume Upload Box */}
-                <label htmlFor="resume" className="flex flex-col items-center border-2 border-dashed p-6 rounded-lg hover:border-indigo-500 transition cursor-pointer">
+                <label htmlFor="resume" className="flex flex-col items-center border-2 border-dashed p-6 rounded-lg hover:border-[#349390] transition cursor-pointer">
                     <input
                         type="file"
                         id="resume"
@@ -147,11 +147,11 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
                 {/* Upload Button */}
                 <button
                     onClick={handleUpload}
-                    className="mt-3 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-green-600 transition flex items-center gap-2 w-full"
+                    className="mt-3 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-[#349390] transition flex items-center gap-2 w-full"
                     disabled={loadingUpload || !selectedFile}
                 >
                     {
-                        loadingUpload ? "Uploading..." : <> <FaUpload /> Upload Resume</>
+                        loadingUpload ? "Uploading..." : <> <FaUpload /> Subir Currículum</>
                     }
                 </button>
             </div>
