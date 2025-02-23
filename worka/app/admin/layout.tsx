@@ -32,8 +32,12 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
   // If user is logged in, show sidebar + content
   return (
     <div className="flex h-screen">
-      <Sidebar /> {/* Sidebar is now an external component */}
-      <main className="flex-1 p-6">{children}</main>
+      <Sidebar /> {/* Sidebar stays fixed */}
+
+      {/* Content area with overflow scrolling */}
+      <main className="flex-1 p-6 overflow-y-auto h-screen bg-gray-100">
+        <div className="max-w-6xl mx-auto h-full">{children}</div> {/* Center content and limit width */}
+      </main>
     </div>
   );
 }
