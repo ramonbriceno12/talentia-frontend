@@ -8,6 +8,8 @@ import Link from "next/link";
 import ProfileCard from "../../components/talents/ProfileCard";
 import BioSection from "../../components/talents/BioCard";
 import ResumeUpload from "../../components/talents/ResumesCard";
+import ExperienceSalarySection from "../../components/talents/ExperienceCard";
+import SkillsSection from "../../components/talents/SkillsCard";
 
 export default function TalentDashboard() {
     const { user } = useAuth();
@@ -74,31 +76,23 @@ export default function TalentDashboard() {
             />
 
             {/* Resumes */}
-            <ResumeUpload talentId={talentData.id}/>
+            <ResumeUpload talentId={talentData.id} />
 
-            {/* Experience & Salary */}
-            <div className="mt-6 bg-white shadow-md p-4 rounded">
-                <h2 className="text-xl font-semibold">Experience & Salary</h2>
-                <p className="text-gray-600">Years of Experience: {talentData.years_of_experience}</p>
-                <p className="text-gray-600">Expected Salary: ${talentData.expected_salary}</p>
-                <p className="text-gray-600">Job Type Preference: {talentData.job_type_preference}</p>
-            </div>
+            {/* Experience & Salary Section */}
+            <ExperienceSalarySection
+                talentId={talentData.id}
+                yearsOfExperience={talentData.years_of_experience}
+                expectedSalary={talentData.expected_salary}
+                jobTypePreference={talentData.job_type_preference}
+                onSave={(updatedData) => setTalentData((prev) => ({ ...prev, ...updatedData }))}
+            />
 
             {/* Skills */}
-            <div className="mt-6 bg-white shadow-md p-4 rounded">
-                <h2 className="text-xl font-semibold">Skills</h2>
-                {talentData.skills && talentData.skills.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                        {talentData.skills.map((skill: any) => (
-                            <span key={skill.id} className="px-3 py-1 bg-blue-200 text-blue-700 rounded">
-                                {skill.name}
-                            </span>
-                        ))}
-                    </div>
-                ) : (
-                    <p className="text-gray-500">No skills added</p>
-                )}
-            </div>
+            <SkillsSection
+                talentId={talentData.id}
+                skills={talentData.skills || []} // ✅ Ensure it's always an array
+                onSave={(updatedSkills) => setTalentData((prev) => ({ ...prev, skills: updatedSkills }))}
+            />
 
             {/* Job Applications Limit */}
             <div className="mt-6 bg-white shadow-md p-4 rounded">
