@@ -10,6 +10,7 @@ import BioSection from "../../components/talents/BioCard";
 import ResumeUpload from "../../components/talents/ResumesCard";
 import ExperienceSalarySection from "../../components/talents/ExperienceCard";
 import SkillsSection from "../../components/talents/SkillsCard";
+import LinksSection from "../../components/talents/LinksCard";
 
 export default function TalentDashboard() {
     const { user } = useAuth();
@@ -94,20 +95,9 @@ export default function TalentDashboard() {
                 onSave={(updatedSkills) => setTalentData((prev) => ({ ...prev, skills: updatedSkills }))}
             />
 
-            {/* Job Applications Limit */}
-            <div className="mt-6 bg-white shadow-md p-4 rounded">
-                <h2 className="text-xl font-semibold">Job Applications</h2>
-                <p className="text-gray-600">
-                    {user?.is_featured
-                        ? "You have unlimited applications!"
-                        : "Limited job applications per month."}
-                </p>
-                {!user?.is_featured && (
-                    <Link href="/admin/upgrade">
-                        <button className="mt-2 px-4 py-2 bg-yellow-500 text-white rounded">Upgrade Plan</button>
-                    </Link>
-                )}
-            </div>
+            {/* Links Section */}
+            <LinksSection links={talentData.links || []} talentId={talentData.id} onSave={(updatedLinks) => setTalentData((prev) => ({ ...prev, links: updatedLinks }))} />
+
         </div>
     );
 }

@@ -77,7 +77,7 @@ export default function ExperienceSalarySection({
         <div className="mt-6 bg-white shadow-md p-4 rounded relative">
             {/* Header with Edit & Close Button */}
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-[#244c56]">Experience & Salary</h2>
+                <h2 className="text-xl font-semibold text-[#244c56]">Experiencia & Salario</h2>
 
                 {isEditing ? (
                     <div className="flex space-x-2">
@@ -86,7 +86,7 @@ export default function ExperienceSalarySection({
                             onClick={handleSave}
                             disabled={loading}
                         >
-                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Save</>}
+                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Guardar</>}
                         </button>
 
                         <button
@@ -100,7 +100,7 @@ export default function ExperienceSalarySection({
                                 setIsEditing(false); 
                             }} 
                         >
-                            <FaTimes size={16} className="inline-block mr-2" /> Close
+                            <FaTimes size={16} className="inline-block mr-2" /> Cancelar
                         </button>
                     </div>
                 ) : (
@@ -108,7 +108,7 @@ export default function ExperienceSalarySection({
                         className="text-gray-500 hover:text-gray-700 px-4 py-2 rounded"
                         onClick={() => setIsEditing(true)}
                     >
-                        <FaEdit size={18} className="inline-block mr-2" /> Edit
+                        <FaEdit size={18} className="inline-block mr-2" /> Editar
                     </button>
                 )}
             </div>
@@ -117,7 +117,7 @@ export default function ExperienceSalarySection({
             {isEditing ? (
                 <div className="space-y-4">
                     <label className="block text-gray-700">
-                        Years of Experience:
+                        Años de Experiencia:
                         <input
                             type="number"
                             className="border border-gray-300 p-2 rounded w-full"
@@ -127,7 +127,7 @@ export default function ExperienceSalarySection({
                     </label>
 
                     <label className="block text-gray-700">
-                        Expected Salary ($):
+                        Salario Esperado ($):
                         <input
                             type="number"
                             className="border border-gray-300 p-2 rounded w-full"
@@ -137,7 +137,7 @@ export default function ExperienceSalarySection({
                     </label>
 
                     <label className="block text-gray-700">
-                        Job Type Preference:
+                        Preferencia de Tipo de Trabajo:
                         <div className="flex flex-wrap gap-2 mt-3">
                             {[
                                 { label: "Tiempo completo", value: "full-time" },
@@ -163,10 +163,10 @@ export default function ExperienceSalarySection({
                 </div>
             ) : (
                 <div>
-                    <p className="text-gray-600">Years of Experience: {yearsOfExperience ?? "N/A"}</p>
-                    <p className="text-gray-600">Expected Salary: ${expectedSalary ?? "N/A"}</p>
+                    <p className="text-gray-600">Años de Experiencia: {yearsOfExperience ?? "N/A"}</p>
+                    <p className="text-gray-600">Salario Esperado: ${expectedSalary ?? "N/A"}</p>
                     <p className="text-gray-600">
-                        Job Type Preference: {jobTypePreference ? jobTypePreference.split("/").join(", ") : "N/A"}
+                        Preferencia de Tipo de Trabajo: {jobTypePreference ? jobTypePreference.split("/").join(", ") : "N/A"}
                     </p>
                 </div>
             )}

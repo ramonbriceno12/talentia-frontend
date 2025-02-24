@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
 
     return (
         <aside
-            className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white p-4 z-50 
+            className={`fixed inset-y-0 left-0 w-64 bg-[#244c56] text-white p-4 z-50 
       transform ${isOpen ? "translate-x-0" : "-translate-x-full"} 
       md:relative md:translate-x-0 transition-transform duration-300 ease-in-out`}
         >
@@ -90,7 +90,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
             <div className="absolute bottom-6 left-4 w-full">
                 <button
                     onClick={logout}
-                    className="flex items-center gap-3 w-[90%] px-4 py-3 bg-red-600 text-white rounded transition hover:bg-red-700"
+                    className="flex items-center gap-3 w-[90%] px-4 py-3 bg-[#ff4612] text-white rounded transition hover:bg-red-700"
                 >
                     <FaSignOutAlt />
                     Logout

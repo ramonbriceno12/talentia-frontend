@@ -77,7 +77,7 @@ export default function SkillsSection({
     return (
         <div className="mt-6 bg-white shadow-md p-4 rounded relative">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-[#244c56]">Skills</h2>
+                <h2 className="text-xl font-semibold text-[#244c56]">Habilidades</h2>
 
                 {isEditing ? (
                     <div className="flex space-x-2">
@@ -86,19 +86,19 @@ export default function SkillsSection({
                             onClick={handleSave}
                             disabled={loading}
                         >
-                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Save</>}
+                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Guardar</>}
                         </button>
 
                         <button
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                             onClick={() => { setUpdatedSkills(skills); setIsEditing(false); }} // Reset & Close
                         >
-                            <FaTimes size={16} className="inline-block mr-2" /> Close
+                            <FaTimes size={16} className="inline-block mr-2" /> Cancelar
                         </button>
                     </div>
                 ) : (
                     <button className="text-gray-500 hover:text-gray-700 px-4 py-2 rounded" onClick={() => setIsEditing(true)}>
-                        <FaEdit size={18} className="inline-block mr-2" /> Edit
+                        <FaEdit size={18} className="inline-block mr-2" /> Editar
                     </button>
                 )}
             </div>
@@ -108,18 +108,18 @@ export default function SkillsSection({
                     {/* Search Input */}
                     <input
                         type="text"
-                        placeholder="Search skills..."
+                        placeholder="Buscar Habilidades..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="border p-2 rounded w-full"
+                        className="border p-2 rounded w-full text-[#244c56]"
                     />
 
                     {/* Selected Skills */}
                     <div className="flex flex-wrap gap-2">
                         {updatedSkills.map(skill => (
-                            <span key={skill.id} className="px-3 py-1 bg-blue-200 text-blue-700 rounded flex items-center">
+                            <span key={skill.id} className="px-3 py-1 bg-[#244c56] text-white rounded flex items-center">
                                 {skill.name}
-                                <button className="ml-2 text-red-500 hover:text-red-700" onClick={() => handleRemoveSkill(skill.id)}>
+                                <button className="ml-2 text-[#ff4612] hover:text-red-700" onClick={() => handleRemoveSkill(skill.id)}>
                                     <FaTimes size={14} />
                                 </button>
                             </span>
@@ -133,7 +133,7 @@ export default function SkillsSection({
                             .map(skill => (
                                 <button
                                     key={skill.id}
-                                    className="block w-full text-left px-3 py-2 hover:bg-gray-200 transition"
+                                    className="block w-full text-left px-3 py-2 hover:bg-gray-200 hover:text-[#349390] transition text-[#244c56]"
                                     onClick={() => handleAddSkill(skill)}
                                 >
                                     <FaPlus size={12} className="inline-block mr-2" /> {skill.name} ({skill.category})

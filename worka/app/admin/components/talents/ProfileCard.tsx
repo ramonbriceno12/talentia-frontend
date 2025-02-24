@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import { FaEdit, FaExclamationCircle, FaSave, FaTimes } from "react-icons/fa";
 import Select from "react-select";
 
 export default function ProfileCard({ talentData, onSave }: { talentData: any; onSave: (updatedData: any) => void }) {
@@ -22,6 +22,7 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
     const [loading, setLoading] = useState(false);
     const [jobTitlesLoading, setJobTitlesLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     // ✅ Fetch job titles (with error handling)
     useEffect(() => {
@@ -36,7 +37,7 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                     label: job.title,
                 })));
             } catch (err) {
-                setError("Error fetching job titles");
+                setErrors((prev) => ({ ...prev, jobTitles: "Error al obtener los cargos" }));
                 console.error("Error fetching job titles:", err);
             } finally {
                 setJobTitlesLoading(false);
@@ -53,7 +54,7 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
 
             setUpdatedData({
                 full_name: talentData?.full_name || "",
-                job_title: matchingJobTitle || { id: "", value: "", label: "" }, // ✅ Ensure full object
+                job_title: matchingJobTitle || talentData.job_title || { id: "", value: "", label: "" }, // Preserve job_title correctly
                 email: talentData?.email || "",
                 profile_picture: talentData?.profile_picture || "",
                 headline: talentData?.headline || "",
@@ -84,6 +85,7 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
     // ✅ Handle Input Change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUpdatedData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
     };
 
     const handleJobTitleChange = (selectedOption: any) => {
@@ -95,6 +97,7 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                 label: selectedOption.label, // ✅ Store Label
             },
         }));
+        setErrors((prev) => ({ ...prev, job_title: "" }));
     };
 
     // ✅ Handle Profile Picture Selection & Preview
@@ -102,34 +105,32 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
         const file = e.target.files?.[0];
         if (file) {
             if (file.size > 10 * 1024 * 1024) {
-                alert("File size should be less than 10MB.");
+                setErrors((prev) => ({ ...prev, profile_picture: "El tamaño del archivo debe ser menor a 10MB." }));
                 return;
             }
             setSelectedFile(file);
             setAvatarPreview(URL.createObjectURL(file));
+            setErrors((prev) => ({ ...prev, profile_picture: "" }));
         }
     };
 
     // ✅ Validate Form Data
     const validateForm = () => {
+        const newErrors: { [key: string]: string } = {};
         if (updatedData.full_name.trim().length < 2) {
-            alert("Full name must be at least 2 characters long.");
-            return false;
+            newErrors.full_name = "El nombre debe tener al menos 2 caracteres.";
         }
         if (!updatedData.job_title?.value || updatedData.job_title.value.trim().length < 3) {
-            // ✅ Use `job_title.value` instead of `job_title.trim()`
-            alert("Job title must be at least 3 characters long.");
-            return false;
+            newErrors.job_title = "Selecciona un cargo válido.";
         }
         if (updatedData.headline.trim().length < 3) {
-            alert("Job title must be at least 3 characters long.");
-            return false;
+            newErrors.headline = "El titular debe tener al menos 3 caracteres.";
         }
         if (!/^\S+@\S+\.\S+$/.test(updatedData.email)) {
-            alert("Invalid email format.");
-            return false;
+            newErrors.email = "Formato de correo electrónico inválido.";
         }
-        return true;
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleSave = async () => {
@@ -188,10 +189,9 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
 
             setAvatarPreview(updatedTalent.talent.profile_picture || null);
             setIsEditing(false);
-            alert("Profile updated successfully!");
         } catch (error) {
             console.error("Error saving profile:", error);
-            alert(error.message || "Something went wrong. Please try again.");
+            setErrors((prev) => ({ ...prev, save: "Hubo un problema al actualizar el perfil. Inténtalo nuevamente." }));
         } finally {
             setLoading(false);
         }
@@ -217,8 +217,15 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition ml-2"
                             onClick={() => {
                                 setIsEditing(false); // Close Editing
-                                setUpdatedData({ ...talentData }); // Reset Data to Initial State
+                                setUpdatedData((prev) => ({
+                                    full_name: talentData.full_name,
+                                    email: talentData.email,
+                                    headline: talentData.headline,
+                                    profile_picture: talentData.profile_picture,
+                                    job_title: prev.job_title || { id: "", value: "", label: "" }, // Preserve job_title
+                                })); // Reset data except job_title
                                 setAvatarPreview(talentData.profile_picture || null); // Reset Image Preview
+                                setErrors({});
                             }}
                         >
                             <FaTimes size={16} className="inline-block mr-2" /> Cancelar
@@ -273,8 +280,14 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                                     name="full_name"
                                     value={updatedData.full_name}
                                     onChange={handleChange}
-                                    className="border border-gray-300 p-2 rounded w-full mb-2 text-[#244c56]"
+                                    className={`border p-2 rounded w-full text-[#244c56] ${errors.full_name ? "border-red-500" : "border-gray-300"
+                                        }`}
                                 />
+                                {errors.full_name && (
+                                    <div className="text-red-500 flex items-center gap-2 mt-1">
+                                        <FaExclamationCircle /> {errors.full_name}
+                                    </div>
+                                )}
                             </div>
                             <div className="mb-2">
                                 <label className="block text-sm font-medium text-gray-700">Titular</label>
@@ -283,8 +296,14 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                                     name="headline"
                                     value={updatedData.headline}
                                     onChange={handleChange}
-                                    className="border border-gray-300 p-2 rounded w-full mb-2 text-[#244c56]"
+                                    className={`border p-2 rounded w-full text-[#244c56] ${errors.headline ? "border-red-500" : "border-gray-300"
+                                        }`}
                                 />
+                                {errors.headline && (
+                                    <div className="text-red-500 flex items-center gap-2 mt-1">
+                                        <FaExclamationCircle /> {errors.headline}
+                                    </div>
+                                )}
                             </div>
 
                             <div className="mb-2">
@@ -299,6 +318,11 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                                     placeholder="Selecciona un cargo..."
                                     isSearchable
                                 />
+                                {errors.job_title && (
+                                    <div className="text-red-500 flex items-center gap-2 mt-1">
+                                        <FaExclamationCircle /> {errors.job_title}
+                                    </div>
+                                )}
                             </div>
                             <div className="mb-2">
                                 <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -307,8 +331,14 @@ export default function ProfileCard({ talentData, onSave }: { talentData: any; o
                                     name="email"
                                     value={updatedData.email}
                                     onChange={handleChange}
-                                    className="border border-gray-300 p-2 rounded w-full text-[#244c56]"
+                                    className={`border p-2 rounded w-full text-[#244c56] ${errors.email ? "border-red-500" : "border-gray-300"
+                                        }`}
                                 />
+                                {errors.email && (
+                                    <div className="text-red-500 flex items-center gap-2 mt-1">
+                                        <FaExclamationCircle /> {errors.email}
+                                    </div>
+                                )}
                             </div>
                         </>
                     ) : (

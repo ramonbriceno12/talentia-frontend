@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaEdit, FaSave, FaTimes } from "react-icons/fa";
+import { FaEdit, FaExclamationCircle, FaSave, FaTimes } from "react-icons/fa";
 
 export default function BioSection({ bio, talentId, onSave }: { 
     bio: string; 
@@ -9,11 +9,22 @@ export default function BioSection({ bio, talentId, onSave }: {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedBio, setUpdatedBio] = useState(bio);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    // ✅ Handle Bio Change & Remove Error
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const newBio = e.target.value;
+        setUpdatedBio(newBio);
+
+        if (newBio.trim().length >= 10) {
+            setError(null); // ✅ Clear error when valid
+        }
+    };
 
     // ✅ Save Bio
     const handleSave = async () => {
         if (updatedBio.trim().length < 10) {
-            alert("Bio must be at least 10 characters long.");
+            setError("La biografía debe tener al menos 10 caracteres.");
             return;
         }
 
@@ -31,15 +42,14 @@ export default function BioSection({ bio, talentId, onSave }: {
             });
 
             if (!response.ok) {
-                throw new Error("Failed to update bio.");
+                throw new Error("Error al actualizar la biografía.");
             }
 
             onSave(updatedBio); // ✅ Update the main view instantly
             setIsEditing(false);
-            alert("Bio updated successfully!");
         } catch (error) {
             console.error("Error updating bio:", error);
-            alert("Something went wrong. Please try again.");
+            setError("Hubo un problema al actualizar la biografía. Inténtalo nuevamente.");
         } finally {
             setLoading(false);
         }
@@ -49,7 +59,7 @@ export default function BioSection({ bio, talentId, onSave }: {
         <div className="mt-6 bg-white shadow-md p-4 rounded relative">
             {/* Header with Edit & Close Button */}
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-[#244c56]">Bio</h2>
+                <h2 className="text-xl font-semibold text-[#244c56]">Biografía</h2>
 
                 {isEditing ? (
                     <div className="flex space-x-2">
@@ -58,14 +68,18 @@ export default function BioSection({ bio, talentId, onSave }: {
                             onClick={handleSave}
                             disabled={loading}
                         >
-                            {loading ? "Saving..." : <><FaSave size={16} className="inline-block mr-2" /> Save</>}
+                            {loading ? "Guardando..." : <><FaSave size={16} className="inline-block mr-2" /> Guardar</>}
                         </button>
 
                         <button
                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                            onClick={() => { setUpdatedBio(bio); setIsEditing(false); }} // Reset & Close
+                            onClick={() => { 
+                                setUpdatedBio(bio); 
+                                setError(null); // ✅ Clear error on cancel
+                                setIsEditing(false); 
+                            }} 
                         >
-                            <FaTimes size={16} className="inline-block mr-2" /> Close
+                            <FaTimes size={16} className="inline-block mr-2" /> Cancelar
                         </button>
                     </div>
                 ) : (
@@ -73,20 +87,31 @@ export default function BioSection({ bio, talentId, onSave }: {
                         className="text-gray-500 hover:text-gray-700 px-4 py-2 rounded"
                         onClick={() => setIsEditing(true)}
                     >
-                        <FaEdit size={18} className="inline-block mr-2" /> Edit
+                        <FaEdit size={18} className="inline-block mr-2" /> Editar
                     </button>
                 )}
             </div>
 
             {/* Editable Bio */}
             {isEditing ? (
-                <textarea
-                    className="border border-gray-300 p-2 rounded w-full h-32 text-[#244c56]"
-                    value={updatedBio}
-                    onChange={(e) => setUpdatedBio(e.target.value)}
-                />
+                <>
+                    <textarea
+                        className={`border p-2 rounded w-full h-32 text-[#244c56] ${
+                            error ? "border-red-500" : "border-gray-300"
+                        }`}
+                        value={updatedBio}
+                        onChange={handleChange}
+                    />
+                    
+                    {/* ✅ Error Message */}
+                    {error && (
+                        <div className="text-red-500 flex items-center gap-2 mt-1">
+                            <FaExclamationCircle /> {error}
+                        </div>
+                    )}
+                </>
             ) : (
-                <p className="text-gray-600 ">{bio || "No bio available."}</p>
+                <p className="text-gray-600">{bio || "No hay biografía disponible."}</p>
             )}
         </div>
     );
