@@ -14,7 +14,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
     // Define menu options based on user role with icons
     const menuOptions = {
         talent: [
-            { path: "/admin", label: "Dashboard", icon: <FaHome /> },
+            { path: "/admin/talents/dashboard", label: "Dashboard", icon: <FaHome /> },
             { path: "/admin/jobs", label: "My Applications", icon: <FaBriefcase /> },
             { path: "/admin/talents/profile", label: "Profile", icon: <FaUser /> },
         ],

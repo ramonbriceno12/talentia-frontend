@@ -12,42 +12,50 @@ export default function TalentDashboard() {
     const [profileViews, setProfileViews] = useState<number>(0);
     const [viewers, setViewers] = useState<Array>([]);
     const [completionPercentage, setCompletionPercentage] = useState<number>(0);
+    const [missingFields, setMissingFields] = useState<string[]>([]);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const { user } = useAuth();
 
     useEffect(() => {
-        const fetchDashboardData = async () => {
-            if (!token || !user?.id) return;
+        const fetchProfileViews = async () => {
+            if (!token) return;
 
             try {
-                // Fetch both profile views & profile completion
-                const [viewsResponse, completionResponse] = await Promise.all([
-                    fetch(`http://localhost:5000/api/profile-views/${user.id}`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }),
-                    fetch(`http://localhost:5000/api/talents/completion/${user.id}`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }),
-                ]);
+                const response = await fetch(`http://localhost:5000/api/profile-views/${user?.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
 
-                if (!viewsResponse.ok) throw new Error("Failed to fetch profile views");
-                if (!completionResponse.ok) throw new Error("Failed to fetch profile completion");
+                if (!response.ok) throw new Error("Failed to fetch profile views");
 
-                const viewsData = await viewsResponse.json();
-                const completionData = await completionResponse.json();
-
-                console.log(completionData)
-
-                setProfileViews(viewsData.profileViews || 0);
-                setViewers(viewsData.viewers || []);
-                setCompletionPercentage(completionData.completionPercentage || 0);
+                const data = await response.json();
+                setProfileViews(data.profileViews || 0);
+                setViewers(data.viewers || []);
             } catch (error) {
-                console.error("Error fetching dashboard data:", error);
+                console.error("Error fetching profile views:", error);
             }
         };
 
-        fetchDashboardData();
-    }, [token, user?.id]);
+        const fetchProfileCompletion = async () => {
+            if (!token) return;
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/talents/completion/${user?.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch profile completion");
+
+                const data = await response.json();
+                setCompletionPercentage(data.completionPercentage || 0);
+                setMissingFields(data.missingFields || []);
+            } catch (error) {
+                console.error("Error fetching profile completion:", error);
+            }
+        };
+
+        fetchProfileViews();
+        fetchProfileCompletion();
+    }, [token]);
 
     return (
         <div className="p-6">
@@ -59,7 +67,7 @@ export default function TalentDashboard() {
             {/* Grid Layout for Dashboard Sections */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                 <JobApplications />
-                <ProfileCompletion completionPercentage={completionPercentage} />
+                <ProfileCompletion completionPercentage={completionPercentage} missingFields={missingFields} />
                 <ProfileViews profileViews={profileViews} viewers={viewers} />
                 <ProposalsReceived />
                 <RelatedJobs />

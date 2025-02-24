@@ -3,14 +3,12 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../utils/authContext";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import ProfileCard from "../../components/talents/ProfileCard";
-import BioSection from "../../components/talents/BioCard";
-import ResumeUpload from "../../components/talents/ResumesCard";
-import ExperienceSalarySection from "../../components/talents/ExperienceCard";
-import SkillsSection from "../../components/talents/SkillsCard";
-import LinksSection from "../../components/talents/LinksCard";
+import ProfileCard from "../../components/talents/profile/ProfileCard";
+import BioSection from "../../components/talents/profile/BioCard";
+import ResumeUpload from "../../components/talents/profile/ResumesCard";
+import ExperienceSalarySection from "../../components/talents/profile/ExperienceCard";
+import SkillsSection from "../../components/talents/profile/SkillsCard";
+import LinksSection from "../../components/talents/profile/LinksCard";
 
 export default function TalentDashboard() {
     const { user } = useAuth();
