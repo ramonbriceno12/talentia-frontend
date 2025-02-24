@@ -13,6 +13,9 @@ export default function TalentDashboard() {
     const [viewers, setViewers] = useState<Array>([]);
     const [completionPercentage, setCompletionPercentage] = useState<number>(0);
     const [missingFields, setMissingFields] = useState<string[]>([]);
+    const [relatedJobs, setRelatedJobs] = useState<Array>([]);
+    const [applicationsDashboard, setApplicationsDashboard] = useState<Array>([]);
+    const [applicationsCount, setApplicationsCount] = useState<number>(0);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const { user } = useAuth();
 
@@ -53,8 +56,42 @@ export default function TalentDashboard() {
             }
         };
 
+        const fetchRelatedJobs = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/jobs/talent/related/${user?.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch related jobs");
+
+                const data = await response.json();
+                setRelatedJobs(data.jobs || []);
+            } catch (error) {
+                console.error("Error fetching related jobs:", error);
+            }
+        };
+
+        const fetchApplicationsDashboard = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/applications/talent/dashboard/${user?.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch job applications");
+
+                const data = await response.json();
+                setApplicationsDashboard(data.applications || []);
+                setApplicationsCount(data.totalApplications || 0);
+            } catch (error) {
+                console.error("Error fetching job applications:", error);
+            }
+        };
+
         fetchProfileViews();
         fetchProfileCompletion();
+        fetchRelatedJobs();
+        fetchApplicationsDashboard();
+
     }, [token]);
 
     return (
@@ -66,11 +103,13 @@ export default function TalentDashboard() {
 
             {/* Grid Layout for Dashboard Sections */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                <JobApplications />
+                <JobApplications totalApplications={applicationsCount} />
                 <ProfileCompletion completionPercentage={completionPercentage} missingFields={missingFields} />
                 <ProfileViews profileViews={profileViews} viewers={viewers} />
                 <ProposalsReceived />
-                <RelatedJobs />
+            </div>
+            <div className="mt-10">
+                <RelatedJobs jobs={relatedJobs} />
             </div>
         </div>
     );

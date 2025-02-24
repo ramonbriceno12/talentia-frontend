@@ -15,7 +15,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
     const menuOptions = {
         talent: [
             { path: "/admin/talents/dashboard", label: "Dashboard", icon: <FaHome /> },
-            { path: "/admin/jobs", label: "My Applications", icon: <FaBriefcase /> },
+            { path: "/admin/talents/applications", label: "My Applications", icon: <FaBriefcase /> },
             { path: "/admin/talents/profile", label: "Profile", icon: <FaUser /> },
         ],
         recruiter: [
