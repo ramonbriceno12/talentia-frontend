@@ -127,19 +127,29 @@ function MultiStepFormComponent() {
       }
     }
     if (files) {
+
       const file = files[0];
-      if (name === 'resume' && file && file.type !== 'application/pdf') {
-        setFileError('❌ Solo se permiten archivos en formato PDF.');
+      const validExtensions = ["pdf", "doc", "docx"];
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
+      // 🔹 Check File Size First
+      if (file.size > 10 * 1024 * 1024) {
+        setFileError("El archivo no debe superar los 10MB.");
         return;
       }
 
-      if (name === 'avatar' && file) {
+      if (name === "resume") {
+        if (!fileExtension || !validExtensions.includes(fileExtension)) {
+          setFileError("Formato de archivo inválido. Solo se permiten PDF, DOC y DOCX.");
+          return;
+        }
+      }
+
+      if (name === "avatar") {
         const reader = new FileReader();
         reader.onload = () => setAvatarPreview(reader.result);
         reader.readAsDataURL(file);
       }
-
-
 
       setFileError('');
     }
