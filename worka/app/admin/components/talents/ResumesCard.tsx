@@ -1,20 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FaTrash, FaUpload } from "react-icons/fa";
+import { FaTrash, FaUpload, FaExclamationCircle } from "react-icons/fa";
 
 export default function ResumeUpload({ talentId }: { talentId: number }) {
     const [resumes, setResumes] = useState<{ id: number; resume_url: string }[]>([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loadingUpload, setLoadingUpload] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState<{ [key: number]: boolean }>({});
+    const [error, setError] = useState<string | null>(null);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
     // ✅ Fetch existing resumes
     const fetchResumes = async () => {
         try {
             const response = await fetch(`http://localhost:5000/api/talents/${talentId}`);
-            if (!response.ok) throw new Error("Failed to fetch resumes");
+            if (!response.ok) throw new Error("Error al obtener los currículums");
             const data = await response.json();
             setResumes(data.resumes || []);
         } catch (error) {
@@ -26,17 +27,35 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
         fetchResumes();
     }, [talentId]);
 
-    // ✅ Handle File Selection
+    // ✅ Handle File Selection with Validation
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
-            setSelectedFile(e.target.files[0]);
+        const file = e.target.files?.[0];
+
+        if (file) {
+            const validExtensions = ["pdf", "doc", "docx"];
+            const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
+            if (!fileExtension || !validExtensions.includes(fileExtension)) {
+                setError("Formato de archivo inválido. Solo se permiten PDF, DOC y DOCX.");
+                setSelectedFile(null);
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                setError("El archivo no debe superar los 10MB.");
+                setSelectedFile(null);
+                return;
+            }
+
+            setSelectedFile(file);
+            setError(null); // ✅ Clear error when valid
         }
     };
 
     // ✅ Upload Resume
     const handleUpload = async () => {
-        if (!selectedFile) return alert("Please select a file.");
-        if (!token) return alert("Unauthorized! Please log in.");
+        if (!selectedFile || error) return;
+        if (!token) return alert("¡No autorizado! Por favor, inicia sesión.");
 
         const formData = new FormData();
         formData.append("resume", selectedFile);
@@ -49,17 +68,16 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
                 body: formData,
             });
 
-            if (!response.ok) throw new Error("Error uploading resume");
+            if (!response.ok) throw new Error("Error al subir el currículum");
             const newResume = await response.json();
 
             // ✅ Update UI Immediately
             setResumes((prev) => [...prev, newResume]);
 
             setSelectedFile(null);
-            alert("Resume uploaded successfully!");
         } catch (error) {
             console.error("Error uploading resume:", error);
-            alert("Something went wrong. Please try again.");
+            setError("Hubo un problema al subir el currículum. Inténtalo nuevamente.");
         } finally {
             setLoadingUpload(false);
         }
@@ -67,8 +85,8 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
 
     // ✅ Remove Resume
     const handleDelete = async (resumeId: number) => {
-        if (!token) return alert("Unauthorized! Please log in.");
-        if (!confirm("Are you sure you want to delete this resume?")) return;
+        if (!token) return alert("¡No autorizado! Por favor, inicia sesión.");
+        if (!confirm("¿Estás seguro de que quieres eliminar este currículum?")) return;
 
         setLoadingDelete((prev) => ({ ...prev, [resumeId]: true }));
 
@@ -78,15 +96,13 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
                 headers: { "Authorization": `Bearer ${token}` },
             });
 
-            if (!response.ok) throw new Error("Error deleting resume");
+            if (!response.ok) throw new Error("Error al eliminar el currículum");
 
             // ✅ Update UI Immediately
             setResumes((prev) => prev.filter((resume) => resume.id !== resumeId));
-
-            alert("Resume deleted successfully!");
         } catch (error) {
             console.error("Error deleting resume:", error);
-            alert("Something went wrong. Please try again.");
+            setError("Hubo un problema al eliminar el currículum. Inténtalo nuevamente.");
         } finally {
             setLoadingDelete((prev) => ({ ...prev, [resumeId]: false }));
         }
@@ -109,7 +125,7 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
                                 className="text-red-500 hover:text-red-700"
                                 disabled={loadingDelete[resume.id]} // ✅ Disable only the clicked button
                             >
-                                {loadingDelete[resume.id] ? "Deleting..." : <FaTrash />}
+                                {loadingDelete[resume.id] ? "Eliminando..." : <FaTrash />}
                             </button>
                         </li>
                     ))}
@@ -140,22 +156,24 @@ export default function ResumeUpload({ talentId }: { talentId: number }) {
 
                     {/* File size limit info */}
                     <p className="text-gray-400 text-sm mt-1">El tamaño máximo es de 10MB</p>
-
-                    {/* Error message */}
                 </label>
+
+                {/* ✅ Error Message */}
+                {error && (
+                    <div className="text-red-500 flex items-center gap-2 mt-2">
+                        <FaExclamationCircle /> {error}
+                    </div>
+                )}
 
                 {/* Upload Button */}
                 <button
                     onClick={handleUpload}
                     className="mt-3 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-[#349390] transition flex items-center gap-2 w-full"
-                    disabled={loadingUpload || !selectedFile}
+                    disabled={loadingUpload || !selectedFile || error !== null}
                 >
-                    {
-                        loadingUpload ? "Uploading..." : <> <FaUpload /> Subir Currículum</>
-                    }
+                    {loadingUpload ? "Subiendo..." : <> <FaUpload /> Subir Currículum</>}
                 </button>
             </div>
-
         </div>
     );
 }
