@@ -11,7 +11,7 @@ export default function ProfileCompletion({ completionPercentage, missingFields 
             <div className="flex items-center gap-3">
                 <FaCheckCircle className={`text-3xl ${completionPercentage >= 80 ? "text-green-500" : "text-yellow-500"}`} />
                 <div>
-                    <h2 className="text-lg font-semibold">Perfil Completo</h2>
+                    <h2 className="text-lg font-semibold text-[#244c56]">Perfil Completo</h2>
                     <p className="text-gray-600">
                         Tu perfil está completo en un <strong>{completionPercentage}%</strong>
                     </p>

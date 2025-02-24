@@ -11,7 +11,7 @@ export default function RelatedJobs() {
 
   return (
     <div className="bg-white shadow-md p-6 rounded">
-      <h2 className="text-lg font-semibold flex items-center gap-2">
+      <h2 className="text-lg font-semibold flex items-center gap-2 text-[#244c56]">
         <FaStar className="text-yellow-500" /> Empleos relacionados
       </h2>
       <ul className="mt-3 space-y-2">

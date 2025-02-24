@@ -10,7 +10,7 @@ export default function ProposalsReceived() {
       <div className="flex items-center gap-3">
         <FaFileAlt className="text-orange-500 text-3xl" />
         <div>
-          <h2 className="text-lg font-semibold">Propuestas recibidas</h2>
+          <h2 className="text-lg font-semibold text-[#244c56]">Propuestas recibidas</h2>
           <p className="text-gray-600">{proposals} propuestas de trabajo</p>
         </div>
       </div>

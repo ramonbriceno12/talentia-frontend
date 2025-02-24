@@ -8,7 +8,7 @@ export default function ProfileViews({ profileViews, viewers }: { profileViews: 
       <div className="flex items-center gap-3">
         <FaEye className="text-purple-500 text-3xl" />
         <div>
-          <h2 className="text-lg font-semibold">Vistas de perfil</h2>
+          <h2 className="text-lg font-semibold text-[#244c56]">Vistas de perfil</h2>
           <p className="text-gray-600">
             {profileViews === 0
               ? "Nadie ha visto tu perfil aún."
