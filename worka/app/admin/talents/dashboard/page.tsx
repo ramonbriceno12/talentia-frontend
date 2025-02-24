@@ -16,6 +16,8 @@ export default function TalentDashboard() {
     const [relatedJobs, setRelatedJobs] = useState<Array>([]);
     const [applicationsDashboard, setApplicationsDashboard] = useState<Array>([]);
     const [applicationsCount, setApplicationsCount] = useState<number>(0);
+    const [proposals, setProposals] = useState<Array>([]);
+    const [proposalsCount, setProposalsCount] = useState<number>(0);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const { user } = useAuth();
 
@@ -87,10 +89,28 @@ export default function TalentDashboard() {
             }
         };
 
+        const fetchProposals = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/proposals/talent/${user?.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch proposals");
+
+                const data = await response.json();
+                setProposals(data.proposals || []);
+                setProposalsCount(data.proposalsCount || 0)
+
+            } catch (error) {
+                console.error("Error fetching proposals:", error);
+            }
+        };
+
         fetchProfileViews();
         fetchProfileCompletion();
         fetchRelatedJobs();
         fetchApplicationsDashboard();
+        fetchProposals();
 
     }, [token]);
 
@@ -106,7 +126,7 @@ export default function TalentDashboard() {
                 <JobApplications totalApplications={applicationsCount} />
                 <ProfileCompletion completionPercentage={completionPercentage} missingFields={missingFields} />
                 <ProfileViews profileViews={profileViews} viewers={viewers} />
-                <ProposalsReceived />
+                <ProposalsReceived totalProposals={proposalsCount} />
             </div>
             <div className="mt-10">
                 <RelatedJobs jobs={relatedJobs} />
