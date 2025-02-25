@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FaBriefcase, FaMapMarkerAlt, FaListUl, FaTrash, FaExclamationCircle, FaUpload } from "react-icons/fa";
 import { useAuth } from "../../../utils/authContext";
+import RelatedJobs from "@/app/admin/components/talents/dashboard/RelatedJobs";
 
 interface Job {
     id: number;
@@ -36,6 +37,7 @@ export default function JobDetailsPage() {
     const [loadingUpload, setLoadingUpload] = useState<boolean>(false);
     const [hasApplied, setHasApplied] = useState<boolean>(false);
     const [applicationData, setApplicationData] = useState<any>(null);
+    const [relatedJobs, setRelatedJobs] = useState<Array>([]);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const { user } = useAuth();
     const talentId = user?.id;
@@ -67,6 +69,7 @@ export default function JobDetailsPage() {
         if (talentId && id) {
             fetchResumes();
             checkApplicationStatus();
+            fetchRelatedJobs();
         }
     }, [talentId, id]);
 
@@ -96,6 +99,21 @@ export default function JobDetailsPage() {
             }
         } catch (error) {
             console.error("Error checking application status:", error);
+        }
+    };
+
+    const fetchRelatedJobs = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/jobs/talent/related/${talentId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch related jobs");
+
+            const data = await response.json();
+            setRelatedJobs(data.jobs || []);
+        } catch (error) {
+            console.error("Error fetching related jobs:", error);
         }
     };
 
@@ -245,7 +263,20 @@ export default function JobDetailsPage() {
             ) : job ? (
                 <>
                     {/* Job Details Card */}
-                    <div className="bg-white shadow-md p-6 rounded-lg">
+                    <div className="bg-white shadow-md p-6 rounded-lg relative overflow-hidden">
+                        {/* Corner Flag */}
+                        {hasApplied && (
+                            <div className="absolute top-0 right-0">
+                                <div className="relative">
+                                    <div className="bg-[#244c56] text-white px-4 py-1 text-sm font-semibold">
+                                        Aplicado
+                                    </div>
+                                    <div className="absolute -bottom-[8px] right-0 border-t-[8px] border-t-[#19353a] border-l-transparent border-l-8 border-r-0 border-b-8 border-b-transparent"></div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Job Details */}
                         <h1 className="text-2xl font-bold text-[#244c56] flex items-center gap-2">
                             <FaBriefcase className="text-blue-500 text-3xl" /> {job.title}
                         </h1>
@@ -404,6 +435,9 @@ export default function JobDetailsPage() {
                                 </button>
                             </>
                         )}
+                    </div>
+                    <div className="mt-6">
+                        <RelatedJobs jobs={relatedJobs} />
                     </div>
                 </>
             ) : (

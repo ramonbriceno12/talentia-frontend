@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaCheckCircle } from "react-icons/fa";
 
 interface Job {
   id: number;
@@ -10,6 +10,7 @@ interface Job {
   location: string;
   is_remote: boolean;
   created_at: string;
+  hasApplied: boolean; // Add hasApplied flag
 }
 
 interface RelatedJobsProps {
@@ -33,6 +34,14 @@ export default function RelatedJobs({ jobs }: RelatedJobsProps) {
               <p className="text-gray-600 text-sm">{job.company}</p>
               <p className="text-gray-500 text-sm">{job.location}</p>
               <p className="text-gray-400 text-xs">Publicado el {new Date(job.created_at).toLocaleDateString()}</p>
+
+              {/* Display if the talent has already applied */}
+              {job.hasApplied && (
+                <p className="text-green-500 text-xs mt-2 flex items-center gap-1">
+                  <FaCheckCircle /> Ya has aplicado a este empleo
+                </p>
+              )}
+
               <Link href={`jobs/${job.id}`}>
                 <button className="mt-4 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-[#349390]">
                   Ver Detalles
