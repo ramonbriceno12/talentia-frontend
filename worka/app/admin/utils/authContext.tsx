@@ -8,6 +8,10 @@ type User = {
   email: string;
   name: string;
   role: string;
+  plan: {
+    id: string;
+    name: string;
+  };
   profile_picture?: string;
 };
 
