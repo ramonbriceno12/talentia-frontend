@@ -18,7 +18,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
             { path: "/admin/talents/jobs", label: "Empleos", icon: <FaSuitcase /> },
             { path: "/admin/talents/applications", label: "Mis Aplicaciones", icon: <FaBriefcase /> },
             { path: "/admin/talents/proposals", label: "Propuestas", icon: <FaFileAlt /> }
-            
+
         ],
         recruiter: [
             { path: "/admin", label: "Dashboard", icon: <FaHome /> },
@@ -65,8 +65,14 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
                         />
                     </div>
                 ) : (
-                    <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center text-lg font-bold uppercase">
-                        {user.name.charAt(0)}
+                    <div className="w-16 h-16 rounded-full overflow-hidden">
+                        <Image
+                            src="/img/default-user.png" // ✅ Default image when no profile picture
+                            alt="Default User"
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                 )}
                 <p className="mt-2 font-semibold">{user.full_name}</p>

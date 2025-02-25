@@ -63,7 +63,7 @@ export default function JobsPage() {
               <p className="text-gray-400 text-xs">Publicado el {new Date(job.created_at).toLocaleDateString()}</p>
               <Link href={`jobs/${job.id}`}>
                 <button className="mt-4 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-[#349390]">
-                  Ver Detalles
+                  Aplicar
                 </button>
               </Link>
             </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FaBriefcase } from "react-icons/fa";
 import { useAuth } from "../../utils/authContext";
+import Link from "next/link";
 
 interface Application {
   job_id: number;
@@ -66,7 +67,7 @@ export default function ApplicationsPage() {
             <tbody>
               {applications.map((app) => (
                 <tr key={app.job_id} className="border-b hover:bg-gray-100 transition text-gray-600">
-                  <td className="p-3 font-medium">{app.job_title}</td>
+                  <td className="p-3 font-medium underline"><Link href={`jobs/${app.job_id}`}>{app.job_title}</Link></td>
                   <td className="p-3">{app.company}</td>
                   <td className="p-3">{app.location}</td>
                   <td className="p-3 text-gray-600">{new Date(app.applied_at).toLocaleDateString()}</td>

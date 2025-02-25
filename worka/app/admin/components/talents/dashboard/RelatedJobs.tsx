@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
 interface Job {
@@ -8,6 +9,7 @@ interface Job {
   company: string;
   location: string;
   is_remote: boolean;
+  created_at: string;
 }
 
 interface RelatedJobsProps {
@@ -27,10 +29,15 @@ export default function RelatedJobs({ jobs }: RelatedJobsProps) {
         <div className="flex flex-wrap gap-4">
           {jobs.map((job) => (
             <div key={job.id} className="bg-gray-100 p-4 rounded-lg shadow-md w-full md:w-[48%] lg:w-[30%]">
-              <h3 className="text-lg font-medium text-[#244c56]">{job.title}</h3>
-              <p className="text-sm text-gray-600">
-                {job.company} • {job.is_remote ? "Remoto" : job.location}
-              </p>
+              <h2 className="text-lg font-semibold text-[#244c56]">{job.title}</h2>
+              <p className="text-gray-600 text-sm">{job.company}</p>
+              <p className="text-gray-500 text-sm">{job.location}</p>
+              <p className="text-gray-400 text-xs">Publicado el {new Date(job.created_at).toLocaleDateString()}</p>
+              <Link href={`jobs/${job.id}`}>
+                <button className="mt-4 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-[#349390]">
+                  Ver Detalles
+                </button>
+              </Link>
             </div>
           ))}
         </div>
