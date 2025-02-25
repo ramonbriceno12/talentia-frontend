@@ -1,26 +1,56 @@
 "use client";
 
-import { FaStar } from "react-icons/fa";
+import Link from "next/link";
+import { FaStar, FaCheckCircle } from "react-icons/fa";
 
-export default function RelatedJobs() {
-  const relatedJobs = [
-    { id: 1, title: "Frontend Developer", company: "TechCorp" },
-    { id: 2, title: "UI/UX Designer", company: "Designify" },
-    { id: 3, title: "Project Manager", company: "BizFlow" },
-  ]; // Placeholder data
+interface Job {
+  id: number;
+  title: string;
+  company: string;
+  location: string;
+  is_remote: boolean;
+  created_at: string;
+  hasApplied: boolean; // Add hasApplied flag
+}
 
+interface RelatedJobsProps {
+  jobs: Job[];
+}
+
+export default function RelatedJobs({ jobs }: RelatedJobsProps) {
   return (
-    <div className="bg-white shadow-md p-6 rounded">
-      <h2 className="text-lg font-semibold flex items-center gap-2">
-        <FaStar className="text-yellow-500" /> Empleos relacionados
+    <div className="bg-white shadow-md p-6 rounded-lg">
+      <h2 className="text-xl font-semibold flex items-center gap-2 text-[#244c56] mb-4">
+        <FaStar className="text-yellow-500" /> Empleos Relacionados
       </h2>
-      <ul className="mt-3 space-y-2">
-        {relatedJobs.map((job) => (
-          <li key={job.id} className="text-gray-600">
-            <strong>{job.title}</strong> en {job.company}
-          </li>
-        ))}
-      </ul>
+
+      {jobs.length === 0 ? (
+        <p className="text-gray-500 [#244c56]">No hay trabajos relacionados en este momento.</p>
+      ) : (
+        <div className="flex flex-wrap gap-4">
+          {jobs.map((job) => (
+            <div key={job.id} className="bg-gray-100 p-4 rounded-lg shadow-md w-full md:w-[48%] lg:w-[30%]">
+              <h2 className="text-lg font-semibold text-[#244c56]">{job.title}</h2>
+              <p className="text-gray-600 text-sm">{job.company}</p>
+              <p className="text-gray-500 text-sm">{job.location}</p>
+              <p className="text-gray-400 text-xs">Publicado el {new Date(job.created_at).toLocaleDateString()}</p>
+
+              {/* Display if the talent has already applied */}
+              {job.hasApplied && (
+                <p className="text-green-500 text-xs mt-2 flex items-center gap-1">
+                  <FaCheckCircle /> Ya has aplicado a este empleo
+                </p>
+              )}
+
+              <Link href={`jobs/${job.id}`}>
+                <button className="mt-4 bg-[#244c56] text-white px-4 py-2 rounded hover:bg-[#349390]">
+                  Ver Detalles
+                </button>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

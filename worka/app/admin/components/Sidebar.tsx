@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useAuth } from "../utils/authContext";
-import { useState } from "react";
 import Image from "next/image";
-import { FaTimes, FaSignOutAlt, FaUser, FaHome, FaBriefcase, FaUsers } from "react-icons/fa";
+import { FaTimes, FaSignOutAlt, FaUser, FaHome, FaBriefcase, FaUsers, FaFileAlt, FaSuitcase } from "react-icons/fa";
 
 export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; closeSidebar: () => void }) {
     const { user, logout } = useAuth();
@@ -14,9 +13,12 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
     // Define menu options based on user role with icons
     const menuOptions = {
         talent: [
-            { path: "/admin", label: "Dashboard", icon: <FaHome /> },
-            { path: "/admin/jobs", label: "My Applications", icon: <FaBriefcase /> },
-            { path: "/admin/talents/profile", label: "Profile", icon: <FaUser /> },
+            { path: "/admin/talents/dashboard", label: "Dashboard", icon: <FaHome /> },
+            { path: "/admin/talents/profile", label: "Perfil", icon: <FaUser /> },
+            { path: "/admin/talents/jobs", label: "Empleos", icon: <FaSuitcase /> },
+            { path: "/admin/talents/applications", label: "Mis Aplicaciones", icon: <FaBriefcase /> },
+            { path: "/admin/talents/proposals", label: "Propuestas", icon: <FaFileAlt /> }
+
         ],
         recruiter: [
             { path: "/admin", label: "Dashboard", icon: <FaHome /> },
@@ -63,8 +65,14 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
                         />
                     </div>
                 ) : (
-                    <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center text-lg font-bold uppercase">
-                        {user.name.charAt(0)}
+                    <div className="w-16 h-16 rounded-full overflow-hidden">
+                        <Image
+                            src="/img/default-user.png" // ✅ Default image when no profile picture
+                            alt="Default User"
+                            width={64}
+                            height={64}
+                            className="w-full h-full object-cover"
+                        />
                     </div>
                 )}
                 <p className="mt-2 font-semibold">{user.full_name}</p>
