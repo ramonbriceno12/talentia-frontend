@@ -6,6 +6,7 @@ import ProfileCompletion from "../../components/talents/dashboard/ProfileComplet
 import ProfileViews from "../../components/talents/dashboard/ProfileViews";
 import ProposalsReceived from "../../components/talents/dashboard/ProposalsReceived";
 import RelatedJobs from "../../components/talents/dashboard/RelatedJobs";
+import Followers from "../../components/talents/dashboard/Followers";
 import { useAuth } from "../../utils/authContext";
 
 export default function TalentDashboard() {
@@ -18,6 +19,7 @@ export default function TalentDashboard() {
     const [applicationsCount, setApplicationsCount] = useState<number>(0);
     const [proposals, setProposals] = useState<Array>([]);
     const [proposalsCount, setProposalsCount] = useState<number>(0);
+    const [followersCount, setFollowersCount] = useState<number>(0);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const { user } = useAuth();
 
@@ -106,11 +108,27 @@ export default function TalentDashboard() {
             }
         };
 
+        const fetchFollowersCount = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/follows/count/${user?.id}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch followers count");
+
+                const data = await response.json();
+                setFollowersCount(data.totalFollowers || 0); // ✅ Set followers count
+            } catch (error) {
+                console.error("Error fetching followers count:", error);
+            }
+        };
+
         fetchProfileViews();
         fetchProfileCompletion();
         fetchRelatedJobs();
         fetchApplicationsDashboard();
         fetchProposals();
+        fetchFollowersCount();
 
     }, [token]);
 
@@ -127,6 +145,7 @@ export default function TalentDashboard() {
                 <ProfileCompletion completionPercentage={completionPercentage} missingFields={missingFields} />
                 <ProfileViews profileViews={profileViews} viewers={viewers} />
                 <ProposalsReceived totalProposals={proposalsCount} />
+                <Followers totalFollowers={followersCount} />
             </div>
             <div className="mt-10">
                 <RelatedJobs jobs={relatedJobs} />
