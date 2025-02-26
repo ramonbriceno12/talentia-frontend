@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "../utils/authContext";
 import Image from "next/image";
-import { FaTimes, FaSignOutAlt, FaUser, FaHome, FaBriefcase, FaUsers, FaFileAlt, FaSuitcase, FaCrown, FaFileInvoiceDollar } from "react-icons/fa";
+import { FaTimes, FaSignOutAlt, FaUser, FaHome, FaBriefcase, FaUsers, FaFileAlt, FaSuitcase, FaCrown, FaFileInvoiceDollar, FaUserFriends } from "react-icons/fa";
 
 export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; closeSidebar: () => void }) {
     const { user, logout } = useAuth();
@@ -17,6 +17,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
         talent: [
             { path: "/admin/talents/dashboard", label: "Dashboard", icon: <FaHome /> },
             { path: "/admin/talents/profile", label: "Perfil", icon: <FaUser /> },
+            { path: "/admin/talents/connections", label: "Mi Red", icon: <FaUserFriends />},
             { path: "/admin/talents/jobs", label: "Empleos", icon: <FaSuitcase /> },
             { path: "/admin/talents/applications", label: "Mis Aplicaciones", icon: <FaBriefcase /> },
             { path: "/admin/talents/proposals", label: "Propuestas", icon: <FaFileAlt /> },
