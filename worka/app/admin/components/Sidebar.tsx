@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useAuth } from "../utils/authContext";
 import Image from "next/image";
-import { FaTimes, FaSignOutAlt, FaUser, FaHome, FaBriefcase, FaUsers, FaFileAlt, FaSuitcase } from "react-icons/fa";
+import { FaTimes, FaSignOutAlt, FaUser, FaHome, FaBriefcase, FaUsers, FaFileAlt, FaSuitcase, FaCrown, FaFileInvoiceDollar } from "react-icons/fa";
 
 export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; closeSidebar: () => void }) {
     const { user, logout } = useAuth();
+
+    console.log(user)
 
     if (!user) return null; // No sidebar if user is not logged in
 
@@ -17,8 +19,8 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
             { path: "/admin/talents/profile", label: "Perfil", icon: <FaUser /> },
             { path: "/admin/talents/jobs", label: "Empleos", icon: <FaSuitcase /> },
             { path: "/admin/talents/applications", label: "Mis Aplicaciones", icon: <FaBriefcase /> },
-            { path: "/admin/talents/proposals", label: "Propuestas", icon: <FaFileAlt /> }
-
+            { path: "/admin/talents/proposals", label: "Propuestas", icon: <FaFileAlt /> },
+            { path: "/admin/talents/billing", label: "Pagos", icon: <FaFileInvoiceDollar />}
         ],
         recruiter: [
             { path: "/admin", label: "Dashboard", icon: <FaHome /> },
@@ -80,7 +82,7 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
             </div>
 
             {/* Navigation Menu */}
-            <nav className="mt-4">
+            <nav className="mt-4 mb-6">
                 {userMenu.map((item) => (
                     <Link
                         key={item.path}
@@ -93,6 +95,20 @@ export default function Sidebar({ isOpen, closeSidebar }: { isOpen: boolean; clo
                     </Link>
                 ))}
             </nav>
+
+            {/* Current Plan */}
+            <div className="p-4 bg-[#2a5a65] rounded-lg">
+                <div className="flex items-center gap-2 mb-4">
+                    <FaCrown className="text-yellow-400" />
+                    Plan Actual: <span className="font-semibold">{user.plan.name}</span>
+                </div>
+                <Link
+                    className="mt-3 w-full py-2 px-4 bg-[#60cf85] text-white rounded transition"
+                    href={`/admin/talents/plans`}
+                >
+                    Upgrade Plan
+                </Link>
+            </div>
 
             {/* Logout Button */}
             <div className="absolute bottom-6 left-4 w-full">

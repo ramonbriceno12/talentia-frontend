@@ -17,8 +17,26 @@ export default function LoginPage() {
 
   // Redirect if user is already logged in
   useEffect(() => {
+
     if (user) {
-      router.push("/admin"); // Redirect to admin dashboard
+      console.log(user)
+      let redirectUrl = "talents"; // Default redirect URL
+
+      switch (user.role) {
+        case "recruiter":
+          redirectUrl = "recruiters";
+          break;
+        case "company":
+          redirectUrl = "companies";
+          break;
+        default:
+          break;
+      }
+
+      setTimeout(() => {
+        router.push(`/admin/${redirectUrl}/dashboard`)
+      }, 1500)
+
     }
   }, [user, router]);
 
@@ -50,7 +68,7 @@ export default function LoginPage() {
 
       localStorage.setItem("token", data.user.token);
       await fetchUser();
-      router.push("/admin");
+
     } catch (err) {
       setError("Something went wrong. Please try again.");
       setLoading(false);
@@ -60,10 +78,10 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      
+
       <div className="flex flex-1 items-center justify-center" style={{
-            background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
-        }}>
+        background: "linear-gradient(90deg, #244c56 50%, #349390 100%)",
+      }}>
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
