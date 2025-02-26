@@ -18,6 +18,7 @@ interface RelatedTalentsProps {
 const RelatedTalents: React.FC<RelatedTalentsProps> = ({ userId }) => {
     const [relatedTalents, setRelatedTalents] = useState<Talent[]>([]);
     const [followStatuses, setFollowStatuses] = useState({});
+    const [connectionStatuses, setConnectionStatuses] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const token = localStorage.getItem('token')
@@ -36,6 +37,7 @@ const RelatedTalents: React.FC<RelatedTalentsProps> = ({ userId }) => {
                 const talentIds = data.relatedTalents.map((talent) => talent.id);
                 if (talentIds.length > 0) {
                     fetchFollowStatuses(talentIds);
+                    fetchConnectionStatuses(talentIds);
                 }
             } catch (error: any) {
                 console.error("Error fetching related talents:", error);
@@ -68,6 +70,27 @@ const RelatedTalents: React.FC<RelatedTalentsProps> = ({ userId }) => {
                 setFollowStatuses(statusMap);
             } catch (error) {
                 console.error("Error fetching follow statuses:", error);
+            }
+        };
+
+        const fetchConnectionStatuses = async (talentIds) => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/connections/statuses/${userId}`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ talentIds }),
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch connection statuses");
+
+                const data = await response.json();
+                console.log(data)
+                setConnectionStatuses(data.connectionStatuses);
+            } catch (error) {
+                console.error("Error fetching connection statuses:", error);
             }
         };
 
@@ -106,7 +129,7 @@ const RelatedTalents: React.FC<RelatedTalentsProps> = ({ userId }) => {
 
                             {/* Buttons - Placed Side by Side */}
                             <div className="flex space-x-2 mt-3">
-                                <ConnectButton userId={talent.id} />
+                                <ConnectButton userId={userId} targetId={talent.id} connectionStatus={connectionStatuses[talent.id] || "none"} />
                                 <FollowButton userId={talent.id} isFollowing={followStatuses[talent.id] || false} />
                             </div>
                         </div>
