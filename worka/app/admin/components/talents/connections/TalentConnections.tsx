@@ -98,18 +98,18 @@ const TalentConnections = ({ userId }) => {
 
     return (
         <div className="p-6">
-            {connections.length > 0 && (
+            {connections.length > 0 ? (
                 <div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <div className="flex overflow-x-auto pb-4">
                         {connections
                             .filter((connection) => connection.status === "accepted") // ✅ Only show accepted connections
                             .map((connection) => (
                                 <div
                                     key={connection.id}
-                                    className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center text-center"
+                                    className="flex-shrink-0 w-64 bg-white border border-gray-200 rounded-lg shadow-lg p-4 flex flex-col items-center text-center mx-2"
                                 >
                                     <UserBadge
-                                        imageUrl={connection.connectedUser?.profile_picture || "img/default-user.png"}
+                                        imageUrl={connection.connectedUser?.profile_picture || "/img/default-user.png"}
                                         statusBadge={connection.connectedUser?.status_badge || null}
                                     />
                                     <h3 className="text-lg font-semibold text-gray-900 mt-3">
@@ -151,6 +151,29 @@ const TalentConnections = ({ userId }) => {
                             ))}
 
                     </div>
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center py-12">
+                    <img
+                        src="/img/default-user.png" // Add a relevant illustration
+                        alt="No followed users"
+                        className="w-24 h-24 mb-6"
+                    />
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                        ¡Conecta con otros usuarios!
+                    </h2>
+                    <p className="text-gray-500 text-center max-w-md">
+                        Descubre talentos increíbles, conecta con profesionales y mantente al día con sus actividades.
+                    </p>
+                    <button
+                        onClick={() => {
+                            // Add navigation or action to explore users
+                            console.log("Explore users clicked");
+                        }}
+                        className="mt-6 px-6 py-2 bg-[#244c56] text-white rounded-lg shadow hover:bg-[#349390] transition-colors"
+                    >
+                        Explorar Usuarios
+                    </button>
                 </div>
             )}
         </div>

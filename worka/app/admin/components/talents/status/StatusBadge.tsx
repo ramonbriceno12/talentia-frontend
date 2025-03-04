@@ -17,7 +17,7 @@ const UserBadge: React.FC<UserBadgeProps> = ({ imageUrl, statusBadge }) => {
         <div className="relative w-24 h-24">
             {/* User Profile Image */}
             <img 
-                src={imageUrl || "img/default-user.png"} 
+                src={imageUrl || "/img/default-user.png"} 
                 alt="User Avatar" 
                 className="w-24 h-24 rounded-full border-2 border-gray-300 object-cover"
             />
