@@ -8,6 +8,7 @@ import ProposalsReceived from "../../components/talents/dashboard/ProposalsRecei
 import RelatedJobs from "../../components/talents/dashboard/RelatedJobs";
 import Followers from "../../components/talents/dashboard/Followers";
 import { useAuth } from "../../utils/authContext";
+import Connections from "../../components/talents/dashboard/Connections";
 
 export default function TalentDashboard() {
     const [profileViews, setProfileViews] = useState<number>(0);
@@ -20,6 +21,7 @@ export default function TalentDashboard() {
     const [proposals, setProposals] = useState<Array>([]);
     const [proposalsCount, setProposalsCount] = useState<number>(0);
     const [followersCount, setFollowersCount] = useState<number>(0);
+    const [connectionsCount, setConnectionsCount] = useState<number>(0);
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     const { user } = useAuth();
 
@@ -123,12 +125,28 @@ export default function TalentDashboard() {
             }
         };
 
+        const fetchConnectionsCount = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/connections/count/`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch connections count");
+
+                const data = await response.json();
+                setConnectionsCount(data.totalConnections || 0);
+            } catch (error) {
+                console.error("Error fetching connections count:", error);
+            }
+        };
+
         fetchProfileViews();
         fetchProfileCompletion();
         fetchRelatedJobs();
         fetchApplicationsDashboard();
         fetchProposals();
         fetchFollowersCount();
+        fetchConnectionsCount();
 
     }, [token]);
 
@@ -146,6 +164,7 @@ export default function TalentDashboard() {
                 <ProfileViews profileViews={profileViews} viewers={viewers} />
                 <ProposalsReceived totalProposals={proposalsCount} />
                 <Followers totalFollowers={followersCount} />
+                <Connections totalConnections={connectionsCount} />
             </div>
             <div className="mt-10">
                 <RelatedJobs jobs={relatedJobs} />

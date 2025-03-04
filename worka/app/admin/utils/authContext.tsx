@@ -17,7 +17,8 @@ type User = {
 
 type AuthContextType = {
   user: User | null;
-  fetchUser: () => Promise<void>; // Ensure fetchUser returns a Promise
+  loadingUser: boolean; // Added to track loading state
+  fetchUser: () => Promise<void>;
   logout: () => void;
 };
 
@@ -25,14 +26,20 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loadingUser, setLoadingUser] = useState(true); // Track user loading state
   const router = useRouter();
 
-  // useCallback to ensure function identity remains stable
   const fetchUser = useCallback(async () => {
-    if (user) return; // Avoid fetching if user is already set
+    if (user) {
+      setLoadingUser(false);
+      return;
+    }
 
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+      setLoadingUser(false);
+      return;
+    }
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/me", {
@@ -47,21 +54,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error) {
       console.error("Error fetching user", error);
+    } finally {
+      setLoadingUser(false);
     }
-  }, [user]); // Only re-run if `user` changes
+  }, [user]);
 
   useEffect(() => {
-    fetchUser(); // Call fetchUser only on first render
+    fetchUser();
   }, [fetchUser]);
 
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    router.push("/admin/login"); // Use router push instead of full page reload
+    router.push("/admin/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, fetchUser, logout }}>
+    <AuthContext.Provider value={{ user, loadingUser, fetchUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

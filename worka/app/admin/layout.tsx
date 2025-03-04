@@ -1,9 +1,9 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AuthProvider, useAuth } from "./utils/authContext";
 import Sidebar from "./components/Sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -15,21 +15,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 }
 
 function AuthWrapper({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const router = useRouter();
+  const { user, loadingUser } = useAuth();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Define authentication pages
   const authPages = ["/admin/login", "/admin/register"];
 
+  useEffect(() => {
+    if (!loadingUser && user === null) {
+      router.push("/admin/login");
+    }
+  }, [user, router, loadingUser]);
+
+  if (loadingUser) {
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
+  }
+
   // If the user is on an authentication page, hide the sidebar
   if (authPages.includes(pathname)) {
     return <>{children}</>;
-  }
-
-  // If user is not logged in, prevent access to admin panel
-  if (!user) {
-    return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 
   return (
@@ -39,9 +45,9 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
 
       {/* Overlay when sidebar is open on mobile */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-          onClick={() => setSidebarOpen(false)} 
+          onClick={() => setSidebarOpen(false)}
         />
       )}
 
